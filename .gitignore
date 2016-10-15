@@ -8,5 +8,16 @@
 *.war
 *.ear
 
+# ide
+/.settings
+/target
+*.springBeans
+*.classpath
+*.project
+*.idea
+
+# jrebel
+rebel*.xml
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
