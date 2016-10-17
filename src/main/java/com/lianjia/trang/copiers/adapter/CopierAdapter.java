@@ -29,6 +29,7 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
 	 * 
 	 * @param sourceClass
 	 * @param targetClass
+	 * @param copier
 	 */
 	protected CopierAdapter(Class<F> sourceClass, Class<T> targetClass, C copier) {
 		this.sourceClass = sourceClass;

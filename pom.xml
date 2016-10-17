@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.lianjia.trang</groupId>
+	<groupId>com.trang</groupId>
 	<artifactId>copiers</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Copiers</name>
@@ -79,7 +79,7 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		<!-- -->
+		<!-- guava工具 -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -115,17 +115,6 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<defaultGoal>package</defaultGoal>
@@ -144,6 +133,9 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>${maven.resources.plugin.version}</version>
 				<inherited>true</inherited>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -190,18 +182,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven.javadoc.plugin.version}</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
 			<plugin>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>${maven.install.plugin.version}</version>
