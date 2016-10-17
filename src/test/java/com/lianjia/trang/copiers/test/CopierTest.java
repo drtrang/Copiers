@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.lianjia.trang.copiers.Copiers;
 import com.lianjia.trang.copiers.bean.NetData;
 import com.lianjia.trang.copiers.bean.NetDataExportEntity;
 import com.lianjia.trang.copiers.impl.CglibCopier;
@@ -45,10 +44,7 @@ public class CopierTest {
 	
 	@Test
 	public void copier() {
-		Long l = Copiers.create(String.class, Long.class).copy("123");
-		System.out.println(l);
 	}
-	
 	
 	/**
 	 * 重新生成对象
@@ -60,7 +56,7 @@ public class CopierTest {
 		for (Integer times : timesList) {
 			long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
 			for (int i = 0; i < times; i++) {
-				NetDataExportEntity target = cglib.copy(source);
+				cglib.copy(source);
 			}
 			long end = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
 			System.out.println("copier:cglib, " + "times:" + times + ", time:" + (end - start));
