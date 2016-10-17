@@ -4,7 +4,7 @@
 
 	<groupId>com.lianjia.trang</groupId>
 	<artifactId>copiers</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Copiers</name>
@@ -25,7 +25,6 @@
 			<email>donghao.l@hotmail.com</email>
 		</developer>
 	</developers>
-
 
 	<scm>
 		<url>https://github.com/drtrang/Copiers</url>
@@ -191,7 +190,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven.javadoc.plugin.version}</version>
 				<executions>
@@ -202,7 +201,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>${maven.install.plugin.version}</version>
