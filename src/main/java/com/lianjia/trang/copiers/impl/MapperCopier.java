@@ -1,5 +1,6 @@
 package com.lianjia.trang.copiers.impl;
 
+import com.baidu.unbiz.easymapper.ClassMapBuilder;
 import com.baidu.unbiz.easymapper.Mapper;
 import com.baidu.unbiz.easymapper.MapperFactory;
 import com.lianjia.trang.copiers.adapter.CopierAdapter;
@@ -11,28 +12,44 @@ import com.lianjia.trang.copiers.inter.Copier;
  * 
  * @author trang
  */
-public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
+public class MapperCopier<F, T> extends CopierAdapter<ClassMapBuilder<F, T>, F, T> {
 
 	public MapperCopier(Class<F> sourceClass, Class<T> targetClass) {
 		// 创建Copier对象
-		super(sourceClass, targetClass, MapperFactory.getCopyByRefMapper().mapClass(sourceClass, targetClass).register());
+		super(sourceClass, targetClass, MapperFactory.getCopyByRefMapper().mapClass(sourceClass, targetClass));
 	}
 
 	@Override
-	public Mapper reverse() {
-		Mapper reverse = this.getReverse();
+	@SuppressWarnings("rawtypes")
+	public ClassMapBuilder reverse() {
+		ClassMapBuilder reverse = this.getReverse();
 		synchronized (this) {
 			if (reverse == null) {
-				return MapperFactory.getCopyByRefMapper().mapClass(getTargetClass(), getSourceClass()).register();
+				return MapperFactory.getCopyByRefMapper().mapClass(getTargetClass(), getSourceClass());
 			}
 		}
 		return reverse;
+	}
+	
+	public MapperCopier<F, T> mapOnNull(boolean mapOnNull) {
+		this.getCopier().mapOnNull(mapOnNull);
+		return this;
+	}
+	
+	public MapperCopier<F, T> field(String sourceField, String targetField) {
+		this.getCopier().field(sourceField, targetField);
+		return this;
+	}
+	
+	public MapperCopier<F, T> exclude(String... properties) {
+		this.getCopier().exclude(properties);
+		return this;
 	}
 
 	@Override
 	public T copy(F input) {
 		try {
-			return this.getCopier().map(input, getTargetClass());
+			return this.getCopier().register().map(input, getTargetClass());
 		} catch (Exception e) {
 			throw new RuntimeException("create object fail, class:" + getTargetClass().getName(), e);
 		}
@@ -40,7 +57,7 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 
 	@Override
 	public void copy(F input, T output) {
-		this.getCopier().map(input, output);
+		this.getCopier().register().map(input, output);
 	}
 
 	@Override
