@@ -37,16 +37,16 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
 		this.copier = copier;
 	}
 	
-	public C getCopier() {
+	protected C getCopier() {
 		return copier;
 	}
-	public Class<F> getSourceClass() {
+	protected Class<F> getSourceClass() {
 		return sourceClass;
 	}
-	public Class<T> getTargetClass() {
+	protected Class<T> getTargetClass() {
 		return targetClass;
 	}
-	public C getReverse() {
+	protected C getReverse() {
 		return reverse;
 	};
 }

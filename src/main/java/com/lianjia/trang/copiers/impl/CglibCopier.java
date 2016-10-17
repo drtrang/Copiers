@@ -60,7 +60,7 @@ public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
 	}
 
 	// getter & setter
-	public Converter getConverter() {
+	protected Converter getConverter() {
 		return converter;
 	}
 	
