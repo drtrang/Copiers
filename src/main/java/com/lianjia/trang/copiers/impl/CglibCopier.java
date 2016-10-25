@@ -3,6 +3,7 @@ package com.lianjia.trang.copiers.impl;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 
+import com.baidu.unbiz.easymapper.util.ReflectionUtil;
 import com.lianjia.trang.copiers.adapter.CopierAdapter;
 import com.lianjia.trang.copiers.inter.Copier;
 
@@ -28,20 +29,14 @@ public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
 	}
 
 	@Override
-	public BeanCopier reverse() {
-		BeanCopier reverse = this.getReverse();
-		synchronized (this) {
-			if (reverse == null) {
-				return BeanCopier.create(this.getTargetClass(), this.getSourceClass(), useConverter);
-			}
-		}
-		return reverse;
+	public CglibCopier<T, F> reverse() {
+		return new CglibCopier<>(getTargetClass(), getSourceClass());
 	}
 
 	@Override
 	public T copy(F source) {
 		try {
-			T target = this.getTargetClass().newInstance();
+			T target = ReflectionUtil.newInstance(this.getTargetClass());
 			this.getCopier().copy(source, target, converter);
 			return target;
 		} catch (Exception e) {

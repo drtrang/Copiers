@@ -1,106 +1,79 @@
 package com.lianjia.trang.copiers.test;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.lianjia.trang.copiers.bean.NetData;
-import com.lianjia.trang.copiers.bean.NetDataExportEntity;
-import com.lianjia.trang.copiers.impl.CglibCopier;
-import com.lianjia.trang.copiers.impl.MapperCopier;
-import com.lianjia.trang.copiers.inter.Copier;
+import com.google.common.collect.ImmutableMap;
+import com.lianjia.trang.copiers.Copiers;
+import com.lianjia.trang.copiers.bean.User;
+import com.lianjia.trang.copiers.bean.UserEntity;
+import com.lianjia.trang.copiers.bean.UserForm;
+import com.lianjia.trang.copiers.bean.UserVo;
+import com.lianjia.trang.copiers.container.CopierContainer;
 
+/**
+ * Copier示例
+ * 
+ * @author trang
+ */
 public class CopierTest {
 	//source object
-	private NetData source = new NetData();
-	//a thousand ~ a hundred million
-	private List<Integer> timesList = ImmutableList.of(1_000, 10_000, 100_000, 1_000_000, 10_000_000/*, 100_000_000*/);
+	private User source = new User();
 	
 	@Before
 	public void before() {
-		source.setAreaCode("areaCode");
-		source.setAreaCodes(Lists.newArrayList("areaCodes"));
-		source.setAreaName("areaName");
-		source.setAuditOpinion("auditOpinion");
-		source.setAuditorMobile("auditorMobile");
-		source.setAuditorName("auditorName");
-		source.setAuditorUcid(1L);
-		source.setAuditStatus(1);
-		source.setBizNo("bizNo");
-		source.setBuildArea(BigDecimal.TEN);
-		source.setBuildAreaRegion("buildAreaRegion");
-		source.setBuildingId(1L);
-		source.setBuildingNo("buildingNo");
-		source.setBuildYear("buildYear");
-		source.setCommission(BigDecimal.ONE);
-		source.setContractNo("contractNo");
-	}
-	
-	@Test
-	public void copier() {
-	}
-	
-	/**
-	 * 重新生成对象
-	 */
-	@Test
-	public void cglib() {
-		Copier<NetData, NetDataExportEntity> cglib = new CglibCopier<>(NetData.class, NetDataExportEntity.class);
-		Stopwatch cglibWatch = Stopwatch.createStarted();
-		for (Integer times : timesList) {
-			long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
-			for (int i = 0; i < times; i++) {
-				cglib.copy(source);
-			}
-			long end = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
-			System.out.println("copier:cglib, " + "times:" + times + ", time:" + (end - start));
-		}
+		source.setName("trang");
+		source.setSex((byte) 0);
+		source.setAge(23);
+		source.setHeight(1.73);
+		source.setWeight(65L);
+		source.setHandsome(true);
+		source.setHobbits(ImmutableList.of("coding"));
+		source.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 		
-		Copier<NetData, NetDataExportEntity> mapper = new MapperCopier<>(NetData.class, NetDataExportEntity.class);
-		Stopwatch mapperWatch = Stopwatch.createStarted();
-		for (Integer times : timesList) {
-			long start = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
-			for (int i = 0; i < times; i++) {
-				mapper.copy(source);
-			}
-			long end = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
-			System.out.println("copier:mapper, " + "times:" + times + ", time:" + (end - start));
-		}
+		User wife = new User();
+		wife.setName("trang");
+		wife.setSex((byte) 0);
+		wife.setAge(23);
+		wife.setHeight(1.73);
+		wife.setWeight(65L);
+		wife.setHandsome(true);
+		wife.setHobbits(ImmutableList.of("coding"));
+		wife.setHouse(ImmutableMap.<String, Object>of("home", "home"));
+		
+		source.setWife(wife);
 	}
 	
-	/**
-	 * 传入对象
-	 */
 	@Test
-	public void mapper() {
-		Copier<NetData, NetDataExportEntity> cglib = new CglibCopier<>(NetData.class, NetDataExportEntity.class);
-		Stopwatch cglibWatch = Stopwatch.createStarted();
-		for (Integer times : timesList) {
-			long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
-			for (int i = 0; i < times; i++) {
-				NetDataExportEntity target = new NetDataExportEntity();
-				cglib.copy(source, target);
-			}
-			long end = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
-			System.out.println("copier:cglib, " + "times:" + times + ", time:" + (end - start));
-		}
+	public void form_user() {
+		UserForm form = new UserForm();
+		User target = CopierContainer.FORM_USER_COPIER.copy(form);
+		System.out.println("form:" + form);
+		System.out.println("target:" + target);
 		
-		Copier<NetData, NetDataExportEntity> mapper = new MapperCopier<>(NetData.class, NetDataExportEntity.class);
-		Stopwatch mapperWatch = Stopwatch.createStarted();
-		for (Integer times : timesList) {
-			long start = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
-			for (int i = 0; i < times; i++) {
-				NetDataExportEntity target = new NetDataExportEntity();
-				mapper.copy(source, target);
-			}
-			long end = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
-			System.out.println("copier:mapper, " + "times:" + times + ", time:" + (end - start));
-		}
+		CopierContainer.USER_FORM_COPIER.copy(source, form);
+		System.out.println("form:" + form);
+		System.out.println("target:" + target);
+		
+		CopierContainer.FORM_USER_COPIER.copy(form, target);
+		System.out.println("form:" + form);
+		System.out.println("target:" + target);
+	}
+	
+	@Test
+	public void user_vo() {
+		UserVo target = CopierContainer.USER_VO_COPIER.copy(source);
+		System.out.println(target);
+		
+		User secondTarget = Copiers.create(UserVo.class, User.class).copy(target);
+		//User secondTarget = CopierContainer.USER_VO_COPIER.reverse().copy(target);
+		System.out.println(secondTarget);
+	}
+	
+	@Test
+	public void user_entity() {
+		UserEntity target = CopierContainer.USER_ENTITY_COPIER.copy(source);
+		System.out.println(target);
 	}
 }

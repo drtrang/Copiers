@@ -19,18 +19,6 @@ public class MapperCopier<F, T> extends CopierAdapter<ClassMapBuilder<F, T>, F, 
 		super(sourceClass, targetClass, MapperFactory.getCopyByRefMapper().mapClass(sourceClass, targetClass));
 	}
 
-	@Override
-	@SuppressWarnings("rawtypes")
-	public ClassMapBuilder reverse() {
-		ClassMapBuilder reverse = this.getReverse();
-		synchronized (this) {
-			if (reverse == null) {
-				return MapperFactory.getCopyByRefMapper().mapClass(getTargetClass(), getSourceClass());
-			}
-		}
-		return reverse;
-	}
-	
 	public MapperCopier<F, T> mapOnNull(boolean mapOnNull) {
 		this.getCopier().mapOnNull(mapOnNull);
 		return this;
@@ -63,5 +51,10 @@ public class MapperCopier<F, T> extends CopierAdapter<ClassMapBuilder<F, T>, F, 
 	@Override
 	public T apply(F input) {
 		return copy(input);
+	}
+
+	@Override
+	public MapperCopier<T, F> reverse() {
+		return new MapperCopier<>(getTargetClass(), getSourceClass());
 	}
 }

@@ -14,15 +14,13 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
 	private Class<F> sourceClass;
 	// 目标类
 	private Class<T> targetClass;
-	// 反转Copier，lazyinit，在调用时才初始化
-	private C reverse;
 	
 	/**
 	 * 反转Copier，子类需定义反转的过程
 	 * 
 	 * @return
 	 */
-	public abstract C reverse();
+	public abstract Copier<T, F> reverse();
 	
 	/**
 	 * 子类可以访问的构造方法
@@ -46,7 +44,4 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
 	protected Class<T> getTargetClass() {
 		return targetClass;
 	}
-	protected C getReverse() {
-		return reverse;
-	};
 }
