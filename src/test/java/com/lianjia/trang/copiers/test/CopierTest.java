@@ -1,8 +1,11 @@
 package com.lianjia.trang.copiers.test;
 
+import java.util.concurrent.ConcurrentHashMap;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.baidu.unbiz.easymapper.metadata.MapperKey;
+import com.baidu.unbiz.easymapper.metadata.TypeFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.lianjia.trang.copiers.Copiers;
@@ -43,6 +46,18 @@ public class CopierTest {
 		wife.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 		
 		source.setWife(wife);
+	}
+	
+	@Test
+	public void m() throws InterruptedException {
+		MapperKey e1 = new MapperKey(TypeFactory.valueOf(User.class), TypeFactory.valueOf(UserForm.class));
+		MapperKey e2 = new MapperKey(TypeFactory.valueOf(UserForm.class), TypeFactory.valueOf(User.class));
+		System.out.println(e1.equals(e2));
+		
+		ConcurrentHashMap<MapperKey, String> cache = new ConcurrentHashMap<>();
+		cache.put(e1, "e1");
+		cache.put(e2, "e2");
+		System.out.println(cache);
 	}
 	
 	@Test
