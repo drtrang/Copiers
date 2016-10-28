@@ -46,7 +46,7 @@
 		<!-- 第三方工具依赖 -->
 		<guava.version>19.0</guava.version>
 		<spring.version>4.3.3.RELEASE</spring.version>
-		<easy.mapper.version>1.0.1</easy.mapper.version>
+		<easy.mapper.version>1.0.2</easy.mapper.version>
 		<javassist.version>3.21.0-GA</javassist.version>
 		<!-- maven插件 -->
 		<maven.dependency.plugin.version>2.10</maven.dependency.plugin.version>
