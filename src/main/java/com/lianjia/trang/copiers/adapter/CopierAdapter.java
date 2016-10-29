@@ -1,5 +1,8 @@
 package com.lianjia.trang.copiers.adapter;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.lianjia.trang.copiers.inter.Copier;
 
 /**
@@ -9,18 +12,13 @@ import com.lianjia.trang.copiers.inter.Copier;
  */
 public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
 	// 实际执行拷贝的类
-	private C copier;
+	protected C copier;
 	// 源类
-	private Class<F> sourceClass;
+	protected Class<F> sourceClass;
 	// 目标类
-	private Class<T> targetClass;
+	protected Class<T> targetClass;
 	
-	/**
-	 * 反转Copier，子类需定义反转的过程
-	 * 
-	 * @return
-	 */
-	public abstract Copier<T, F> reverse();
+	protected CopierAdapter() {}
 	
 	/**
 	 * 子类可以访问的构造方法
@@ -35,13 +33,21 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
 		this.copier = copier;
 	}
 	
-	protected C getCopier() {
-		return copier;
+	/**
+	 * 将List转换为目标List
+	 * 
+	 * @param sourceList
+	 * @return targetList
+	 */
+	@Override
+	public List<T> map(List<F> sourceList) {
+		List<T> targetList = Lists.transform(sourceList, this);
+		// 安全起见，返回List，而不是视图
+		return Lists.newArrayList(targetList);
 	}
-	protected Class<F> getSourceClass() {
-		return sourceClass;
-	}
-	protected Class<T> getTargetClass() {
-		return targetClass;
+	
+	@Override
+	public T apply(F source) {
+		return copy(source);
 	}
 }

@@ -11,9 +11,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.lianjia.trang.copiers.bean.User;
 import com.lianjia.trang.copiers.bean.UserEntity;
-import com.lianjia.trang.copiers.impl.CglibCopier;
-import com.lianjia.trang.copiers.impl.MapperCopier;
+import com.lianjia.trang.copiers.cglib.CglibCopier;
 import com.lianjia.trang.copiers.inter.Copier;
+import com.lianjia.trang.copiers.mapper.MapperCopier;
 
 /**
  * 性能测试

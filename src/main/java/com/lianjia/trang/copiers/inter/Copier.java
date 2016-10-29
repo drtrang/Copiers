@@ -1,5 +1,7 @@
 package com.lianjia.trang.copiers.inter;
 
+import java.util.List;
+
 import com.google.common.base.Function;
 
 /**
@@ -10,4 +12,5 @@ import com.google.common.base.Function;
 public interface Copier<F, T> extends Function<F, T> {
 	T copy (F source);
 	void copy (F source, T target);
+	List<T> map(List<F> sourceList);
 }

@@ -5,7 +5,7 @@ import com.lianjia.trang.copiers.bean.User;
 import com.lianjia.trang.copiers.bean.UserEntity;
 import com.lianjia.trang.copiers.bean.UserForm;
 import com.lianjia.trang.copiers.bean.UserVo;
-import com.lianjia.trang.copiers.impl.MapperCopier;
+import com.lianjia.trang.copiers.mapper.MapperCopier;
 
 public class CopierContainer {
 	public static final MapperCopier<User, UserEntity> USER_ENTITY_COPIER = Copiers.create(User.class, UserEntity.class);

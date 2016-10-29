@@ -1,11 +1,9 @@
 package com.lianjia.trang.copiers.test;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.baidu.unbiz.easymapper.metadata.MapperKey;
-import com.baidu.unbiz.easymapper.metadata.TypeFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.lianjia.trang.copiers.Copiers;
@@ -14,6 +12,7 @@ import com.lianjia.trang.copiers.bean.UserEntity;
 import com.lianjia.trang.copiers.bean.UserForm;
 import com.lianjia.trang.copiers.bean.UserVo;
 import com.lianjia.trang.copiers.container.CopierContainer;
+import com.lianjia.trang.copiers.inter.Copier;
 
 /**
  * Copier示例
@@ -50,15 +49,11 @@ public class CopierTest {
 	
 	@Test
 	public void m() throws InterruptedException {
-		MapperKey e1 = new MapperKey(TypeFactory.valueOf(User.class), TypeFactory.valueOf(UserForm.class));
-		MapperKey e2 = new MapperKey(TypeFactory.valueOf(UserForm.class), TypeFactory.valueOf(User.class));
-		System.out.println(e1.equals(e2));
-		
-		ConcurrentHashMap<MapperKey, String> cache = new ConcurrentHashMap<>();
-		cache.put(e1, "e1");
-		cache.put(e2, "e2");
-		System.out.println(cache);
+		Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class).field("name", "username").mapper();
+		UserEntity target = copier.copy(source);
+		System.out.println(target);
 	}
+	
 	
 	@Test
 	public void form_user() {
@@ -90,5 +85,17 @@ public class CopierTest {
 	public void user_entity() {
 		UserEntity target = CopierContainer.USER_ENTITY_COPIER.copy(source);
 		System.out.println(target);
+	}
+	
+	@Test
+	public void list() {
+		List<User> users = ImmutableList.of(source, source);
+		UserEntity entity = Copiers.create(User.class, UserEntity.class).copy(source);
+		System.out.println("source:" + source);
+		System.out.println("entity:" + entity);
+		
+		List<UserEntity> entities = Copiers.create(User.class, UserEntity.class).map(users);
+		System.out.println(users);
+		System.out.println(entities);
 	}
 }

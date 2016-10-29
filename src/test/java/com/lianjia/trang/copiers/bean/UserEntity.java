@@ -17,7 +17,7 @@ public class UserEntity implements Serializable {
 	private Byte sex;
 	private Double height;
 	private Long weight;
-	private String name;
+	private String username;
 	private List<String> hobbits;
 	private Boolean handsome;
 	private Map<String, Object> house;
@@ -31,7 +31,7 @@ public class UserEntity implements Serializable {
 					.add("sex", sex)
 					.add("height", height)
 					.add("weight", weight)
-					.add("name", name)
+					.add("username", username)
 					.add("hobbits", hobbits)
 					.add("handsome", handsome)
 					.add("house", house)
@@ -82,12 +82,6 @@ public class UserEntity implements Serializable {
 	public void setWeight(Long weight) {
 		this.weight = weight;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public List<String> getHobbits() {
 		return hobbits;
 	}
@@ -99,5 +93,11 @@ public class UserEntity implements Serializable {
 	}
 	public void setHandsome(Boolean handsome) {
 		this.handsome = handsome;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
