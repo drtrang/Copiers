@@ -23,7 +23,7 @@ public class MapperCopierSupport<F, T> {
 	 * 
 	 * @param sourceField
 	 * @param targetField
-	 * @return
+	 * @return this
 	 */
 	public MapperCopierSupport<F, T> field(String sourceField, String targetField) {
 		builder.field(sourceField, targetField);
@@ -48,7 +48,7 @@ public class MapperCopierSupport<F, T> {
 	 * false	不拷贝，默认值
 	 * 
 	 * @param mapOnNull
-	 * @return
+	 * @return this
 	 */
 	public MapperCopierSupport<F, T> isNull(boolean mapOnNull) {
 		builder.mapOnNull(mapOnNull);
@@ -59,7 +59,7 @@ public class MapperCopierSupport<F, T> {
 	 * 跳过某个字段
 	 * 
 	 * @param properties
-	 * @return
+	 * @return this
 	 */
 	public MapperCopierSupport<F, T> skip(String... properties) {
 		builder.exclude(properties);
@@ -70,7 +70,7 @@ public class MapperCopierSupport<F, T> {
 	 * 自定义映射处理类
 	 * 
 	 * @param mapping
-	 * @return
+	 * @return this
 	 */
 	public MapperCopierSupport<F, T> mapping(AtoBMapping<F, T> mapping) {
 		builder.customMapping(mapping);
@@ -80,9 +80,9 @@ public class MapperCopierSupport<F, T> {
 	/**
 	 * 构建执行拷贝的Copier
 	 * 
-	 * @return
+	 * @return copier
 	 */
-	public MapperCopier<F, T> mapper() {
+	public MapperCopier<F, T> regist() {
 		return new MapperCopier<>(builder);
 	}
 }

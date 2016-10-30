@@ -49,7 +49,7 @@ public class CopierTest {
 	
 	@Test
 	public void m() throws InterruptedException {
-		Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class).field("name", "username").mapper();
+		Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class).field("name", "username").regist();
 		UserEntity target = copier.copy(source);
 		System.out.println(target);
 	}

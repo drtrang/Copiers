@@ -25,6 +25,7 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 	
 	/**
 	 * 通过#{@link ClassMapBuilder}自定义#{@link Mapper}
+	 * 通过#{@link MapperCopierSupport}创建
 	 * 
 	 * @param builder
 	 */

@@ -17,7 +17,7 @@ public class Copiers {
 	 * 
 	 * @param sourceClass
 	 * @param targetClass
-	 * @return
+	 * @return copier
 	 */
 	public static <F, T> MapperCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
 		return new MapperCopier<>(sourceClass, targetClass);
@@ -28,7 +28,7 @@ public class Copiers {
 	 * 
 	 * @param sourceClass
 	 * @param targetClass
-	 * @return
+	 * @return copier
 	 */
 	public static <F, T> MapperCopierSupport<F, T> createMapper(Class<F> sourceClass, Class<T> targetClass) {
 		return new MapperCopierSupport<>(sourceClass, targetClass);
@@ -39,7 +39,7 @@ public class Copiers {
 	 * 
 	 * @param sourceClass
 	 * @param targetClass
-	 * @return
+	 * @return copier
 	 */
 	public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
 		return new CglibCopier<>(sourceClass, targetClass);
