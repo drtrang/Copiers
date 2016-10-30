@@ -24,6 +24,17 @@ public class UserEntity implements Serializable {
 	private UserEntity wife;
 	private String other;
 	
+	public static UserEntity of() {
+		return new UserEntity();
+	}
+
+	public static UserEntity of(String name, Integer age) {
+		UserEntity entity = new UserEntity();
+		entity.setUsername(name);
+		entity.setAge(age);
+		return entity;
+	}
+	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this).omitNullValues()

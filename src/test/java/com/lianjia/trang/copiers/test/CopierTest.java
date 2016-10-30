@@ -48,8 +48,8 @@ public class CopierTest {
 	}
 	
 	@Test
-	public void m() throws InterruptedException {
-		Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class).field("name", "username").regist();
+	public void feature() {
+		Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class).skip("name", "username").regist();
 		UserEntity target = copier.copy(source);
 		System.out.println(target);
 	}

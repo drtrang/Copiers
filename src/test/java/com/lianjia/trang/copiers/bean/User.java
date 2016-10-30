@@ -22,6 +22,13 @@ public class User implements Serializable {
 	private Map<String, Object> house;
 	private User wife;
 	
+	public static User of(String name, Integer age) {
+		User user = new User();
+		user.setName(name);
+		user.setAge(age);
+		return user;
+	}
+	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this).omitNullValues()
