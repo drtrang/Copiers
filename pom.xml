@@ -5,13 +5,13 @@
 
 	<groupId>com.lianjia.trang</groupId>
 	<artifactId>copiers</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Copiers</name>
-	<description>Bean Copier的流式风格调用</description>
 	<url>https://github.com/drtrang/Copiers</url>
-
+	<description>A Friendly Bean Copier Packaging.</description>
+	
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>

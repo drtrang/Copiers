@@ -2,6 +2,7 @@ package com.lianjia.trang.copiers.adapter;
 
 import java.util.List;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.lianjia.trang.copiers.inter.Copier;
 
@@ -10,7 +11,7 @@ import com.lianjia.trang.copiers.inter.Copier;
  * 
  * @author trang
  */
-public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
+public abstract class CopierAdapter<C, F, T> implements Copier<F, T>, Function<F, T> {
 	// 实际执行拷贝的类
 	protected C copier;
 	// 源类
