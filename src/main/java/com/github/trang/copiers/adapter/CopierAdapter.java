@@ -1,10 +1,10 @@
-package com.lianjia.trang.copiers.adapter;
+package com.github.trang.copiers.adapter;
 
 import java.util.List;
 
+import com.github.trang.copiers.inter.Copier;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.lianjia.trang.copiers.inter.Copier;
 
 /**
  * Copier的适配器，可继承该类实现具体的拷贝过程，也可直接实现#{@link Copier}接口

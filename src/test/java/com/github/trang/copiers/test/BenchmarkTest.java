@@ -1,4 +1,4 @@
-package com.lianjia.trang.copiers.test;
+package com.github.trang.copiers.test;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -6,14 +6,14 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.trang.copiers.bean.User;
+import com.github.trang.copiers.bean.UserEntity;
+import com.github.trang.copiers.cglib.CglibCopier;
+import com.github.trang.copiers.inter.Copier;
+import com.github.trang.copiers.mapper.MapperCopier;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.lianjia.trang.copiers.bean.User;
-import com.lianjia.trang.copiers.bean.UserEntity;
-import com.lianjia.trang.copiers.cglib.CglibCopier;
-import com.lianjia.trang.copiers.inter.Copier;
-import com.lianjia.trang.copiers.mapper.MapperCopier;
 
 /**
  * 性能测试

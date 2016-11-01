@@ -1,18 +1,18 @@
-package com.lianjia.trang.copiers.test;
+package com.github.trang.copiers.test;
 
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.trang.copiers.Copiers;
+import com.github.trang.copiers.bean.User;
+import com.github.trang.copiers.bean.UserEntity;
+import com.github.trang.copiers.bean.UserForm;
+import com.github.trang.copiers.bean.UserVo;
+import com.github.trang.copiers.container.CopierContainer;
+import com.github.trang.copiers.inter.Copier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.lianjia.trang.copiers.Copiers;
-import com.lianjia.trang.copiers.bean.User;
-import com.lianjia.trang.copiers.bean.UserEntity;
-import com.lianjia.trang.copiers.bean.UserForm;
-import com.lianjia.trang.copiers.bean.UserVo;
-import com.lianjia.trang.copiers.container.CopierContainer;
-import com.lianjia.trang.copiers.inter.Copier;
 
 /**
  * Copier示例

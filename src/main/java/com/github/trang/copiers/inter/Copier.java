@@ -1,4 +1,4 @@
-package com.lianjia.trang.copiers.inter;
+package com.github.trang.copiers.inter;
 
 import java.util.List;
 

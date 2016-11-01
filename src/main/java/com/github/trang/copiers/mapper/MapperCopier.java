@@ -1,10 +1,10 @@
-package com.lianjia.trang.copiers.mapper;
+package com.github.trang.copiers.mapper;
 
 import com.baidu.unbiz.easymapper.ClassMapBuilder;
 import com.baidu.unbiz.easymapper.Mapper;
 import com.baidu.unbiz.easymapper.MapperFactory;
-import com.lianjia.trang.copiers.adapter.CopierAdapter;
-import com.lianjia.trang.copiers.inter.Copier;
+import com.github.trang.copiers.adapter.CopierAdapter;
+import com.github.trang.copiers.inter.Copier;
 
 /**
  * 基于 easy mapper #{@link Mapper}的#{@link Copier}实现

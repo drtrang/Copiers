@@ -1,4 +1,4 @@
-package com.lianjia.trang.copiers.bean;
+package com.github.trang.copiers.bean;
 
 import java.io.Serializable;
 import java.util.List;

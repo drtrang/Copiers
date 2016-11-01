@@ -1,11 +1,11 @@
-package com.lianjia.trang.copiers.cglib;
+package com.github.trang.copiers.cglib;
 
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 
 import com.baidu.unbiz.easymapper.util.ReflectionUtil;
-import com.lianjia.trang.copiers.adapter.CopierAdapter;
-import com.lianjia.trang.copiers.inter.Copier;
+import com.github.trang.copiers.adapter.CopierAdapter;
+import com.github.trang.copiers.inter.Copier;
 
 /**
  * 基于 cglib #{@link BeanCopier}的#{@link Copier}实现

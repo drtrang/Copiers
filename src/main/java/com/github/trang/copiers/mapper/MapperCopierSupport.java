@@ -1,4 +1,4 @@
-package com.lianjia.trang.copiers.mapper;
+package com.github.trang.copiers.mapper;
 
 import com.baidu.unbiz.easymapper.ClassMapBuilder;
 import com.baidu.unbiz.easymapper.MapperFactory;

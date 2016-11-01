@@ -1,8 +1,8 @@
-package com.lianjia.trang.copiers;
+package com.github.trang.copiers;
 
-import com.lianjia.trang.copiers.cglib.CglibCopier;
-import com.lianjia.trang.copiers.mapper.MapperCopier;
-import com.lianjia.trang.copiers.mapper.MapperCopierSupport;
+import com.github.trang.copiers.cglib.CglibCopier;
+import com.github.trang.copiers.mapper.MapperCopier;
+import com.github.trang.copiers.mapper.MapperCopierSupport;
 
 /**
  * Copier工具类，可根据需要替换底层实现
