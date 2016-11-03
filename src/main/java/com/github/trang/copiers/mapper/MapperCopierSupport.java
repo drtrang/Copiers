@@ -50,7 +50,7 @@ public class MapperCopierSupport<F, T> {
 	 * @param mapOnNull
 	 * @return this
 	 */
-	public MapperCopierSupport<F, T> isNull(boolean mapOnNull) {
+	public MapperCopierSupport<F, T> nulls(boolean mapOnNull) {
 		builder.mapOnNull(mapOnNull);
 		return this;
 	}
