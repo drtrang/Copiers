@@ -1,5 +1,6 @@
 package com.github.trang.copiers.adapter;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.github.trang.copiers.inter.Copier;
@@ -42,6 +43,9 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T>, Function<F
 	 */
 	@Override
 	public List<T> map(List<F> sourceList) {
+		if (sourceList == null || sourceList.isEmpty()) {
+			return Collections.emptyList();
+		}
 		List<T> targetList = Lists.transform(sourceList, this);
 		// 安全起见，返回List，而不是视图
 		return Lists.newArrayList(targetList);

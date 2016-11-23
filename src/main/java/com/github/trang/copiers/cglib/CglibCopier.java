@@ -6,6 +6,7 @@ import org.springframework.cglib.core.Converter;
 import com.baidu.unbiz.easymapper.util.ReflectionUtil;
 import com.github.trang.copiers.adapter.CopierAdapter;
 import com.github.trang.copiers.inter.Copier;
+import com.google.common.base.Preconditions;
 
 /**
  * 基于 cglib #{@link BeanCopier}的#{@link Copier}实现
@@ -30,6 +31,7 @@ public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
 
 	@Override
 	public T copy(F source) {
+		Preconditions.checkNotNull(source);
 		try {
 			T target = ReflectionUtil.newInstance(targetClass);
 			copier.copy(source, target, converter);
@@ -41,6 +43,8 @@ public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
 
 	@Override
 	public void copy(F source, T target) {
+		Preconditions.checkNotNull(source);
+		Preconditions.checkNotNull(target);
 		copier.copy(source, target, converter);
 	}
 

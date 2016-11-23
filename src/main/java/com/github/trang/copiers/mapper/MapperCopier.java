@@ -5,6 +5,7 @@ import com.baidu.unbiz.easymapper.Mapper;
 import com.baidu.unbiz.easymapper.MapperFactory;
 import com.github.trang.copiers.adapter.CopierAdapter;
 import com.github.trang.copiers.inter.Copier;
+import com.google.common.base.Preconditions;
 
 /**
  * 基于 easy mapper #{@link Mapper}的#{@link Copier}实现
@@ -36,16 +37,19 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 	}
 	
 	@Override
-	public T copy(F input) {
+	public T copy(F source) {
+		Preconditions.checkNotNull(source);
 		try {
-			return copier.map(input, targetClass);
+			return copier.map(source, targetClass);
 		} catch (Exception e) {
 			throw new RuntimeException("create object fail, class:" + targetClass.getName(), e);
 		}
 	}
 
 	@Override
-	public void copy(F input, T output) {
-		copier.map(input, output);
+	public void copy(F source, T target) {
+		Preconditions.checkNotNull(source);
+		Preconditions.checkNotNull(target);
+		copier.map(source, target);
 	}
 }
