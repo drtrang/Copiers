@@ -28,7 +28,7 @@ Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节
 ### 3.1 简单拷贝
 只拷贝源对象和目标对象字段相同的部分，有两种实现，基于 EasyMapper 的 `Copiers.create()` 和基于 Cglib 的 `Copiers.createCglib()`，区别是 EasyMapper 不会拷贝值为 null 的字段，而Cglib则相反。
 
-```
+```java
 //拷贝对象，创建新对象，使用EasyMapper
 User user = User.of("trang", 25);
 UserEntity entity = Copiers.create(User.class, UserEntity.class).copy(user);
@@ -53,7 +53,7 @@ Copiers.createCglib(User.class, UserEntity.class).copy(user, entity);
 ### 3.2 复杂拷贝
 若简单拷贝不满足业务需求，可以通过 `Copiers.createMapper()` 自定义映射关系，基于 EasyMapper 的特性实现，支持级联拷贝。
 
-```
+```java
 //将源对象的name字段映射到目标对象的username字段
 Copiers.createMapper(User.class, UserEntity.class).field("name", "username").regist();
 
