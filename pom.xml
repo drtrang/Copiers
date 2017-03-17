@@ -5,23 +5,12 @@
 
     <groupId>com.github.trang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Copiers</name>
     <url>https://github.com/drtrang/Copiers</url>
     <description>A Friendly Bean Copier Packaging.</description>
-
-    <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <licenses>
         <license>
@@ -82,18 +71,18 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- 日志依赖 -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
         <!-- guava工具 -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
             <scope>test</scope>
+        </dependency>
+        <!-- 日志依赖 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <!-- BeanCopier工具 -->
         <dependency>
