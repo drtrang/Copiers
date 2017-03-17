@@ -48,7 +48,7 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
         }
         List<T> targetList = new ArrayList<>(sourceList.size());
         for (F f : sourceList) {
-            targetList.add(this.copy(f));
+            targetList.add(copy(f));
         }
         return targetList;
     }

@@ -82,7 +82,7 @@ public class MapperCopierSupport<F, T> {
      *
      * @return copier
      */
-    public MapperCopier<F, T> regist() {
+    public MapperCopier<F, T> register() {
         return new MapperCopier<>(builder);
     }
 }

@@ -31,9 +31,7 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
      * @param builder
      */
     protected MapperCopier(ClassMapBuilder<F, T> builder) {
-        this.sourceClass = builder.getAType().getRawType();
-        this.targetClass = builder.getBType().getRawType();
-        this.copier = builder.register();
+        super(builder.getAType().getRawType(), builder.getBType().getRawType(), builder.register());
     }
 
     @Override

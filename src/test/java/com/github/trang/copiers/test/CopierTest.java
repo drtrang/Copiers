@@ -41,7 +41,6 @@ public class CopierTest {
         wife.setHeight(1.65);
         wife.setWeight(60L);
         wife.setHandsome(true);
-        wife.setHobbits(ImmutableList.of("beautiful"));
         wife.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 
         source.setWife(wife);
@@ -51,7 +50,7 @@ public class CopierTest {
     public void feature() {
         Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
                 .skip("name", "username")
-                .regist();
+                .register();
         UserEntity target = copier.copy(source);
         System.out.println(target);
     }
