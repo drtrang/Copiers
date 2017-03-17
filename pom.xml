@@ -5,12 +5,23 @@
 
     <groupId>com.github.trang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Copiers</name>
     <url>https://github.com/drtrang/Copiers</url>
     <description>A Friendly Bean Copier Packaging.</description>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <licenses>
         <license>
@@ -29,8 +40,8 @@
 
     <scm>
         <url>https://github.com/drtrang/Copiers</url>
-        <connection>scm:git:git://github.com/drtrang/Copiers</connection>
-        <developerConnection>scm:git:git://github.com/drtrang/Copiers</developerConnection>
+        <connection>scm:git:https://github.com/drtrang/Copiers.git</connection>
+        <developerConnection>scm:git:https://github.com/drtrang</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -42,17 +53,17 @@
         <jdk.version>1.7</jdk.version>
         <!-- 基础依赖 -->
         <junit.version>4.12</junit.version>
-        <slf4j.version>1.7.22</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <!-- 第三方工具依赖 -->
-        <guava.version>19.0</guava.version>
-        <spring.version>4.3.3.RELEASE</spring.version>
         <easy.mapper.version>1.0.2</easy.mapper.version>
         <javassist.version>3.21.0-GA</javassist.version>
+        <cglib.version>3.2.5</cglib.version>
+        <guava.version>20.0</guava.version>
         <!-- maven插件 -->
-        <maven.dependency.plugin.version>2.10</maven.dependency.plugin.version>
+        <maven.dependency.plugin.version>3.0.0</maven.dependency.plugin.version>
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
         <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
-        <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
@@ -60,6 +71,7 @@
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+        <maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
     </properties>
 
     <dependencies>
@@ -76,16 +88,12 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
         <!-- guava工具 -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+            <scope>test</scope>
         </dependency>
         <!-- BeanCopier工具 -->
         <dependency>
@@ -105,16 +113,9 @@
             <version>${javassist.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-            <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
         </dependency>
     </dependencies>
 
@@ -156,7 +157,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>${maven.gpg.plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>verify</phase>
@@ -178,17 +179,14 @@
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>${maven.dependency.plugin.version}</version>
-                <inherited>true</inherited>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>${maven.clean.plugin.version}</version>
-                <inherited>true</inherited>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>${maven.resources.plugin.version}</version>
-                <inherited>true</inherited>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
@@ -200,10 +198,6 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
-                    <debug>true</debug>
-                    <optimize>true</optimize>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
             <plugin>
@@ -216,23 +210,14 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven.jar.plugin.version}</version>
-                <inherited>true</inherited>
-                <configuration>
-                    <includes>
-                        <include>**/**.class</include>
-                        <include>META-INF/**</include>
-                    </includes>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-install-plugin</artifactId>
                 <version>${maven.install.plugin.version}</version>
-                <inherited>true</inherited>
             </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>${maven.deploy.plugin.version}</version>
-                <inherited>true</inherited>
                 <configuration>
                     <updateReleaseInfo>true</updateReleaseInfo>
                 </configuration>

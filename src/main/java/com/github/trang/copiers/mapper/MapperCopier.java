@@ -5,7 +5,6 @@ import com.baidu.unbiz.easymapper.Mapper;
 import com.baidu.unbiz.easymapper.MapperFactory;
 import com.github.trang.copiers.adapter.CopierAdapter;
 import com.github.trang.copiers.inter.Copier;
-import com.google.common.base.Preconditions;
 
 /**
  * 基于 easy mapper #{@link Mapper}的#{@link Copier}实现
@@ -21,9 +20,8 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
      * @param targetClass
      */
     public MapperCopier(Class<F> sourceClass, Class<T> targetClass) {
-        super(sourceClass, targetClass, MapperFactory.getCopyByRefMapper()
-                .mapClass(sourceClass, targetClass)
-                .register());
+        super(sourceClass, targetClass,
+                MapperFactory.getCopyByRefMapper().mapClass(sourceClass, targetClass).register());
     }
 
     /**
@@ -40,7 +38,9 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 
     @Override
     public T copy(F source) {
-        Preconditions.checkNotNull(source);
+        if (source == null) {
+            throw new NullPointerException("source bean cannot be null!");
+        }
         try {
             return copier.map(source, targetClass);
         } catch (Exception e) {
@@ -50,8 +50,15 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 
     @Override
     public void copy(F source, T target) {
-        Preconditions.checkNotNull(source);
-        Preconditions.checkNotNull(target);
-        copier.map(source, target);
+        if (source == null) {
+            throw new NullPointerException("source bean cannot be null!");
+        } else if (target == null) {
+            throw new NullPointerException("target bean cannot be null!");
+        }
+        try {
+            copier.map(source, target);
+        } catch (Exception e) {
+            throw new RuntimeException("create object fail, class:" + targetClass.getName(), e);
+        }
     }
 }
