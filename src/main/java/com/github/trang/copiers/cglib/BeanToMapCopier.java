@@ -18,8 +18,12 @@ public class BeanToMapCopier<F> extends CopierAdapter<BeanMap, F, Map<String, Ob
         if (bean == null) {
             throw new NullPointerException("source bean cannot be null!");
         }
-        BeanMap beanMap = BeanMap.create(bean);
-        return new HashMap<>(beanMap);
+        try {
+            BeanMap beanMap = BeanMap.create(bean);
+            return new HashMap<>(beanMap);
+        } catch (Exception e) {
+            throw new RuntimeException("create object fail, class:" + bean.getClass().getName(), e);
+        }
     }
 
     @Override
@@ -27,7 +31,11 @@ public class BeanToMapCopier<F> extends CopierAdapter<BeanMap, F, Map<String, Ob
         if (bean == null) {
             throw new NullPointerException("source bean cannot be null!");
         }
-        BeanMap beanMap = BeanMap.create(bean);
-        map.putAll(beanMap);
+        try {
+            BeanMap beanMap = BeanMap.create(bean);
+            map.putAll(beanMap);
+        } catch (Exception e) {
+            throw new RuntimeException("create object fail, class:" + bean.getClass().getName(), e);
+        }
     }
 }
