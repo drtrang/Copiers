@@ -1,6 +1,6 @@
 package com.github.trang.copiers.test;
 
-import com.github.trang.copiers.Copiers;
+import com.github.trang.copiers.BeanMapCopier;
 import com.github.trang.copiers.bean.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -44,20 +44,20 @@ public class BeanMapTest {
 
     @Test
     public void beanToMap() {
-        Map<String, Object> map = Copiers.createBeanToMap(User.class).copy(trang);
+        Map<String, Object> map = BeanMapCopier.beanToMap(trang);
         System.out.println(map);
 
         Map<String, Object> map2 = new HashMap<>();
         map2.put("value", "value");
         map2.put("name", "name");
-        Copiers.createBeanToMap(User.class).copy(trang, map2);
+        BeanMapCopier.beanToMap(trang, map2);
         System.out.println(map2);
     }
 
     @Test
     public void beansToMap() {
         List<User> users = Lists.newArrayList(trang, meng);
-        List<Map<String, Object>> list = Copiers.createBeanToMap(User.class).map(users);
+        List<Map<String, Object>> list = BeanMapCopier.beansToMap(users);
         for (Map<String, Object> map : list) {
             System.out.println(map);
         }
@@ -65,17 +65,17 @@ public class BeanMapTest {
 
     @Test
     public void mapToBean() {
-        Map<String, Object> map = Copiers.createBeanToMap(User.class).copy(trang);
+        Map<String, Object> map = BeanMapCopier.beanToMap(trang);
         map.remove("handsome");
         System.out.println(map);
 
-        User user = Copiers.createMapToBean(User.class).copy(map);
+        User user = BeanMapCopier.mapToBean(map, User.class);
         System.out.println(user);
 
         User u2 = new User();
         u2.setName("name");
         u2.setHandsome(true);
-        Copiers.createMapToBean(User.class).copy(map, u2);
+        BeanMapCopier.mapToBean(map, u2);
         System.out.println(u2);
 
     }
@@ -83,8 +83,8 @@ public class BeanMapTest {
     @Test
     public void mapToBeans() {
         List<User> users = Lists.newArrayList(trang, meng);
-        List<Map<String, Object>> map = Copiers.createBeanToMap(User.class).map(users);
-        List<User> list = Copiers.createMapToBean(User.class).map(map);
+        List<Map<String, Object>> map = BeanMapCopier.beansToMap(users);
+        List<User> list = BeanMapCopier.mapToBeans(map, User.class);
         System.out.println(list);
     }
 
