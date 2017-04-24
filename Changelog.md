@@ -18,3 +18,7 @@
 1. CopierAdapter 去掉不实用的`reverse()`方法
 2. Copier 接口新增转换 List 的方法`map()`
 3. 新增 EasyMapper 新特性，抽象到 MapperCopierSupport 类
+
+##1.1.0 2017-03-16
+1. 去除 Guava 依赖
+2. 增加 Bean 与 Map 互相转换的工具

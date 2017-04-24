@@ -3,9 +3,8 @@ package com.github.trang.copiers.cglib;
 import com.baidu.unbiz.easymapper.util.ReflectionUtil;
 import com.github.trang.copiers.adapter.CopierAdapter;
 import com.github.trang.copiers.inter.Copier;
-import com.google.common.base.Preconditions;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.cglib.core.Converter;
+import net.sf.cglib.beans.BeanCopier;
+import net.sf.cglib.core.Converter;
 
 /**
  * 基于 cglib #{@link BeanCopier}的#{@link Copier}实现
@@ -18,19 +17,21 @@ import org.springframework.cglib.core.Converter;
  */
 public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
     // 是否使用BeanCopier的转换器
-    private static final boolean useConverter = false;
+    private static final boolean USE_CONVERTER = false;
 
     // 自定义转换器，只有在useConverter为true时生效
     private Converter converter;
 
     public CglibCopier(Class<F> sourceClass, Class<T> targetClass) {
         // 创建BeanCopier对象，不使用转换器
-        super(sourceClass, targetClass, BeanCopier.create(sourceClass, targetClass, useConverter));
+        super(sourceClass, targetClass, BeanCopier.create(sourceClass, targetClass, USE_CONVERTER));
     }
 
     @Override
     public T copy(F source) {
-        Preconditions.checkNotNull(source);
+        if (source == null) {
+            throw new NullPointerException("source bean cannot be null!");
+        }
         try {
             T target = ReflectionUtil.newInstance(targetClass);
             copier.copy(source, target, converter);
@@ -42,9 +43,16 @@ public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
 
     @Override
     public void copy(F source, T target) {
-        Preconditions.checkNotNull(source);
-        Preconditions.checkNotNull(target);
-        copier.copy(source, target, converter);
+        if (source == null) {
+            throw new NullPointerException("source bean cannot be null!");
+        } else if (target == null) {
+            throw new NullPointerException("target bean cannot be null!");
+        }
+        try {
+            copier.copy(source, target, converter);
+        } catch (Exception e) {
+            throw new RuntimeException("create object fail, class:" + targetClass.getName(), e);
+        }
     }
 
     // getter & setter

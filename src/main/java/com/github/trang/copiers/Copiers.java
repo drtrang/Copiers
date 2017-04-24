@@ -1,6 +1,7 @@
 package com.github.trang.copiers;
 
 import com.github.trang.copiers.cglib.CglibCopier;
+import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.mapper.MapperCopier;
 import com.github.trang.copiers.mapper.MapperCopierSupport;
 
@@ -10,7 +11,11 @@ import com.github.trang.copiers.mapper.MapperCopierSupport;
  *
  * @author trang
  */
-public class Copiers {
+public final class Copiers {
+
+    private Copiers() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * 基于EasyMapper实现的基础拷贝，满足基本需求
@@ -19,7 +24,7 @@ public class Copiers {
      * @param targetClass
      * @return copier
      */
-    public static <F, T> MapperCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
+    public static <F, T> Copier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
         return new MapperCopier<>(sourceClass, targetClass);
     }
 
@@ -41,7 +46,7 @@ public class Copiers {
      * @param targetClass
      * @return copier
      */
-    public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
+    public static <F, T> Copier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
         return new CglibCopier<>(sourceClass, targetClass);
     }
 }
