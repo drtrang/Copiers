@@ -55,11 +55,11 @@ Copiers.createCglib(User.class, UserEntity.class).copy(user, entity);
 
 ```java
 //将源对象的name字段映射到目标对象的username字段
-Copiers.createMapper(User.class, UserEntity.class).field("name", "username").regist();
+Copiers.createMapper(User.class, UserEntity.class).field("name", "username").register();
 
 //排除拷贝字段
-Copiers.createMapper(User.class, UserEntity.class).skip("name", "sex").regist();
+Copiers.createMapper(User.class, UserEntity.class).skip("name", "sex").register();
 
 //强制拷贝值为null的字段，默认不拷贝
-Copiers.createMapper(User.class, UserEntity.class).skip("name").isNull(true).regist();
+Copiers.createMapper(User.class, UserEntity.class).skip("name").isNull(true).register();
 ```
