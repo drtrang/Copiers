@@ -1,13 +1,10 @@
 # Copiers
 
----
-A Friendly Bean Copier Packaging.
+[![Build Status](https://api.travis-ci.org/drtrang/Copiers.svg?branch=master)](https://www.travis-ci.org/drtrang/Copiers)
+[![Coverage Status](https://coveralls.io/repos/github/drtrang/Copiers/badge.svg?branch=master)](https://coveralls.io/github/drtrang/Copiers?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers)
+[![License](http://img.shields.io/badge/license-apache%202-brightgreen.svg)](https://github.com/drtrang/Copiers/blob/master/LICENSE)
 
----
-
-[toc]
-
----
 
 ## 1. 概览
 Copiers 是一个 Bean Copy 的解决方案，是基于不同底层实现的再次封装。
