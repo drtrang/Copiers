@@ -1,6 +1,7 @@
 language: java
 jdk:
-  - oraclejdk8
   - oraclejdk7
 sudo: false
 install: false
+after_success:
+  - mvn clean test jacoco:report coveralls:report
