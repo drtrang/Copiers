@@ -7,17 +7,17 @@ import com.github.trang.copiers.adapter.CopierAdapter;
 import com.github.trang.copiers.inter.Copier;
 
 /**
- * 基于 easy mapper #{@link Mapper}的#{@link Copier}实现
+ * 基于 EasyMapper #{@link Mapper} 的 #{@link Copier} 实现
  *
  * @author trang
  */
 public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 
     /**
-     * 直接创建执行拷贝的#{@link Mapper}
+     * 创建默认的 #{@link Mapper}
      *
-     * @param sourceClass
-     * @param targetClass
+     * @param sourceClass 源类型
+     * @param targetClass 目标类型
      */
     public MapperCopier(Class<F> sourceClass, Class<T> targetClass) {
         super(sourceClass, targetClass,
@@ -25,10 +25,9 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
     }
 
     /**
-     * 通过#{@link ClassMapBuilder}自定义#{@link Mapper}
-     * 通过#{@link MapperCopierSupport}创建
+     * 自定义 #{@link Mapper}，由 #{@link MapperCopierSupport} 创建
      *
-     * @param builder
+     * @param builder 构造者
      */
     protected MapperCopier(ClassMapBuilder<F, T> builder) {
         super(builder.getAType().getRawType(), builder.getBType().getRawType(), builder.register());
@@ -36,27 +35,23 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 
     @Override
     public T copy(F source) {
-        if (source == null) {
-            throw new NullPointerException("source bean cannot be null!");
-        }
+        checkNull(source, "source bean cannot be null!");
         try {
             return copier.map(source, targetClass);
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class:" + targetClass.getName(), e);
+            throw new RuntimeException("create object fail, class: " + targetClass.getName(), e);
         }
     }
 
     @Override
     public void copy(F source, T target) {
-        if (source == null) {
-            throw new NullPointerException("source bean cannot be null!");
-        } else if (target == null) {
-            throw new NullPointerException("target bean cannot be null!");
-        }
+        checkNull(source, "source bean cannot be null!");
+        checkNull(target, "target bean cannot be null!");
         try {
             copier.map(source, target);
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class:" + targetClass.getName(), e);
+            throw new RuntimeException("create object fail, class: " + targetClass.getName(), e);
         }
     }
+
 }

@@ -7,7 +7,7 @@ import net.sf.cglib.beans.BeanMap;
 import java.util.Map;
 
 /**
- * Map 转换为 Bean
+ * Map 转换为 JavaBean
  *
  * @author trang
  */
@@ -19,33 +19,28 @@ public class MapToBeanCopier<T> extends CopierAdapter<BeanMap, Map<String, Objec
 
     @Override
     public T copy(Map<String, Object> map) {
-        if (map == null || map.isEmpty()) {
-            throw new NullPointerException("map cannot be null!");
-        } else if (targetClass == null) {
-            throw new NullPointerException("target class cannot be null!");
-        }
+        checkNull(map, "map cannot be null!");
+        checkNull(targetClass, "target class cannot be null!");
         try {
             T bean = ReflectionUtil.newInstance(targetClass);
             BeanMap beanMap = BeanMap.create(bean);
             beanMap.putAll(map);
             return bean;
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class:" + targetClass.getName(), e);
+            throw new RuntimeException("create object fail, class: " + targetClass.getName(), e);
         }
     }
 
     @Override
     public void copy(Map<String, Object> map, T bean) {
-        if (map == null || map.isEmpty()) {
-            throw new NullPointerException("map cannot be null!");
-        } else if (bean == null) {
-            throw new NullPointerException("target bean cannot be null!");
-        }
+        checkNull(map, "map cannot be null!");
+        checkNull(targetClass, "target bean cannot be null!");
         try {
             BeanMap beanMap = BeanMap.create(bean);
             beanMap.putAll(map);
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class:" + bean.getClass().getName(), e);
+            throw new RuntimeException("create object fail, class: " + bean.getClass().getName(), e);
         }
     }
+
 }
