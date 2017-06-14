@@ -1,0 +1,5 @@
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+sudo: false
+install: false
