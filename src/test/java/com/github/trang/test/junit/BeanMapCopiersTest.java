@@ -1,4 +1,4 @@
-package com.github.trang.test;
+package com.github.trang.test.junit;
 
 import com.github.trang.copiers.Copiers;
 import com.github.trang.test.bean.User;
@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 public class BeanMapCopiersTest {
     //trang object
@@ -85,12 +84,4 @@ public class BeanMapCopiersTest {
         System.out.println(list);
     }
 
-    @Test
-    public void propertiesToMap() {
-        Properties properties = new Properties();
-        properties.setProperty("0", "false");
-        properties.setProperty("1", "true");
-        Map<String, Object> map = ((Map) properties);
-        System.out.println(map);
-    }
 }

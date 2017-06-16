@@ -1,4 +1,4 @@
-package com.github.trang.test;
+package com.github.trang.test.junit;
 
 import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.Copiers;
