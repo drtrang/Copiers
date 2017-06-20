@@ -1,10 +1,10 @@
-package com.github.trang.test;
+package com.github.trang.copiers.test;
 
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
-import com.github.trang.test.bean.User;
-import com.github.trang.test.bean.UserEntity;
-import com.github.trang.test.container.CopierContainer;
+import com.github.trang.copiers.test.bean.User;
+import com.github.trang.copiers.test.bean.UserEntity;
+import com.github.trang.copiers.test.container.CopierContainer;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

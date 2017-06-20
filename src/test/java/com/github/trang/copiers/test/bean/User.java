@@ -1,4 +1,4 @@
-package com.github.trang.test.bean;
+package com.github.trang.copiers.test.bean;
 
 import com.google.common.base.MoreObjects;
 
@@ -7,35 +7,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户信息 Entity
- * 与 #{@link User} 区别：
- *   1. 增加 other 字段
- *   2. weight 字段由 Integer 类型改为 Long 型
+ * 用户信息
  */
-public class UserEntity implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Integer age;
     private Byte sex;
     private Double height;
-    private Long weight;
-    private String username;
+    private Integer weight;
+    private String name;
     private List<String> hobbits;
     private Boolean handsome;
     private Map<String, Object> house;
-    private UserEntity wife;
-    private String other;
+    private User wife;
 
-    public static UserEntity of() {
-        return new UserEntity();
-    }
-
-    public static UserEntity of(String name, Integer age) {
-        UserEntity entity = new UserEntity();
-        entity.setUsername(name);
-        entity.setAge(age);
-        return entity;
+    public static User of(String name, Integer age) {
+        User user = new User();
+        user.setName(name);
+        user.setAge(age);
+        return user;
     }
 
     @Override
@@ -45,21 +37,12 @@ public class UserEntity implements Serializable {
                 .add("sex", sex)
                 .add("height", height)
                 .add("weight", weight)
-                .add("username", username)
+                .add("name", name)
                 .add("hobbits", hobbits)
                 .add("handsome", handsome)
                 .add("house", house)
                 .add("wife", wife)
-                .add("other", other)
                 .toString();
-    }
-
-    public String getOther() {
-        return other;
-    }
-
-    public void setOther(String other) {
-        this.other = other;
     }
 
     public Map<String, Object> getHouse() {
@@ -70,11 +53,11 @@ public class UserEntity implements Serializable {
         this.house = house;
     }
 
-    public UserEntity getWife() {
+    public User getWife() {
         return wife;
     }
 
-    public void setWife(UserEntity wife) {
+    public void setWife(User wife) {
         this.wife = wife;
     }
 
@@ -102,12 +85,20 @@ public class UserEntity implements Serializable {
         this.height = height;
     }
 
-    public Long getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(Long weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<String> getHobbits() {
@@ -124,13 +115,5 @@ public class UserEntity implements Serializable {
 
     public void setHandsome(Boolean handsome) {
         this.handsome = handsome;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

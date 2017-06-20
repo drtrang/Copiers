@@ -1,10 +1,13 @@
-package com.github.trang.test.junit;
+package com.github.trang.copiers.test.junit;
 
 import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
-import com.github.trang.test.bean.*;
-import com.github.trang.test.container.CopierContainer;
+import com.github.trang.copiers.test.bean.User;
+import com.github.trang.copiers.test.bean.UserEntity;
+import com.github.trang.copiers.test.bean.UserForm;
+import com.github.trang.copiers.test.bean.UserVo;
+import com.github.trang.copiers.test.container.CopierContainer;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Before;

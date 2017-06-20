@@ -1,14 +1,16 @@
-package com.github.trang.test.bean;
+package com.github.trang.copiers.test.bean;
 
 import com.google.common.base.MoreObjects;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 用户信息 Form
- * 与 #{@link User} 区别：只有部分信息
+ * 用户信息 VO
+ * 与 #{@link User} 区别：去除wife信息
  */
-public class UserForm implements Serializable {
+public class UserVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,6 +19,9 @@ public class UserForm implements Serializable {
     private Double height;
     private Integer weight;
     private String name;
+    private List<String> hobbits;
+    private Boolean handsome;
+    private Map<String, Object> house;
 
     @Override
     public String toString() {
@@ -26,7 +31,18 @@ public class UserForm implements Serializable {
                 .add("height", height)
                 .add("weight", weight)
                 .add("name", name)
+                .add("hobbits", hobbits)
+                .add("handsome", handsome)
+                .add("house", house)
                 .toString();
+    }
+
+    public Map<String, Object> getHouse() {
+        return house;
+    }
+
+    public void setHouse(Map<String, Object> house) {
+        this.house = house;
     }
 
     public Integer getAge() {
@@ -67,5 +83,21 @@ public class UserForm implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<String> getHobbits() {
+        return hobbits;
+    }
+
+    public void setHobbits(List<String> hobbits) {
+        this.hobbits = hobbits;
+    }
+
+    public Boolean getHandsome() {
+        return handsome;
+    }
+
+    public void setHandsome(Boolean handsome) {
+        this.handsome = handsome;
     }
 }

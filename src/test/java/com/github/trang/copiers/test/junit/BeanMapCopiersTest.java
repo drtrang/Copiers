@@ -1,7 +1,7 @@
-package com.github.trang.test.junit;
+package com.github.trang.copiers.test.junit;
 
 import com.github.trang.copiers.Copiers;
-import com.github.trang.test.bean.User;
+import com.github.trang.copiers.test.bean.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
