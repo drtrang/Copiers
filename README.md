@@ -5,9 +5,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers)
 [![License](http://img.shields.io/badge/license-apache%202-brightgreen.svg)](https://github.com/drtrang/Copiers/blob/master/LICENSE)
 
-
-## 1. 概览
-Copiers 是一个 Bean Copy 的解决方案，是基于不同底层实现的再次封装。
+Copiers 是一个优雅的 Bean 拷贝解决方案，是基于不同底层实现的再次封装。
 Copiers 隐藏了底层实现，仅暴露统一的 Api 来完成 Copy 过程，用户可随时通过工厂方法切换底层的拷贝方式。
 
 ## 2. 底层实现
@@ -60,3 +58,5 @@ Copiers.createMapper(User.class, UserEntity.class).skip("name", "sex").register(
 //强制拷贝值为null的字段，默认不拷贝
 Copiers.createMapper(User.class, UserEntity.class).skip("name").isNull(true).register();
 ```
+
+## About Me
