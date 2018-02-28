@@ -1,10 +1,10 @@
 # Copiers
 
-[![Build Status](https://api.travis-ci.org/drtrang/Copiers.svg?branch=master)](https://www.travis-ci.org/drtrang/Copiers)
-[![Coverage Status](https://coveralls.io/repos/github/drtrang/Copiers/badge.svg?branch=master)](https://coveralls.io/github/drtrang/Copiers?branch=master)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers)
+[![Build Status](https://img.shields.io/travis/drtrang/Copiers/master.svg?style=flat-square)](https://www.travis-ci.org/drtrang/Copiers)
+[![Coverage Status](https://img.shields.io/coveralls/drtrang/Copiers/master.svg?style=flat-square)](https://coveralls.io/github/drtrang/Copiers?branch=master)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.drtrang/copiers.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers)
 [![GitHub Release](https://img.shields.io/github/release/drtrang/Copiers.svg?style=flat-square)](https://github.com/drtrang/Copiers/releases)
-[![License](http://img.shields.io/badge/license-apache%202-brightgreen.svg)](https://github.com/drtrang/Copiers/blob/master/LICENSE)
+[![License](http://img.shields.io/badge/license-apache%202-blue.svg?style=flat-square)](https://github.com/drtrang/Copiers/blob/master/LICENSE)
 
 Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮助用户完成拷贝对象的操作。
 
