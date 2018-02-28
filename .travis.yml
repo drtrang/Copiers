@@ -1,5 +1,6 @@
 language: java
-jdk: oraclejdk7
+jdk:
+  - openjdk7
 sudo: false
 install: false
 cache:
