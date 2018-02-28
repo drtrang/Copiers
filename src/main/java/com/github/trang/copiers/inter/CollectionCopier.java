@@ -5,6 +5,6 @@ package com.github.trang.copiers.inter;
  *
  * @author trang
  */
-public interface CollectionCopier<F, T> extends Parallel<F, T> {
+public interface CollectionCopier<F, T> {
 
 }

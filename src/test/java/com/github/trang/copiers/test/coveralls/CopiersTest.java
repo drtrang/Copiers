@@ -1,5 +1,6 @@
 package com.github.trang.copiers.test.coveralls;
 
+import com.baidu.unbiz.easymapper.codegen.AtoBMapping;
 import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
@@ -42,7 +43,7 @@ public class CopiersTest {
         user.setName("trang");
         user.setHobbits(ImmutableList.of("coding"));
         user.setHandsome(true);
-        user.setHouse(ImmutableMap.of("home", "home"));
+        user.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 
         User wife = new User();
         wife.setName("meng");
@@ -50,7 +51,7 @@ public class CopiersTest {
         wife.setAge(24);
         wife.setHeight(1.65);
         wife.setWeight(55);
-        wife.setHouse(ImmutableMap.of("home", "home"));
+        wife.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 
         user.setWife(wife);
     }
@@ -87,16 +88,29 @@ public class CopiersTest {
                 // 自定义属性映射，只映射名称，适用于类型一致名称不同的场景
                 .field("name", "username")
                 // 自定义属性映射，声明映射关系，适用于类型不一致的场景
-                .field("weight", "weight", Integer::longValue)
-                // easy-mapper 默认不支持 List 的级联拷贝，需要手动声明，否则会抛出异常
-                .field("sub", "sub", (Transformer<List<User>, List<UserEntity>>) users -> {
-                    List<UserEntity> result = new ArrayList<>();
-                    for (User u : users) {
-                        result.add(Copiers.create(User.class, UserEntity.class).copy(u));
+                .field("weight", "weight", new Transformer<Integer, Long>() {
+                    @Override
+                    public Long transform(Integer source) {
+                        return source.longValue();
                     }
-                    return result;
                 })
-                .mapping((source, target) -> target.setUsername("user:" + target.getUsername()))
+                // easy-mapper 默认不支持 List 的级联拷贝，需要手动声明，否则会抛出异常
+                .field("sub", "sub", new Transformer<List<User>, List<UserEntity>>() {
+                    @Override
+                    public List<UserEntity> transform(List<User> users) {
+                        List<UserEntity> result = new ArrayList<>();
+                        for (User u : users) {
+                            result.add(Copiers.create(User.class, UserEntity.class).copy(u));
+                        }
+                        return result;
+                    }
+                })
+                .mapping(new AtoBMapping<User, UserEntity>() {
+                    @Override
+                    public void map(User source, UserEntity target) {
+                        target.setUsername("user:" + target.getUsername());
+                    }
+                })
                 // 开启拷贝 null 值，默认关闭
                 .nulls()
                 .register();
@@ -138,7 +152,13 @@ public class CopiersTest {
     public void mapping() {
         Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
                 .field("age", "age")
-                .mapping((source, target) -> target.setUsername("extra"))
+                .mapping(new AtoBMapping<User, UserEntity>() {
+                    @Override
+                    public void map(User source, UserEntity target) {
+                        target.setUsername("extra");
+                        target.setAge(0);
+                    }
+                })
                 .field("name", "username")
                 .field("age", "age")
                 .skip("sub", "weight")
@@ -152,14 +172,24 @@ public class CopiersTest {
         Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
                 .skip("sub")
                 .field("name", "username")
-                .field("weight", "weight", Integer::longValue)
+                .field("weight", "weight", new Transformer<Integer, Long>() {
+                    @Override
+                    public Long transform(Integer source) {
+                        return source.longValue();
+                    }
+                })
                 .register();
         UserEntity target = copier.copy(user);
 
         Copier<UserEntity, User> reverseCopier = Copiers.createMapper(UserEntity.class, User.class)
                 .skip("sub")
                 .field("username", "name")
-                .field("weight", "weight", Long::intValue)
+                .field("weight", "weight", new Transformer<Long, Integer>() {
+                    @Override
+                    public Integer transform(Long source) {
+                        return source.intValue();
+                    }
+                })
                 .register();
         User reverseUser = reverseCopier.copy(target);
     }

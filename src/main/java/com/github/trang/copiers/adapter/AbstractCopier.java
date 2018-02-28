@@ -31,21 +31,6 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
         this.copier = copier;
     }
 
-    private boolean parallel;
-    private boolean ordered;
-
-    @Override
-    public AbstractCopier<C, F, T> parallel() {
-        this.parallel = true;
-        return this;
-    }
-
-    @Override
-    public AbstractCopier<C, F, T> ordered() {
-        this.ordered = true;
-        return this;
-    }
-
     /**
      * 拷贝数组
      *
@@ -58,10 +43,9 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
                 || sourceArray.length != targetArray.length) {
             return;
         }
-        if (parallel) {
-            Arrays.parallelSetAll(targetArray, index -> copy(sourceArray[index]));
-        } else {
-            Arrays.stream(sourceArray).map(this::copy).toArray(non -> targetArray);
+        for (int i = 0; i < sourceArray.length; i++) {
+            T target = copy(sourceArray[i]);
+            targetArray[i] = target;
         }
     }
 
@@ -98,12 +82,8 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
     }
 
     protected void forEachTransform(Collection<F> sources, Collection<T> targets) {
-        if (parallel && ordered) {
-            sources.parallelStream().map(this::copy).forEachOrdered(targets::add);
-        } else if (parallel) {
-            sources.parallelStream().map(this::copy).forEach(targets::add);
-        } else {
-            sources.stream().map(this::copy).forEach(targets::add);
+        for (F source : sources) {
+            targets.add(copy(source));
         }
     }
 
