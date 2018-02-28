@@ -15,7 +15,7 @@
 1. 更新 EasyMapper 版本到 1.0.4
 2. CglibCopier 新增支持 Converter 的方法
 3. MapperCopierSupport 移动到 MapperCopier.Builder
-4. Bean 与 Map转换的功能移动到 MapCopiers
+4. Bean 与 Map 转换的功能移动到 MapCopiers
 5. 新增 CopierException，代替之前的 RuntimeException
 6. 完善 ReadMe 与单元测试
 
