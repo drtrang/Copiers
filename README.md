@@ -14,14 +14,14 @@ Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 
 <!-- java8 or higher -->
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>2.2.0</version>
+    <version>2.2.1</version>
 </dependency>
 ```
 
@@ -181,12 +181,16 @@ Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.cl
                 .register();
 // 使用 Stream 拷贝 List
 sourceList.stream().map(copier::copy).collect(toList());
+// 2.2.1 版本之后可以如下调用，等同于上边代码
+copier.map(sourceList);
 // 使用并行 Stream 拷贝 List
 sourceList.parallelStream().map(copier::copy).collect(toList());
+// 2.2.1 版本之后可以如下调用，等同于上边代码
+copier.parallel().map(sourceList);
 // 使用 Optional 拷贝 List
 Optional.of(name)
         .map(n -> service.selectByName(n))
-        .map(copier::map)
+        .map(copier::map) 
         .orElse(emptyList());
 ```
 

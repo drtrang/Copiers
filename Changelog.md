@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.1
+1. 将 Copier 分离成职责更加单一的接口
+2. 新增并行流拷贝，开启并行时可额外开启顺序拷贝
+3. 新增拷贝 Set、Array
+4. 拷贝集合的时候最大限度的返回传入的对象类，如传入 LinkedList 则返回 LinkedList
+
+## 1.2.1
+1. 将 Copier 分离成职责更加单一的接口
+2. 新增拷贝 Set、Array
+3. 拷贝集合的时候最大限度的返回传入的对象类，如传入 LinkedList 则返回 LinkedList
+
 ## 1.2.0
 1. 更新 EasyMapper 版本到 1.0.4
 2. CglibCopier 新增支持 Converter 的方法
