@@ -8,7 +8,24 @@
 
 Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮助用户完成拷贝对象的操作。
 
-## 1. 底层实现
+## 依赖
+```xml
+<!-- java7 -->
+<dependency>
+    <groupId>com.github.drtrang</groupId>
+    <artifactId>copiers</artifactId>
+    <version>1.2.0</version>
+</dependency>
+
+<!-- java8 -->
+<dependency>
+    <groupId>com.github.drtrang</groupId>
+    <artifactId>copiers</artifactId>
+    <version>2.2.0</version>
+</dependency>
+```
+
+## 底层实现
 Copiers 目前有两种实现：`Cglib` & `EasyMapper`，用户可以通过工厂方法来切换底层的拷贝方式。
 
 ```java
@@ -20,7 +37,7 @@ Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass)
 Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter)
 ```
 
-### 1.1 Cglib
+### Cglib
 Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节码增强技术，千万次拷贝仅在 **1.5s** 左右，但高性能带来的显著缺点是功能单一、拓展性差，BeanCopier 仅支持源对象到目标对象的**完全拷贝**，不支持自定义映射，Convert 拓展也只能对拷贝的 value 做处理，很多情况下不满足实际的业务需求。
 
 **注意：**
@@ -28,7 +45,7 @@ Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节
 2. 当目标类的 setter 方法少于 getter 方法时，会导致创建 BeanCopier 失败
 3. 一旦使用 Converter，BeanCopier 将完全使用 Converter 中定义的规则去拷贝，所以在 `convert()` 方法中要考虑到所有的属性，否则会抛出 `ClassCastException`
 
-### 1.2 EasyMapper
+### EasyMapper
 [EasyMapper](https://github.com/neoremind/easy-mapper) 基于 Javassist 字节码技术，千万次拷贝在 **8s** 左右。虽不如 Cglib，但 EasyMapper 的优点在于使用灵活、扩展性强，具体情况可以查看 EasyMapper 的 Github，地址：https://github.com/neoremind/easy-mapper，中文文档地址：http://neoremind.com/2016/08/easy-mapper-一个灵活可扩展的高性能bean-mapping类库
 
 **注意：**
@@ -36,10 +53,10 @@ Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节
 2. 支持级联拷贝，但是需要提前注册好级联对象之间的映射关系
 3. 支持与 Java8 结合使用，支持 lambda 与 stream
 
-## 2. 使用方式
+## 使用方式
 通过工厂方法建立 Source 与 Target 之间的关系后，调用 `copy()` 方法即可完成 Bean 拷贝，调用 `map()` 方法即可完成 List 拷贝，简洁高效。
 
-### 2.1 Cglib
+### Cglib
 ```java
 // 拷贝对象，创建新对象
 User user = User.of("trang", 25);
@@ -57,7 +74,7 @@ List<User> family = ImmutableList.of(trang, meng);
 List<UserEntity> entries = Copiers.createCglib(User.class, UserEntity.class).map(family);
 ```
 
-### 2.2 EasyMapper
+### EasyMapper
 ```java
 // 拷贝对象，创建新对象
 User user = User.of("trang", 25);
@@ -75,7 +92,7 @@ List<User> family = ImmutableList.of(trang, meng);
 List<UserEntity> entries = Copiers.create(User.class, UserEntity.class).map(family);
 ```
 
-## 3. EasyMapper 进阶
+## EasyMapper 进阶
 EasyMapper 支持强大的自定义关系映射，并且使用缓存技术，一次注册后续直接使用。
 
 ```java
