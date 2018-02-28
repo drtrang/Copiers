@@ -3,7 +3,7 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p --- [%15.15t] %-40.40logger{39} : %m%n</pattern>
             <charset>UTF8</charset>
         </encoder>
     </appender>
