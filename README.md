@@ -17,7 +17,7 @@ Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮
     <version>1.2.0</version>
 </dependency>
 
-<!-- java8 -->
+<!-- java8 or higher -->
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
