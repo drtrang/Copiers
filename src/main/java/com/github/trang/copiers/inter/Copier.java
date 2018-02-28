@@ -3,7 +3,7 @@ package com.github.trang.copiers.inter;
 import java.util.List;
 
 /**
- * 拷贝接口
+ * 底层拷贝基础接口
  *
  * @author trang
  */

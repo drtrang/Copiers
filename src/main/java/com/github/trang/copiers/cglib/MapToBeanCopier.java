@@ -2,6 +2,7 @@ package com.github.trang.copiers.cglib;
 
 import com.baidu.unbiz.easymapper.util.ReflectionUtil;
 import com.github.trang.copiers.adapter.CopierAdapter;
+import com.github.trang.copiers.exception.CopierException;
 import net.sf.cglib.beans.BeanMap;
 
 import java.util.Map;
@@ -27,7 +28,7 @@ public class MapToBeanCopier<T> extends CopierAdapter<BeanMap, Map<String, Objec
             beanMap.putAll(map);
             return bean;
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class: " + targetClass.getName(), e);
+            throw new CopierException("create object fail, class: " + targetClass.getName(), e);
         }
     }
 
@@ -39,7 +40,7 @@ public class MapToBeanCopier<T> extends CopierAdapter<BeanMap, Map<String, Objec
             BeanMap beanMap = BeanMap.create(bean);
             beanMap.putAll(map);
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class: " + bean.getClass().getName(), e);
+            throw new CopierException("create object fail, class: " + bean.getClass().getName(), e);
         }
     }
 

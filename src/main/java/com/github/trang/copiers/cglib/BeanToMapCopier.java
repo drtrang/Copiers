@@ -1,6 +1,7 @@
 package com.github.trang.copiers.cglib;
 
 import com.github.trang.copiers.adapter.CopierAdapter;
+import com.github.trang.copiers.exception.CopierException;
 import net.sf.cglib.beans.BeanMap;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class BeanToMapCopier<F> extends CopierAdapter<BeanMap, F, Map<String, Ob
             BeanMap beanMap = BeanMap.create(bean);
             return new HashMap<>(beanMap);
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class: " + bean.getClass().getName(), e);
+            throw new CopierException("create object fail, class: " + bean.getClass().getName(), e);
         }
     }
 
@@ -29,11 +30,12 @@ public class BeanToMapCopier<F> extends CopierAdapter<BeanMap, F, Map<String, Ob
     @SuppressWarnings("unchecked")
     public void copy(F bean, Map<String, Object> map) {
         checkNull(bean, "source bean cannot be null!");
+        checkNull(map, "map cannot be null!");
         try {
             BeanMap beanMap = BeanMap.create(bean);
             map.putAll(beanMap);
         } catch (Exception e) {
-            throw new RuntimeException("create object fail, class: " + bean.getClass().getName(), e);
+            throw new CopierException("create object fail, class: " + bean.getClass().getName(), e);
         }
     }
 

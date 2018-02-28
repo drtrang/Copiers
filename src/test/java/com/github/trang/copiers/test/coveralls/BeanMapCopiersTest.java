@@ -1,4 +1,4 @@
-package com.github.trang.copiers.test.junit;
+package com.github.trang.copiers.test.coveralls;
 
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.test.bean.User;

@@ -1,10 +1,10 @@
 package com.github.trang.copiers.test;
 
+import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
-import com.github.trang.copiers.test.container.CopierContainer;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -22,10 +22,19 @@ import java.util.concurrent.TimeUnit;
 public class BenchmarkTest {
 
     // source object
-    private User source = new User();
+    private final User source = new User();
     // a thousand ~ a hundred million
-    private List<Integer> timesList = ImmutableList.of(1_000, 10_000, 100_000, 1_000_000, 10_000_000/*, 100_000_000*/);
-
+    private final List<Integer> timesList = ImmutableList.of(1_000, 10_000, 100_000, 1_000_000, 10_000_000/*, 100_000_000*/);
+    private final Copier<User, UserEntity> copier =
+            Copiers.createMapper(User.class, UserEntity.class)
+                    .skip("sub")
+                    .field("weight", "weight", new Transformer<Integer, Long>() {
+                        @Override
+                        public Long transform(Integer source) {
+                            return source.longValue();
+                        }
+                    })
+                    .register();
     @Before
     public void before() {
         source.setName("trang");
@@ -68,14 +77,13 @@ public class BenchmarkTest {
             System.out.println("copier-2: cglib, " + "times:" + times + ", time:" + (end - start));
         }
 
-        //easy mapper
-        Copier<User, UserEntity> mapper = CopierContainer.USER_TO_ENTITY;
+        // easy-mapper
         Stopwatch mapperWatch = Stopwatch.createStarted();
         for (Integer times : timesList) {
             long start = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
             for (int i = 0; i < times; i++) {
                 UserEntity target = new UserEntity();
-                mapper.copy(source, target);
+                copier.copy(source, target);
             }
             long end = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
             System.out.println("copier-2: easy mapper, " + "times:" + times + ", time:" + (end - start));
@@ -99,13 +107,12 @@ public class BenchmarkTest {
             System.out.println("copier-1: cglib, " + "times:" + times + ", time:" + (end - start));
         }
 
-        //easy mapper
-        Copier<User, UserEntity> easyMapperCopier = CopierContainer.USER_TO_ENTITY;
+        // easy-mapper
         Stopwatch mapperWatch = Stopwatch.createStarted();
         for (Integer times : timesList) {
             long start = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
             for (int i = 0; i < times; i++) {
-                easyMapperCopier.copy(source);
+                copier.copy(source);
             }
             long end = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
             System.out.println("copier-1: easy mapper, " + "times:" + times + ", time:" + (end - start));

@@ -3,60 +3,155 @@
 [![Build Status](https://api.travis-ci.org/drtrang/Copiers.svg?branch=master)](https://www.travis-ci.org/drtrang/Copiers)
 [![Coverage Status](https://coveralls.io/repos/github/drtrang/Copiers/badge.svg?branch=master)](https://coveralls.io/github/drtrang/Copiers?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.drtrang/copiers)
+[![GitHub Release](https://img.shields.io/github/release/drtrang/Copiers.svg?style=flat-square)](https://github.com/drtrang/Copiers/releases)
 [![License](http://img.shields.io/badge/license-apache%202-brightgreen.svg)](https://github.com/drtrang/Copiers/blob/master/LICENSE)
 
-Copiers 是一个优雅的 Bean 拷贝解决方案，是基于不同底层实现的再次封装。
-Copiers 隐藏了底层实现，仅暴露统一的 Api 来完成 Copy 过程，用户可随时通过工厂方法切换底层的拷贝方式。
+Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮助用户完成拷贝对象的操作。
 
 ## 2. 底层实现
-Copiers 目前有两种底层实现：`Cglib` & `EasyMapper`，两种方式差明显，可根据实际情况任选其一或二者结合使用。
+Copiers 目前有两种实现：`Cglib` & `EasyMapper`，用户可以通过工厂方法来切换底层的拷贝方式。
+
+```java
+// easy-mapper
+Copiers.create(Class<F> sourceClass, Class<T> targetClass)
+Copiers.createMapper(Class<F> sourceClass, Class<T> targetClass)
+// cglib
+Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass)
+Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter)
+```
 
 ### 2.1 Cglib
-Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节码增强技术，千万次拷贝仅在 *1s* 以内，但高性能带来的显著缺点是功能单一、拓展性差，BeanCopier 仅支持源对象到目标对象的完全拷贝，不支持自定义映射，Convert 拓展也只能对拷贝的 value 做处理，很多情况下不满足实际的业务需求。
+Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节码增强技术，千万次拷贝仅在 **1.5s** 左右，但高性能带来的显著缺点是功能单一、拓展性差，BeanCopier 仅支持源对象到目标对象的**完全拷贝**，不支持自定义映射，Convert 拓展也只能对拷贝的 value 做处理，很多情况下不满足实际的业务需求。
+
+注意：
+1. BeanCopier 只拷贝名称和类型都相同的属性
+2. 当目标类的 setter 方法少于 getter 方法时，会导致创建 BeanCopier 失败
+
 
 ### 2.2 EasyMapper
-[EasyMapper](https://github.com/neoremind/easy-mapper) 基于 Javassist 的字节码技术，千万次拷贝在 *4s* 左右。虽不如 BeanCopier，但大幅领先 Apache Commons BeanUtils、Dozer 等其它拷贝方式。且 EasyMapper 的优点在于使用灵活、扩展性强，具体情况可以查看 EasyMapper 的 Github， 地址：https://github.com/neoremind/easy-mapper
+[EasyMapper](https://github.com/neoremind/easy-mapper) 基于 Javassist 字节码技术，千万次拷贝在 **8s** 左右。虽不如 Cglib，但 EasyMapper 的优点在于使用灵活、扩展性强，具体情况可以查看 EasyMapper 的 Github，地址：https://github.com/neoremind/easy-mapper，中文文档地址：http://neoremind.com/2016/08/easy-mapper-一个灵活可扩展的高性能bean-mapping类库/
 
 ## 3. 使用方法
 通过工厂方法建立 Source 与 Target 之间的关系后，调用 `copy()` 方法即可完成 Bean 拷贝，调用 `map()` 方法即可完成 List 拷贝，简洁高效。
 
-### 3.1 简单拷贝
-只拷贝源对象和目标对象字段相同的部分，有两种实现，基于 EasyMapper 的 `Copiers.create()` 和基于 Cglib 的 `Copiers.createCglib()`，区别是 EasyMapper 不会拷贝值为 null 的字段，而Cglib则相反。
-
+### 3.1 Cglib
 ```java
-//拷贝对象，创建新对象，使用EasyMapper
+// 拷贝对象，创建新对象
 User user = User.of("trang", 25);
-UserEntity entity = Copiers.create(User.class, UserEntity.class).copy(user);
+UserEntity entity = Copiers.createCglib(User.class, UserEntity.class).copy(user);
 
-//拷贝对象，传入目标对象
-User user = User.of("trang", 25);
-UserEntity entity = UserEntity.of("meng", 24);
-Copiers.create(User.class, UserEntity.class).copy(user, entity);
-
-//拷贝List
-User user1 = User.of("trang", 25);
-User user2 = User.of("meng", 24);
-List<User> users = ImmutableList.of(user1, user2);
-List<UserEntity> entities = Copiers.create(User.class, UserEntity.class).map(users);
-
-//拷贝对象，使用cglib，会拷贝null值
+// 拷贝对象，传入已有对象，完全拷贝
 User user = User.of("trang", null);
 UserEntity entity = UserEntity.of("meng", 24);
 Copiers.createCglib(User.class, UserEntity.class).copy(user, entity);
+
+// 拷贝 List，创建新 List
+User trang = User.of("trang", 25);
+User meng = User.of("meng", 24);
+List<User> family = ImmutableList.of(trang, meng);
+List<UserEntity> entries = Copiers.createCglib(User.class, UserEntity.class).map(family);
 ```
 
-### 3.2 复杂拷贝
-若简单拷贝不满足业务需求，可以通过 `Copiers.createMapper()` 自定义映射关系，基于 EasyMapper 的特性实现，支持级联拷贝。
+### 3.2 EasyMapper
+```java
+// 拷贝对象，创建新对象
+User user = User.of("trang", 25);
+UserEntity entity = Copiers.create(User.class, UserEntity.class).copy(user);
+
+// 拷贝对象，传入已有对象，不会拷贝值为 null 的属性（可以配置）
+User user = User.of("trang", null);
+UserEntity entity = UserEntity.of("meng", 24);
+Copiers.create(User.class, UserEntity.class).copy(user, entity);
+
+// 拷贝 List，创建新 List
+User trang = User.of("trang", 25);
+User meng = User.of("meng", 24);
+List<User> family = ImmutableList.of(trang, meng);
+List<UserEntity> entries = Copiers.create(User.class, UserEntity.class).map(family);
+```
+
+## 4. EasyMapper 进阶
+EasyMapper 支持强大的自定义关系映射，并且使用缓存技术，一次映射后续直接使用。
 
 ```java
-//将源对象的name字段映射到目标对象的username字段
-Copiers.createMapper(User.class, UserEntity.class).field("name", "username").register();
+// 跳过拷贝的属性，支持配置多个
+Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+        .skip("age", "sex")
+        .register();
 
-//排除拷贝字段
-Copiers.createMapper(User.class, UserEntity.class).skip("name", "sex").register();
+// 将源对象的 `name` 属性映射到目标对象的 `username` 属性，只映射名称，适用于类型一致名称不同的场景
+Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+        .field("name", "username")
+        .register();
 
-//强制拷贝值为null的字段，默认不拷贝
-Copiers.createMapper(User.class, UserEntity.class).skip("name").isNull(true).register();
+// 将源对象的 `weight` 属性映射到目标对象的 `weight` 属性，声明映射关系，适用于类型不一致的场景
+Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+        .field("weight", "weight", new Transformer<Integer, Long>() {
+            @Override
+            public Long transform(Integer source) {
+                return source.longValue();
+            }
+        })
+        .register();
+
+// 开启拷贝 null 值，默认 EasyMapper 不会将源对象中值为 null 的属性拷贝到目标对象中，如有需要可以手动开启
+Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+        .nulls()
+        .register();
+
+// 全局自定义映射关系，若和其它方法结合使用则在最后执行
+Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+        .mapping(new AtoBMapping<User, UserEntity>() {
+            @Override
+            public void map(User source, UserEntity target) {
+                target.setUsername("extra");
+            }
+        })
+        .register();
 ```
 
+当然，以上映射关系可以任意结合使用，
+```java
+Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+                // 跳过拷贝
+                .skip("age", "sex")
+                // 自定义属性映射
+                .field("name", "username")
+                // 自定义属性映射
+                .field("weight", "weight", new Transformer<Integer, Long>() {
+                    @Override
+                    public Long transform(Integer source) {
+                        return source.longValue();
+                    }
+                })
+                // easy-mapper 默认不支持 List 的级联拷贝，需要手动声明，否则会抛出异常
+                .field("sub", "sub", new Transformer<List<User>, List<UserEntity>>() {
+                    @Override
+                    public List<UserEntity> transform(List<User> users) {
+                        List<UserEntity> result = new ArrayList<>();
+                        for (User u : users) {
+                            result.add(Copiers.create(User.class, UserEntity.class).copy(u));
+                        }
+                        return result;
+                    }
+                })
+                // 全局自定义映射关系
+                .mapping(new AtoBMapping<User, UserEntity>() {
+                    @Override
+                    public void map(User source, UserEntity target) {
+                        target.setUsername("user:" + target.getUsername());
+                    }
+                })
+                .register();
+```
+
+## Change Log
+[Release Notes](https://github.com/drtrang/Copiers/releases)
+
+## TODO
+任何意见和建议可以提 [ISSUE](https://github.com/drtrang/Copiers/issues)，我会酌情加到 [TODO List](https://github.com/drtrang/Copiers/blob/master/TODO.md)，一般情况一周内迭代完毕。
+
 ## About Me
+QQ：349096849<br>
+Email：donghao.l@hotmail.com<br>
+Blog：[Trang's Blog](http://blog.trang.space)

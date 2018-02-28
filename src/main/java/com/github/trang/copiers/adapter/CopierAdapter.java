@@ -2,10 +2,8 @@ package com.github.trang.copiers.adapter;
 
 import com.github.trang.copiers.inter.Copier;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * #{@link Copier} 适配器，可继承该类实现具体的拷贝过程，也可直接实现 #{@link Copier} 接口
@@ -14,11 +12,11 @@ import java.util.Map;
  */
 public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
 
-    // 实际执行拷贝的对象
+    /** 实际执行拷贝的对象 */
     protected C copier;
-    // 源类型
+    /** 源对象的类型 */
     protected Class<F> sourceClass;
-    // 目标类型
+    /** 目标对象的类型 */
     protected Class<T> targetClass;
 
     protected CopierAdapter() {
@@ -41,9 +39,23 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
         if (sourceList == null || sourceList.isEmpty()) {
             return Collections.emptyList();
         }
-        List<T> targetList = new ArrayList<>(sourceList.size());
+        List<T> targetList = createActualList(sourceList);
         for (F source : sourceList) {
             targetList.add(copy(source));
+        }
+        return targetList;
+    }
+
+    private List<T> createActualList(List<F> sourceList) {
+        List<T> targetList;
+        if (sourceList instanceof LinkedList) {
+            targetList = new LinkedList<>();
+        } else if (sourceList instanceof CopyOnWriteArrayList) {
+            targetList = new CopyOnWriteArrayList<>();
+        } else if (sourceList instanceof Vector) {
+            targetList = new Vector<>(sourceList.size());
+        } else {
+            targetList = new ArrayList<>(sourceList.size());
         }
         return targetList;
     }
@@ -55,8 +67,10 @@ public abstract class CopierAdapter<C, F, T> implements Copier<F, T> {
     }
 
     protected void checkNull(Map map, String msg) {
-        if (map == null || map.isEmpty()) {
+        if (map == null) {
             throw new NullPointerException(msg);
+        } else if (map.isEmpty()) {
+            throw new IllegalArgumentException(msg);
         }
     }
 
