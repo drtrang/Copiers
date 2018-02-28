@@ -12,8 +12,8 @@ import java.util.Map;
 /**
  * 用户信息 Entity
  * 与 #{@link User} 区别：
- *   1. 增加 other 字段
- *   2. weight 字段由 Integer 类型改为 Long 型
+ *   1. 增加 other 属性
+ *   2. weight 属性由 Integer 类型改为 Long
  */
 @Getter
 @Setter

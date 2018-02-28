@@ -69,10 +69,10 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
         }
 
         /**
-         * 自定义字段映射
+         * 自定义属性映射
          *
-         * @param sourceField 源对象字段名称
-         * @param targetField 目标对象字段名称
+         * @param sourceField 源对象属性名称
+         * @param targetField 目标对象属性名称
          * @return this
          */
         public Builder<F, T> field(String sourceField, String targetField) {
@@ -81,10 +81,10 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
         }
 
         /**
-         * 自定义字段映射
+         * 自定义属性映射
          *
-         * @param sourceField 源对象字段名称
-         * @param targetField 目标对象字段名称
+         * @param sourceField 源对象属性名称
+         * @param targetField 目标对象属性名称
          * @param transformer 自定义转换规则
          * @return this
          */
@@ -94,12 +94,12 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
         }
 
         /**
-         * 自定义字段映射
+         * 自定义属性映射
          *
-         * @param sourceField 源对象字段名称
-         * @param targetField 目标对象字段名称
-         * @param sourceType  源对象字段类型
-         * @param targetType  目标对象字段类型
+         * @param sourceField 源对象属性名称
+         * @param targetField 目标对象属性名称
+         * @param sourceType  源对象属性类型
+         * @param targetType  目标对象属性类型
          * @param transformer 自定义转换规则
          * @return this
          */
@@ -110,7 +110,7 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
         }
 
         /**
-         * 是否拷贝值为 null 的字段
+         * 是否拷贝值为 null 的属性
          *
          * @return this
          */
@@ -120,9 +120,9 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
         }
 
         /**
-         * 排除字段
+         * 排除属性
          *
-         * @param fields 要排除的字段名称
+         * @param fields 要排除的属性名称
          * @return this
          */
         public Builder<F, T> skip(String... fields) {

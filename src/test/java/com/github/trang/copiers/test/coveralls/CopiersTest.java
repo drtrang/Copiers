@@ -8,7 +8,8 @@ import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.bean.UserForm;
 import com.github.trang.copiers.test.bean.UserVo;
-import com.github.trang.copiers.test.container.CopierContainer;
+import com.github.trang.copiers.test.plugin.CopierContainer;
+import com.github.trang.copiers.test.plugin.SimpleConverter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
@@ -66,8 +67,16 @@ public class CopiersTest {
         User reverseUser = Copiers.createCglib(UserEntity.class, User.class).copy(target);
     }
 
+    @Test
+    public void cglibWithConverter() {
+        SimpleConverter converter = new SimpleConverter();
+        Copier<User, UserForm> cglibCopier = Copiers.createCglib(User.class, UserForm.class, converter);
+        UserForm target = cglibCopier.copy(user);
+        assertThat(target.getName(), equalTo("converter:trang"));
+    }
+
     /**
-     * EasyMapper 支持自定义字段映射、类型转换、级联映射等
+     * EasyMapper 支持自定义属性映射、类型转换、级联映射等
      * http://neoremind.com/2016/08/easy-mapper-一个灵活可扩展的高性能bean-mapping类库
      */
     @Test
