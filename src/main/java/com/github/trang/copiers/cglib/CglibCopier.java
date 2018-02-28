@@ -1,11 +1,14 @@
 package com.github.trang.copiers.cglib;
 
 import com.baidu.unbiz.easymapper.util.ReflectionUtil;
-import com.github.trang.copiers.adapter.CopierAdapter;
+import com.github.trang.copiers.adapter.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.inter.Copier;
+import lombok.Getter;
 import net.sf.cglib.beans.BeanCopier;
 import net.sf.cglib.core.Converter;
+
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 /**
  * 基于 Cglib #{@link BeanCopier} 的 #{@link Copier} 实现
@@ -15,7 +18,8 @@ import net.sf.cglib.core.Converter;
  *
  * @author trang
  */
-public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
+@Getter
+public class CglibCopier<F, T> extends AbstractCopier<BeanCopier, F, T> {
 
     /** 自定义转换器，只有在 useConverter 为 true 时生效 */
     private Converter converter;
@@ -33,7 +37,7 @@ public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
 
     @Override
     public T copy(F source) {
-        checkNull(source, "source bean cannot be null!");
+        checkNotNull(source, "source bean cannot be null!");
         try {
             T target = ReflectionUtil.newInstance(targetClass);
             copier.copy(source, target, converter);
@@ -45,19 +49,13 @@ public class CglibCopier<F, T> extends CopierAdapter<BeanCopier, F, T> {
 
     @Override
     public void copy(F source, T target) {
-        checkNull(source, "source bean cannot be null!");
-        checkNull(target, "target bean cannot be null!");
+        checkNotNull(source, "source bean cannot be null!");
+        checkNotNull(target, "target bean cannot be null!");
         try {
             copier.copy(source, target, converter);
         } catch (Exception e) {
             throw new CopierException("create object fail, class: " + targetClass.getName(), e);
         }
-    }
-
-    // getter & setter
-
-    public Converter getConverter() {
-        return converter;
     }
 
 }

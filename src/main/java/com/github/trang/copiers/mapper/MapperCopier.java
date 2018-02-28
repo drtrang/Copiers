@@ -5,16 +5,18 @@ import com.baidu.unbiz.easymapper.Mapper;
 import com.baidu.unbiz.easymapper.MapperFactory;
 import com.baidu.unbiz.easymapper.codegen.AtoBMapping;
 import com.baidu.unbiz.easymapper.transformer.Transformer;
-import com.github.trang.copiers.adapter.CopierAdapter;
+import com.github.trang.copiers.adapter.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.inter.Copier;
+
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 /**
  * 基于 EasyMapper #{@link Mapper} 的 #{@link Copier} 实现
  *
  * @author trang
  */
-public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
+public class MapperCopier<F, T> extends AbstractCopier<Mapper, F, T> {
 
     /**
      * 创建默认的 #{@link Mapper}
@@ -38,7 +40,7 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 
     @Override
     public T copy(F source) {
-        checkNull(source, "source bean cannot be null!");
+        checkNotNull(source, "source bean cannot be null!");
         try {
             return copier.map(source, targetClass);
         } catch (Exception e) {
@@ -48,8 +50,8 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
 
     @Override
     public void copy(F source, T target) {
-        checkNull(source, "source bean cannot be null!");
-        checkNull(target, "target bean cannot be null!");
+        checkNotNull(source, "source bean cannot be null!");
+        checkNotNull(target, "target bean cannot be null!");
         try {
             copier.map(source, target);
         } catch (Exception e) {
@@ -146,7 +148,7 @@ public class MapperCopier<F, T> extends CopierAdapter<Mapper, F, T> {
          *
          * @return copier
          */
-        public Copier<F, T> register() {
+        public MapperCopier<F, T> register() {
             return new MapperCopier<>(builder);
         }
 

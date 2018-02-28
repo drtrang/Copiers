@@ -1,18 +1,20 @@
 package com.github.trang.copiers.cglib;
 
 import com.baidu.unbiz.easymapper.util.ReflectionUtil;
-import com.github.trang.copiers.adapter.CopierAdapter;
+import com.github.trang.copiers.adapter.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 import net.sf.cglib.beans.BeanMap;
 
 import java.util.Map;
+
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 /**
  * Map 转换为 JavaBean
  *
  * @author trang
  */
-public class MapToBeanCopier<T> extends CopierAdapter<BeanMap, Map<String, Object>, T> {
+public class MapToBeanCopier<T> extends AbstractCopier<BeanMap, Map<String, Object>, T> {
 
     public MapToBeanCopier(Class<T> beanClass) {
         this.targetClass = beanClass;
@@ -20,8 +22,8 @@ public class MapToBeanCopier<T> extends CopierAdapter<BeanMap, Map<String, Objec
 
     @Override
     public T copy(Map<String, Object> map) {
-        checkNull(map, "map cannot be null!");
-        checkNull(targetClass, "target class cannot be null!");
+        checkNotNull(map, "map cannot be null!");
+        checkNotNull(targetClass, "target class cannot be null!");
         try {
             T bean = ReflectionUtil.newInstance(targetClass);
             BeanMap beanMap = BeanMap.create(bean);
@@ -34,8 +36,8 @@ public class MapToBeanCopier<T> extends CopierAdapter<BeanMap, Map<String, Objec
 
     @Override
     public void copy(Map<String, Object> map, T bean) {
-        checkNull(map, "map cannot be null!");
-        checkNull(targetClass, "target bean cannot be null!");
+        checkNotNull(map, "map cannot be null!");
+        checkNotNull(targetClass, "target bean cannot be null!");
         try {
             BeanMap beanMap = BeanMap.create(bean);
             beanMap.putAll(map);

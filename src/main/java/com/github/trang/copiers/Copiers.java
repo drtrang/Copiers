@@ -25,7 +25,7 @@ public final class Copiers {
      * @param targetClass 目标类型
      * @return copier
      */
-    public static <F, T> Copier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
+    public static <F, T> MapperCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
         return new MapperCopier<>(sourceClass, targetClass);
     }
 
@@ -47,7 +47,7 @@ public final class Copiers {
      * @param targetClass 目标类型
      * @return copier
      */
-    public static <F, T> Copier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
+    public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
         return new CglibCopier<>(sourceClass, targetClass);
     }
 
@@ -59,7 +59,7 @@ public final class Copiers {
      * @param converter   转换器
      * @return copier
      */
-    public static <F, T> Copier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter) {
+    public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter) {
         return new CglibCopier<>(sourceClass, targetClass, converter);
     }
 
