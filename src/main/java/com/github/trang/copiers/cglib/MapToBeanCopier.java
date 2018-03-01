@@ -1,8 +1,8 @@
 package com.github.trang.copiers.cglib;
 
-import com.baidu.unbiz.easymapper.util.ReflectionUtil;
 import com.github.trang.copiers.adapter.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
+import com.github.trang.easymapper.util.ReflectionUtil;
 import net.sf.cglib.beans.BeanMap;
 
 import java.util.Map;

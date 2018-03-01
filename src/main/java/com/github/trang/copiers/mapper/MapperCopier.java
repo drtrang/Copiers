@@ -1,13 +1,13 @@
 package com.github.trang.copiers.mapper;
 
-import com.baidu.unbiz.easymapper.ClassMapBuilder;
-import com.baidu.unbiz.easymapper.Mapper;
-import com.baidu.unbiz.easymapper.MapperFactory;
-import com.baidu.unbiz.easymapper.codegen.AtoBMapping;
-import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.adapter.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.inter.Copier;
+import com.github.trang.easymapper.ClassMapBuilder;
+import com.github.trang.easymapper.Mapper;
+import com.github.trang.easymapper.MapperFactory;
+import com.github.trang.easymapper.codegen.AtoBMapping;
+import com.github.trang.easymapper.transformer.Transformer;
 
 import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 

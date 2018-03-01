@@ -1,6 +1,5 @@
 package com.github.trang.copiers.test.coveralls;
 
-import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.test.bean.User;
@@ -9,6 +8,7 @@ import com.github.trang.copiers.test.bean.UserForm;
 import com.github.trang.copiers.test.bean.UserVo;
 import com.github.trang.copiers.test.plugin.CopierContainer;
 import com.github.trang.copiers.test.plugin.SimpleConverter;
+import com.github.trang.easymapper.transformer.Transformer;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;

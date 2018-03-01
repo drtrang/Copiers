@@ -1,12 +1,12 @@
 package com.github.trang.copiers.test.plugin;
 
-import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.bean.UserForm;
 import com.github.trang.copiers.test.bean.UserVo;
+import com.github.trang.easymapper.transformer.Transformer;
 
 public class CopierContainer {
 

@@ -53,8 +53,8 @@
             <url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>oss</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>releases</id>
+            <url>http://maven.lianjia.com/content/repositories/Lianjia-Iprd-Releases/</url>
         </repository>
     </distributionManagement>
 
