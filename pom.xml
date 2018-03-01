@@ -42,6 +42,11 @@
         <url>https://github.com/drtrang/Copiers</url>
     </scm>
 
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/drtrang/Copiers/issues</url>
+    </issueManagement>
+
     <distributionManagement>
         <snapshotRepository>
             <id>oss</id>
@@ -52,11 +57,6 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-
-    <issueManagement>
-        <system>github</system>
-        <url>https://github.com/drtrang/Copiers/issues</url>
-    </issueManagement>
 
     <properties>
         <!-- 工程参数 -->

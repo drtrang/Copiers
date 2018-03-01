@@ -176,7 +176,7 @@ Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.cl
 Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
                 .skip("sub")
                 .field("name", "username")
-                .field("weight", "weight", source -> source.longValue())
+                .field("weight", "weight", Integer::longValue)
                 .mapping((source, target) -> target.setUsername("user:" + target.getUsername()))
                 .register();
 // 使用 Stream 拷贝 List
@@ -189,7 +189,7 @@ sourceList.parallelStream().map(copier::copy).collect(toList());
 copier.parallel().map(sourceList);
 // 使用 Optional 拷贝 List
 Optional.of(name)
-        .map(n -> service.selectByName(n))
+        .map(service::selectByName)
         .map(copier::map) 
         .orElse(emptyList());
 ```
