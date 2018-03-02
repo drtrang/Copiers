@@ -27,6 +27,7 @@ public class OrikaCopierTest {
                 .field("name", "username")
                 .field("wife.sex", "wife.sex")
                 // 自定义属性映射，声明映射关系，适用于类型不一致的场景
+                .nulls()
                 .register();
         UserEntity target = copier.copy(user);
 
@@ -47,7 +48,7 @@ public class OrikaCopierTest {
         // 使用自定义的设置
         assertThat(target.getWife().getSex(), equalTo(user.getWife().getSex()));
         assertThat(target.getWife().getHeight(), equalTo(user.getWife().getHeight()));
-        assertThat(target.getWife().getWeight(), equalTo(user.getWife().getWeight()));
+        assertThat(target.getWife().getWeight(), equalTo(user.getWife().getWeight().longValue()));
         assertThat(target.getWife().getHouse(), equalTo(user.getWife().getHouse()));
         assertThat(target.getOther(), nullValue(String.class));
 
