@@ -23,7 +23,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
      * @param sourceClass 源类型
      * @param targetClass 目标类型
      */
-    public OrikaCopier(Class<F> sourceClass, Class<T> targetClass) {
+    private OrikaCopier(Class<F> sourceClass, Class<T> targetClass) {
         super(sourceClass, targetClass, OrikaMapperFactory.getInstance().getMapperFacade(sourceClass, targetClass));
     }
 
@@ -202,7 +202,8 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          */
         public OrikaCopier<F, T> register() {
             ClassMap<F, T> classMap = builder.toClassMap();
-            if (classMap.getConstructorB().length == 0) {
+            String[] constructorB = classMap.getConstructorB();
+            if (constructorB == null || constructorB.length == 0) {
                 builder.constructorB();
             }
             builder.byDefault().register();
