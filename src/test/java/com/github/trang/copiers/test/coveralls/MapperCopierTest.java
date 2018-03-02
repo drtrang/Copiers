@@ -7,73 +7,26 @@ import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.bean.UserForm;
 import com.github.trang.copiers.test.bean.UserVo;
 import com.github.trang.copiers.test.plugin.CopierContainer;
-import com.github.trang.copiers.test.plugin.SimpleConverter;
+import com.github.trang.copiers.test.util.MockUtils;
+import com.github.trang.easymapper.MapperFactory;
 import com.github.trang.easymapper.transformer.Transformer;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 
 /**
- * Copiers 测试
- *
  * @author trang
  */
 @Slf4j
-public class CopiersTest {
+public class MapperCopierTest {
 
-    private User user = new User();
-
-    @Before
-    public void before() {
-        user.setAge(25);
-        user.setSex((byte) 0);
-        user.setHeight(1.73);
-        user.setWeight(null);
-        user.setName("trang");
-        user.setHobbits(ImmutableList.of("coding"));
-        user.setHandsome(true);
-        user.setHouse(ImmutableMap.of("home", "home"));
-
-        User wife = new User();
-        wife.setName("meng");
-        wife.setSex((byte) 1);
-        wife.setAge(24);
-        wife.setHeight(1.65);
-        wife.setWeight(55);
-        wife.setHouse(ImmutableMap.of("home", "home"));
-
-        user.setWife(wife);
-    }
-
-    /**
-     * cglib 仅支持相同名称、相同类型的拷贝，且不支持级联，不支持自定义
-     */
-    @Test
-    public void cglib() {
-        Copier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
-        UserEntity target = cglibCopier.copy(user);
-        List<UserEntity> targets = cglibCopier.map(newArrayList(user, user));
-
-        User reverseUser = Copiers.createCglib(UserEntity.class, User.class).copy(target);
-    }
-
-    @Test
-    public void cglibWithConverter() {
-        SimpleConverter converter = new SimpleConverter();
-        Copier<User, UserForm> cglibCopier = Copiers.createCglib(User.class, UserForm.class, converter);
-        UserForm target = cglibCopier.copy(user);
-        assertThat(target.getName(), equalTo("converter:trang"));
-    }
+    private User user = MockUtils.newUser();
 
     /**
      * EasyMapper 支持自定义属性映射、类型转换、级联映射等
@@ -96,7 +49,6 @@ public class CopiersTest {
                     }
                     return result;
                 })
-                .mapping((source, target) -> target.setUsername("user:" + target.getUsername()))
                 // 开启拷贝 null 值，默认关闭
                 .nulls()
                 .register();
@@ -109,7 +61,7 @@ public class CopiersTest {
         // weight 属性在 user 对象中没有设置值
         assertThat(target.getWeight(), nullValue());
         assertThat(target.getHeight(), equalTo(user.getHeight()));
-        assertThat(target.getUsername(), equalTo("user:" + user.getName()));
+        assertThat(target.getUsername(), equalTo(user.getName()));
         assertThat(target.getHobbits(), equalTo(user.getHobbits()));
         assertThat(target.getHandsome(), equalTo(user.getHandsome()));
         assertThat(target.getHouse(), equalTo(user.getHouse()));
@@ -125,7 +77,7 @@ public class CopiersTest {
         // sex 属性跳过拷贝
         assertThat(target2.getSex(), nullValue());
         // 相同属性拷贝后 target2 的值被覆盖
-        assertThat(target2.getUsername(), equalTo("user:" + user.getName()));
+        assertThat(target2.getUsername(), equalTo(user.getName()));
         // 拷贝 null 的配置已开启，所以拷贝后 target2 的值被覆盖，关闭后不会被覆盖
         assertThat(target2.getWeight(), nullValue());
         assertThat(target2.getHeight(), equalTo(user.getHeight()));
@@ -137,14 +89,15 @@ public class CopiersTest {
     @Test
     public void mapping() {
         Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
-                .field("age", "age")
-                .mapping((source, target) -> target.setUsername("extra"))
+                .field("age", "age", (Transformer<Integer, Integer>) age -> age - 1)
                 .field("name", "username")
-                .field("age", "age")
                 .skip("sub", "weight")
                 .register();
         UserEntity target = copier.copy(user);
         System.out.println(target);
+        MapperFactory.getCopyByRefMapper().mapClass(User.class, UserEntity.class)
+                .field("age", "age", (Transformer<Integer, Integer>) age -> age - 1)
+                .register();
     }
 
     @Test

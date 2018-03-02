@@ -3,7 +3,7 @@ package com.github.trang.copiers;
 import com.github.trang.copiers.cglib.CglibCopier;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.mapper.MapperCopier;
-import com.github.trang.copiers.mapper.MapperCopier.Builder;
+import com.github.trang.copiers.orika.OrikaCopier;
 import net.sf.cglib.core.Converter;
 
 /**
@@ -36,8 +36,19 @@ public final class Copiers {
      * @param targetClass 目标类型
      * @return copier
      */
-    public static <F, T> Builder<F, T> createMapper(Class<F> sourceClass, Class<T> targetClass) {
+    public static <F, T> MapperCopier.Builder<F, T> createMapper(Class<F> sourceClass, Class<T> targetClass) {
         return new MapperCopier.Builder<>(sourceClass, targetClass);
+    }
+
+    /**
+     * 基于 Orika 实现的高级拷贝，满足复杂需求
+     *
+     * @param sourceClass 源类型
+     * @param targetClass 目标类型
+     * @return copier
+     */
+    public static <F, T> OrikaCopier.Builder<F, T> createOrika(Class<F> sourceClass, Class<T> targetClass) {
+        return new OrikaCopier.Builder<>(sourceClass, targetClass);
     }
 
     /**

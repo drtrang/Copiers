@@ -1,24 +1,23 @@
 package com.github.trang.copiers.test.bean;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Date;
 
 /**
  * @author trang
  */
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class SimpleTarget {
 
     private String id;
+    private Date time;
 
-    @Override
-    public String toString() {
-        return "\"" + id + "\"";
+    public SimpleTarget(String id) {
+        this.id = id;
     }
-
 }

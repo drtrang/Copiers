@@ -1,4 +1,4 @@
-package com.github.trang.copiers.test;
+package com.github.trang.copiers.test.benchmark;
 
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;

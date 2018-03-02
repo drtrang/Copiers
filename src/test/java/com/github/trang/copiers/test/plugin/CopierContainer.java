@@ -12,6 +12,7 @@ public class CopierContainer {
 
     public static final Copier<User, UserEntity> USER_TO_ENTITY =
             Copiers.createMapper(User.class, UserEntity.class)
+                    .skip("sub")
                     .field("name", "username")
                     .field("weight", "weight", new Transformer<Integer, Long>() {
                         @Override

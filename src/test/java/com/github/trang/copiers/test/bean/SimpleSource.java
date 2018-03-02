@@ -1,24 +1,22 @@
 package com.github.trang.copiers.test.bean;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author trang
  */
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class SimpleSource {
 
     private Integer id;
+    private Long time;
 
-    @Override
-    public String toString() {
-        return Integer.toString(id);
+    public SimpleSource(Integer id) {
+        this.id = id;
     }
 
 }
