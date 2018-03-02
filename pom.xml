@@ -65,7 +65,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- 基础依赖 -->
         <cglib.version>3.2.5</cglib.version>
-        <easy-mapper.version>1.1.0-SNAPSHOT</easy-mapper.version>
         <orika.version>1.5.2</orika.version>
         <lombok.version>1.16.20</lombok.version>
         <!-- 测试依赖 -->
@@ -100,11 +99,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.drtrang</groupId>
-            <artifactId>easy-mapper</artifactId>
-            <version>${easy-mapper.version}</version>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>

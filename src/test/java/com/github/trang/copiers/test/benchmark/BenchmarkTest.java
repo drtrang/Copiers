@@ -4,7 +4,6 @@ import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
-import com.github.trang.easymapper.transformer.Transformer;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -26,14 +25,8 @@ public class BenchmarkTest {
     // a thousand ~ a hundred million
     private final List<Integer> timesList = ImmutableList.of(1_000, 10_000, 100_000, 1_000_000, 10_000_000/*, 100_000_000*/);
     private final Copier<User, UserEntity> copier =
-            Copiers.createMapper(User.class, UserEntity.class)
+            Copiers.createOrika(User.class, UserEntity.class)
                     .skip("sub")
-                    .field("weight", "weight", new Transformer<Integer, Long>() {
-                        @Override
-                        public Long transform(Integer source) {
-                            return source.longValue();
-                        }
-                    })
                     .register();
     @Before
     public void before() {
