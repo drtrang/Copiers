@@ -5,19 +5,20 @@ import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.inter.Copier;
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.Mapper;
+import ma.glasnost.orika.metadata.ClassMap;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 
 import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 /**
- * 基于 EasyMapper #{@link Mapper} 的 #{@link Copier} 实现
+ * 基于 Orika 的 #{@link Copier} 实现
  *
  * @author trang
  */
 public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F, T> {
 
     /**
-     * 创建默认的 #{@link Mapper}
+     * 创建默认的 OrikaCopier
      *
      * @param sourceClass 源类型
      * @param targetClass 目标类型
@@ -27,13 +28,13 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
     }
 
     /**
-     * 自定义 #{@link Mapper}，由 #{@link Builder} 创建
+     * 自定义 OrikaCopier，由 #{@link Builder} 创建
      *
      * @param builder 构造者
      */
     private OrikaCopier(ClassMapBuilder<F, T> builder) {
-        super(builder.getAType().getRawType(), builder.getBType().getRawType(), OrikaMapperFactory.getInstance()
-                .getMapperFacade(builder.getAType().getRawType(), builder.getBType().getRawType()));
+        super(builder.getAType().getRawType(), builder.getBType().getRawType(),
+                OrikaMapperFactory.getInstance().getMapperFacade(builder.getAType().getRawType(), builder.getBType().getRawType()));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
     public static class Builder<F, T> {
 
         /**
-         * 自定义 Mapper
+         * 自定义 Copier
          */
         private ClassMapBuilder<F, T> builder;
 
@@ -104,8 +105,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param targetType  目标对象属性类型
          * @return this
          */
-        public Builder<F, T> field(String sourceField, String targetField,
-                                          Class<?> sourceType, Class<?> targetType) {
+        public Builder<F, T> field(String sourceField, String targetField, Class<?> sourceType, Class<?> targetType) {
             builder.fieldMap(sourceField, targetField)
                     .aElementType(sourceType)
                     .bElementType(targetType)
@@ -123,9 +123,8 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param converterId 自定义转换规则
          * @return this
          */
-        public Builder<F, T> field(String sourceField, String targetField,
-                                          Class<?> sourceType, Class<?> targetType,
-                                          String converterId) {
+        public Builder<F, T> field(String sourceField, String targetField, Class<?> sourceType, Class<?> targetType,
+                                   String converterId) {
             builder.fieldMap(sourceField, targetField)
                     .aElementType(sourceType)
                     .bElementType(targetType)
@@ -174,11 +173,38 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
         }
 
         /**
+         * 自定义构造器
+         *
+         * @param args 构造参数
+         * @return this
+         */
+        public Builder<F, T> construct(String... args) {
+            builder.constructorB(args);
+            return this;
+        }
+
+        /**
+         * 自定义构造器
+         *
+         * @param parentSourceClass 源对象父类类型
+         * @param parentTargetClass 目标对象父类类型
+         * @return this
+         */
+        public Builder<F, T> use(Class<?> parentSourceClass, Class<?> parentTargetClass) {
+            builder.use(parentSourceClass, parentTargetClass);
+            return this;
+        }
+
+        /**
          * 构建执行拷贝的 Copier
          *
          * @return copier
          */
         public OrikaCopier<F, T> register() {
+            ClassMap<F, T> classMap = builder.toClassMap();
+            if (classMap.getConstructorB().length == 0) {
+                builder.constructorB();
+            }
             builder.byDefault().register();
             return new OrikaCopier<>(builder);
         }

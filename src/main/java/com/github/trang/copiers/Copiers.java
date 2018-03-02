@@ -19,23 +19,26 @@ public final class Copiers {
     }
 
     /**
-     * 基于 EasyMapper 实现的简单拷贝，满足基本需求
+     * 基于 Orika 实现的简单拷贝，满足基本需求
      *
      * @param sourceClass 源类型
      * @param targetClass 目标类型
      * @return copier
      */
-    public static <F, T> MapperCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
-        return new MapperCopier<>(sourceClass, targetClass);
+    public static <F, T> OrikaCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
+        return new OrikaCopier<>(sourceClass, targetClass);
     }
 
     /**
      * 基于 EasyMapper 实现的高级拷贝，满足复杂需求
      *
+     * @deprecated 由于 EasyMapper 在外部容器启动时几率性抛出异常，故废弃
+     *
      * @param sourceClass 源类型
      * @param targetClass 目标类型
      * @return copier
      */
+    @Deprecated
     public static <F, T> MapperCopier.Builder<F, T> createMapper(Class<F> sourceClass, Class<T> targetClass) {
         return new MapperCopier.Builder<>(sourceClass, targetClass);
     }
