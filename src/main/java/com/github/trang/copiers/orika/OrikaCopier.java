@@ -154,9 +154,6 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
                 for (String field : fields) {
                     builder.exclude(field);
                 }
-                // 排除属性后使用空构造
-                // https://github.com/orika-mapper/orika/issues/135
-                builder.constructorB();
             }
             return this;
         }
@@ -167,7 +164,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param customizedMapper 自定义映射规则
          * @return this
          */
-        public Builder<F, T> mapping(Mapper<F, T> customizedMapper) {
+        public Builder<F, T> customize(Mapper<F, T> customizedMapper) {
             builder.customize(customizedMapper);
             return this;
         }
@@ -178,7 +175,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param args 构造参数
          * @return this
          */
-        public Builder<F, T> construct(String... args) {
+        public Builder<F, T> constructor(String... args) {
             builder.constructorB(args);
             return this;
         }
@@ -190,7 +187,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param parentTargetClass 目标对象父类类型
          * @return this
          */
-        public Builder<F, T> use(Class<?> parentSourceClass, Class<?> parentTargetClass) {
+        public Builder<F, T> parent(Class<?> parentSourceClass, Class<?> parentTargetClass) {
             builder.use(parentSourceClass, parentTargetClass);
             return this;
         }
@@ -201,11 +198,20 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @return copier
          */
         public OrikaCopier<F, T> register() {
+            // 获取构建的 ClassMap，便于查看自定义参数
             ClassMap<F, T> classMap = builder.toClassMap();
+            // 当用户没有自定义构造方法时，则使用空构造，覆盖默认的全参构造
+            // https://github.com/orika-mapper/orika/issues/135
             String[] constructorB = classMap.getConstructorB();
             if (constructorB == null || constructorB.length == 0) {
                 builder.constructorB();
             }
+            // 当用户没有自定义构造方法时，则使用空构造，覆盖默认的全参构造
+            String[] constructorA = classMap.getConstructorA();
+            if (constructorA == null || constructorA.length == 0) {
+                builder.constructorA();
+            }
+            // 使用默认的 DefaultFieldMappers
             builder.byDefault().register();
             return new OrikaCopier<>(builder);
         }
