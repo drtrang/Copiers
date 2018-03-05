@@ -4,6 +4,8 @@ import com.github.trang.copiers.test.bean.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 /**
  * @author trang
  */
@@ -29,6 +31,7 @@ public class MockUtils {
         wife.setHouse(ImmutableMap.of("home", "home"));
 
         user.setWife(wife);
+        user.setSub(newArrayList(wife));
         return user;
     }
 

@@ -5,6 +5,10 @@ import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.util.MockUtils;
+import ma.glasnost.orika.BoundMapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.constructor.SimpleConstructorResolverStrategy;
+import ma.glasnost.orika.impl.DefaultMapperFactory.Builder;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -20,6 +24,43 @@ public class OrikaCopierTest {
 
     @Test
     public void orika() {
+        MapperFactory mapperFactory = new Builder().mapNulls(false).constructorResolverStrategy(new SimpleConstructorResolverStrategy()).build();
+        mapperFactory.classMap(User.class, UserEntity.class)
+                .field("name", "username")
+                .field("wife.sex", "wife.sex")
+                .exclude("age")
+                .exclude("sex")
+//                .mapNulls(true)
+//                .constructorB()
+                .byDefault()
+                .register();
+        BoundMapperFacade<User, UserEntity> mapperFacade = mapperFactory.getMapperFacade(User.class, UserEntity.class);
+        UserEntity target = mapperFacade.map(user);
+
+        // age 属性跳过拷贝
+        assertThat(target.getAge(), nullValue(Integer.class));
+        // sex 属性跳过拷贝
+        assertThat(target.getSex(), nullValue(Byte.class));
+        // weight 属性在 user 对象中没有设置值
+        assertThat(target.getWeight(), nullValue(Long.class));
+        assertThat(target.getHeight(), equalTo(user.getHeight()));
+        assertThat(target.getUsername(), equalTo(user.getName()));
+        assertThat(target.getHobbits(), equalTo(user.getHobbits()));
+        assertThat(target.getHandsome(), equalTo(user.getHandsome()));
+        assertThat(target.getHouse(), equalTo(user.getHouse()));
+        assertThat(target.getWife().getUsername(), equalTo(user.getWife().getName()));
+        // 使用上级对象的设置，跳过拷贝
+        assertThat(target.getWife().getAge(), nullValue());
+        // 使用自定义的设置
+        assertThat(target.getWife().getSex(), equalTo(user.getWife().getSex()));
+        assertThat(target.getWife().getHeight(), equalTo(user.getWife().getHeight()));
+        assertThat(target.getWife().getWeight(), equalTo(user.getWife().getWeight().longValue()));
+        assertThat(target.getWife().getHouse(), equalTo(user.getWife().getHouse()));
+        assertThat(target.getOther(), nullValue(String.class));
+    }
+
+    @Test
+    public void copier() {
         Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
                 // 跳过拷贝的属性，支持配置多个
                 .skip("age", "sex")

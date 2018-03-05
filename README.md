@@ -14,24 +14,24 @@ Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
 </dependency>
 
 <!-- java8 or higher -->
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>2.2.1</version>
+    <version>2.3.0</version>
 </dependency>
 ```
 
 ## 底层实现
-Copiers 目前有两种实现：`Cglib` & `EasyMapper`，用户可以通过工厂方法来切换底层的拷贝方式。
+Copiers 目前有两种实现：`Cglib` & `Orika`，用户可以通过工厂方法来切换底层的拷贝方式。
 
 ```java
-// easy-mapper
+// orika
 Copiers.create(Class<F> sourceClass, Class<T> targetClass)
-Copiers.createMapper(Class<F> sourceClass, Class<T> targetClass)
+Copiers.createOrika(Class<F> sourceClass, Class<T> targetClass)
 // cglib
 Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass)
 Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter)
@@ -45,8 +45,8 @@ Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节
 2. 当目标类的 setter 方法少于 getter 方法时，会导致创建 BeanCopier 失败
 3. 一旦使用 Converter，BeanCopier 将完全使用 Converter 中定义的规则去拷贝，所以在 `convert()` 方法中要考虑到所有的属性，否则会抛出 `ClassCastException`
 
-### EasyMapper
-[EasyMapper](https://github.com/neoremind/easy-mapper) 基于 Javassist 字节码技术，千万次拷贝在 **8s** 左右。虽不如 Cglib，但 EasyMapper 的优点在于使用灵活、扩展性强，具体情况可以查看 EasyMapper 的 Github，地址：https://github.com/neoremind/easy-mapper，中文文档地址：http://neoremind.com/2016/08/easy-mapper-一个灵活可扩展的高性能bean-mapping类库
+### Orika
+[Orika](https://github.com/orika-mapper/orika) 基于 Javassist 字节码技术，千万次拷贝在 **8s** 左右。虽不如 Cglib，但 Orika 的优点在于使用灵活、扩展性强，具体情况可以查看 Orika 的 Github，地址：https://github.com/neoremind/easy-mapper，中文文档地址：http://neoremind.com/2016/08/easy-mapper-一个灵活可扩展的高性能bean-mapping类库
 
 **注意：**
 1. 拷贝结果为浅拷贝
@@ -74,7 +74,7 @@ List<User> family = ImmutableList.of(trang, meng);
 List<UserEntity> entries = Copiers.createCglib(User.class, UserEntity.class).map(family);
 ```
 
-### EasyMapper
+### Orika
 ```java
 // 拷贝对象，创建新对象
 User user = User.of("trang", 25);
@@ -92,8 +92,8 @@ List<User> family = ImmutableList.of(trang, meng);
 List<UserEntity> entries = Copiers.create(User.class, UserEntity.class).map(family);
 ```
 
-## EasyMapper 进阶
-EasyMapper 支持强大的自定义关系映射，并且使用缓存技术，一次注册后续直接使用。
+## Orika 进阶
+Orika 支持强大的自定义关系映射，并且使用缓存技术，一次注册后续直接使用。
 
 ```java
 // 跳过拷贝的属性，支持配置多个
@@ -116,7 +116,7 @@ Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.cl
         })
         .register();
 
-// 开启拷贝 null 值，默认 EasyMapper 不会将源对象中值为 null 的属性拷贝到目标对象中，如有需要可以手动开启
+// 开启拷贝 null 值，默认 Orika 不会将源对象中值为 null 的属性拷贝到目标对象中，如有需要可以手动开启
 Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
         .nulls()
         .register();
