@@ -3,8 +3,8 @@ package com.github.trang.copiers.orika;
 import com.github.trang.copiers.adapter.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.inter.Copier;
-import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.Mapper;
+import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.metadata.ClassMap;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 
@@ -15,7 +15,7 @@ import static com.github.trang.copiers.util.Preconditions.checkNotNull;
  *
  * @author trang
  */
-public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F, T> {
+public class OrikaCopier<F, T> extends AbstractCopier<MapperFacade, F, T> {
 
     /**
      * 创建默认的 OrikaCopier
@@ -24,7 +24,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
      * @param targetClass 目标类型
      */
     private OrikaCopier(Class<F> sourceClass, Class<T> targetClass) {
-        super(sourceClass, targetClass, OrikaMapperFactory.getInstance().getMapperFacade(sourceClass, targetClass));
+        super(sourceClass, targetClass, OrikaMapperFactory.getInstance().getMapperFacade());
     }
 
     /**
@@ -34,14 +34,15 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
      */
     private OrikaCopier(ClassMapBuilder<F, T> builder) {
         super(builder.getAType().getRawType(), builder.getBType().getRawType(),
-                OrikaMapperFactory.getInstance().getMapperFacade(builder.getAType().getRawType(), builder.getBType().getRawType()));
+                OrikaMapperFactory.getInstance().getMapperFacade());
     }
 
     @Override
     public T copy(F source) {
         checkNotNull(source, "source bean cannot be null!");
+        checkNotNull(targetClass, "target class cannot be null!");
         try {
-            return copier.map(source);
+            return copier.map(source, targetClass);
         } catch (Exception e) {
             throw new CopierException("create object fail, class: " + targetClass.getName(), e);
         }

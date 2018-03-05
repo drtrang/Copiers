@@ -16,9 +16,7 @@ public class OrikaMapperFactory {
         if (INSTANCE == null) {
             synchronized (OrikaMapperFactory.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new DefaultMapperFactory.Builder()
-                            .mapNulls(false)
-                            .build();
+                    INSTANCE = new DefaultMapperFactory.Builder().mapNulls(false).build();
                 }
             }
         }
