@@ -27,16 +27,6 @@ public class OrikaCopier<F, T> extends AbstractCopier<MapperFacade, F, T> {
         super(sourceClass, targetClass, OrikaMapperFactory.getInstance().getMapperFacade());
     }
 
-    /**
-     * 自定义 OrikaCopier，由 #{@link Builder} 创建
-     *
-     * @param builder 构造者
-     */
-    private OrikaCopier(ClassMapBuilder<F, T> builder) {
-        super(builder.getAType().getRawType(), builder.getBType().getRawType(),
-                OrikaMapperFactory.getInstance().getMapperFacade());
-    }
-
     @Override
     public T copy(F source) {
         checkNotNull(source, "source bean cannot be null!");
@@ -214,7 +204,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<MapperFacade, F, T> {
             }
             // 使用默认的 DefaultFieldMappers
             builder.byDefault().register();
-            return new OrikaCopier<>(builder);
+            return new OrikaCopier<>(classMap.getAType().getRawType(), classMap.getBType().getRawType());
         }
 
     }
