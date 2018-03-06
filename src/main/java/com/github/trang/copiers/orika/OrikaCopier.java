@@ -204,7 +204,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<MapperFacade, F, T> {
             }
             // 使用默认的 DefaultFieldMappers
             builder.byDefault().register();
-            return new OrikaCopier<>(classMap.getAType().getRawType(), classMap.getBType().getRawType());
+            return new OrikaCopier<>(builder.getAType().getRawType(), builder.getBType().getRawType());
         }
 
     }
