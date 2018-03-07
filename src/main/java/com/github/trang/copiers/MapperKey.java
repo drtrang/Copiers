@@ -5,6 +5,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
+/**
+ * 用作对象缓存的 Key
+ *
+ * @param <F>
+ * @param <T>
+ * @author trang
+ */
 @Getter
 @RequiredArgsConstructor
 public class MapperKey<F, T> {

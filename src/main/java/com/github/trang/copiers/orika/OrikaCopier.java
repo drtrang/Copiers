@@ -146,7 +146,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
 //                    builder.fieldMap(field).exclude().add();
                 }
                 // Orika 默认使用全参构造，这时 skip() 不生效，需要使用不包含 skip 属性的构造方法，
-                // 默认使用无参构造，用户也可以在调用 skip() 后使用 constructor() 方法自己指定
+                // 所以 Copiers 将默认值改为了无参构造，用户也可以在调用 skip() 后使用 constructor() 方法自己指定
                 // https://github.com/orika-mapper/orika/issues/135
                  builder.constructorB();
             }

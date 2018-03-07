@@ -7,7 +7,7 @@ import net.sf.cglib.core.Converter;
 
 /**
  * Copiers 工具类，通过工厂方法创建 #{@link Copier} 对象
- * 目前有两种实现：Cglib & EasyMapper
+ * 目前有两种实现：Cglib & Orika
  *
  * @author trang
  */

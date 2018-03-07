@@ -5,7 +5,7 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory.MapperFactoryBuilder;
 
 /**
- * OrikaMapperFactory
+ * 创建 MapperFactory 的单例
  *
  * @author trang
  */

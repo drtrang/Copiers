@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * 享元模式
+ * Copier 对象缓存
  *
  * @author trang
  */

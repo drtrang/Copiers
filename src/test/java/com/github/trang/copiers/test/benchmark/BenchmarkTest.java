@@ -1,6 +1,7 @@
 package com.github.trang.copiers.test.benchmark;
 
 import com.github.trang.copiers.Copiers;
+import com.github.trang.copiers.cglib.CglibCopier;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
@@ -23,7 +24,6 @@ public class BenchmarkTest {
     private final User source = MockUtils.newUser();
     // a thousand ~ a hundred million
     private final List<Integer> timesList = ImmutableList.of(1_000, 10_000, 100_000, 1_000_000, 10_000_000/*, 100_000_000*/);
-    private final List<Integer> temp = ImmutableList.of(100);
 
     /**
      * 传入对象
@@ -31,18 +31,18 @@ public class BenchmarkTest {
     @Test
     public void test2() {
         // cglib
-//        CglibCopier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
-//        Stopwatch cglibWatch = Stopwatch.createStarted();
-//        for (Integer times : timesList) {
-//            long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
-//            for (int i = 0; i < times; i++) {
-//                UserEntity target = new UserEntity();
+        CglibCopier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
+        Stopwatch cglibWatch = Stopwatch.createStarted();
+        for (Integer times : timesList) {
+            long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
+            for (int i = 0; i < times; i++) {
+                UserEntity target = new UserEntity();
 //                Copiers.createCglib(User.class, UserEntity.class).copy(source, target);
-////                cglibCopier.copy(source, target);
-//            }
-//            long end = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
-//            System.out.println("copier-2: cglib, " + "times:" + times + ", time:" + (end - start));
-//        }
+                cglibCopier.copy(source, target);
+            }
+            long end = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
+            System.out.println("copier-2: cglib, " + "times:" + times + ", time:" + (end - start));
+        }
 
         // orika
         Copier<User, UserEntity> orikaCopier =
@@ -59,11 +59,11 @@ public class BenchmarkTest {
 //                        .skip("sub")
 //                        .field("name", "username")
 //                        .register().copy(source, target);
-                Copiers.create(User.class, UserEntity.class).copy(source, target);
-//                orikaCopier.copy(source, target);
+//                Copiers.create(User.class, UserEntity.class).copy(source, target);
+                orikaCopier.copy(source, target);
             }
             long end = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
-            System.out.println("copier-2: easy mapper, " + "times:" + times + ", time:" + (end - start));
+            System.out.println("copier-2: orika, " + "times:" + times + ", time:" + (end - start));
         }
     }
 
@@ -97,7 +97,7 @@ public class BenchmarkTest {
                 orikaCopier.copy(source);
             }
             long end = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
-            System.out.println("copier-1: easy mapper, " + "times:" + times + ", time:" + (end - start));
+            System.out.println("copier-1: orika, " + "times:" + times + ", time:" + (end - start));
         }
     }
 
