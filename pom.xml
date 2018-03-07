@@ -65,7 +65,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- 基础依赖 -->
         <cglib.version>3.2.5</cglib.version>
-        <orika.version>1.5.3-SNAPSHOT</orika.version>
+        <orika.version>1.5.2</orika.version>
         <lombok.version>1.16.20</lombok.version>
         <!-- 测试依赖 -->
         <guava.version>24.0-jre</guava.version>
@@ -114,6 +114,16 @@
             <groupId>ma.glasnost.orika</groupId>
             <artifactId>orika-core</artifactId>
             <version>${orika.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

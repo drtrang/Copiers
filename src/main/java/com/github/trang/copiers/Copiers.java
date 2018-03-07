@@ -25,7 +25,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> OrikaCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
-        return new OrikaCopier.Builder<>(sourceClass, targetClass).register();
+        return CopierFactory.getOrikaCopier(sourceClass, targetClass);
     }
 
     /**
@@ -47,7 +47,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
-        return new CglibCopier<>(sourceClass, targetClass);
+        return CopierFactory.getCglibCopier(sourceClass, targetClass);
     }
 
     /**
@@ -59,7 +59,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter) {
-        return new CglibCopier<>(sourceClass, targetClass, converter);
+        return CopierFactory.getCglibCopier(sourceClass, targetClass, converter);
     }
 
 }

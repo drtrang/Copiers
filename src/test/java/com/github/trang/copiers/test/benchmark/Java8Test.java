@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
@@ -88,6 +89,20 @@ public class Java8Test {
         stopwatch.reset().start();
         Set<SimpleTarget> targetSet3 = copier.parallel().ordered().map(sourceSet);
         log.info("多线程 Ordered 耗时: {}ms, 大小: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS), targetSet3.size());
+    }
+
+    @Test
+    public void concurrentMap() {
+        ConcurrentHashMap<Object, Object> map = new ConcurrentHashMap<>();
+        map.computeIfAbsent("A", key -> value());
+        map.computeIfAbsent("A", key -> value());
+        map.computeIfAbsent("B", key -> value());
+        System.out.println(map.size());
+    }
+
+    private Object value() {
+        System.out.println("---");
+        return "VALUE";
     }
 
 }
