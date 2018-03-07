@@ -30,7 +30,6 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
     @Override
     public T copy(F source) {
         checkNotNull(source, "source bean cannot be null!");
-        checkNotNull(targetClass, "target class cannot be null!");
         try {
             return copier.map(source);
         } catch (Exception e) {

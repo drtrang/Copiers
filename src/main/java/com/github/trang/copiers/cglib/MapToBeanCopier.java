@@ -17,13 +17,13 @@ import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 public class MapToBeanCopier<T> extends AbstractCopier<BeanMap, Map<String, Object>, T> {
 
     public MapToBeanCopier(Class<T> beanClass) {
+        checkNotNull(beanClass, "bean class cannot be null!");
         this.targetClass = beanClass;
     }
 
     @Override
     public T copy(Map<String, Object> map) {
         checkNotNull(map, "map cannot be null!");
-        checkNotNull(targetClass, "target class cannot be null!");
         try {
             T bean = ReflectionUtil.newInstance(targetClass);
             BeanMap beanMap = BeanMap.create(bean);
@@ -37,7 +37,6 @@ public class MapToBeanCopier<T> extends AbstractCopier<BeanMap, Map<String, Obje
     @Override
     public void copy(Map<String, Object> map, T bean) {
         checkNotNull(map, "map cannot be null!");
-        checkNotNull(targetClass, "target bean cannot be null!");
         try {
             BeanMap beanMap = BeanMap.create(bean);
             beanMap.putAll(map);

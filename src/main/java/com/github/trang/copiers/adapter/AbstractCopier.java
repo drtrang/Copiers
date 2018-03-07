@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
+
 /**
  * #{@link Copier} 适配器，可继承该类实现具体的拷贝过程，也可直接实现 #{@link Copier} 接口
  *
@@ -26,6 +28,9 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
     }
 
     protected AbstractCopier(Class<F> sourceClass, Class<T> targetClass, C copier) {
+        checkNotNull(sourceClass, "source class cannot be null!");
+        checkNotNull(targetClass, "target class cannot be null!");
+        checkNotNull(copier, "copier cannot be null!");
         this.sourceClass = sourceClass;
         this.targetClass = targetClass;
         this.copier = copier;
