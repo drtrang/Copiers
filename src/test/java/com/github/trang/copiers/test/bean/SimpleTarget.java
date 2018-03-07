@@ -10,16 +10,22 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class SimpleTarget {
 
     private String id;
     private Date time;
     private String statuses;
+    private String name;
+
+//    public SimpleTarget() {
+//    }
 
     public SimpleTarget(String id) {
         this.id = id;
+    }
+
+    public SimpleTarget(Date time) {
+        this.time = time;
     }
 
     public SimpleTarget(String id, Date time) {

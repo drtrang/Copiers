@@ -3,6 +3,7 @@ package com.github.trang.copiers.test.bean;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author trang
@@ -10,12 +11,15 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 public class SimpleSource {
 
     private Integer id;
     private Long time;
     private List<Integer> statusList;
+    private Map<String, Object> map;
+
+//    public SimpleSource() {
+//    }
 
     public SimpleSource(Integer id) {
         this.id = id;

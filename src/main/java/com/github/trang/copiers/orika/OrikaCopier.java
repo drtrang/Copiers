@@ -5,7 +5,6 @@ import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.inter.Copier;
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.Mapper;
-import ma.glasnost.orika.metadata.ClassMap;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 
 import static com.github.trang.copiers.util.Preconditions.checkNotNull;
@@ -145,7 +144,12 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
             if (fields != null && fields.length != 0) {
                 for (String field : fields) {
                     builder.exclude(field);
+//                    builder.fieldMap(field).exclude().add();
                 }
+                // Orika 默认使用全参构造，这时 skip() 不生效，需要使用不包含 skip 属性的构造方法，
+                // 默认使用无参构造，用户也可以在调用 skip() 后使用 constructor() 方法自己指定
+                // https://github.com/orika-mapper/orika/issues/135
+                 builder.constructorB();
             }
             return this;
         }
@@ -190,20 +194,6 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @return copier
          */
         public OrikaCopier<F, T> register() {
-            // 获取构建的 ClassMap，便于查看自定义参数
-            ClassMap<F, T> classMap = builder.toClassMap();
-            // 当用户没有自定义构造方法时，则使用空构造，覆盖默认的全参构造
-            // https://github.com/orika-mapper/orika/issues/135
-            String[] constructorB = classMap.getConstructorB();
-            if (constructorB == null || constructorB.length == 0) {
-                builder.constructorB();
-            }
-            // 当用户没有自定义构造方法时，则使用空构造，覆盖默认的全参构造
-            String[] constructorA = classMap.getConstructorA();
-            if (constructorA == null || constructorA.length == 0) {
-                builder.constructorA();
-            }
-            // 使用默认的 DefaultFieldMappers
             builder.byDefault().register();
             return new OrikaCopier<>(builder.getAType().getRawType(), builder.getBType().getRawType());
         }

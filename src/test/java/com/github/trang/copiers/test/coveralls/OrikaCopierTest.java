@@ -14,6 +14,7 @@ import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class OrikaCopierTest {
     }
 
     @Test
+    @Ignore
     public void orika() {
         OrikaCopier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
                 .skip("age", "sex")
@@ -111,7 +113,10 @@ public class OrikaCopierTest {
         });
 
         Copier<SimpleSource, SimpleTarget> copier = Copiers.createOrika(SimpleSource.class, SimpleTarget.class)
-                .field("statusList", "statuses")
+                .field("statusList", "statuses", "list2String")
+                .skip("id")
+                // 自定义 constructor() 需在 skip() 之后
+                .constructor("time")
                 .register();
 
         SimpleSource source = new SimpleSource(1, System.currentTimeMillis());
