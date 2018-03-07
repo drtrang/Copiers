@@ -3,6 +3,8 @@ package com.github.trang.copiers.util;
 import java.util.Map;
 
 /**
+ * 参数校验工具
+ *
  * @author trang
  */
 public final class Preconditions {

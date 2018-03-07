@@ -14,47 +14,48 @@ Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
 </dependency>
 
 <!-- java8 or higher -->
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>2.2.1</version>
+    <version>2.3.0</version>
 </dependency>
 ```
 
 ## 底层实现
-Copiers 目前有两种实现：`Cglib` & `EasyMapper`，用户可以通过工厂方法来切换底层的拷贝方式。
+Copiers 目前有两种实现：`Cglib` & `Orika`，用户可以通过工厂方法来切换底层的拷贝方式。
 
 ```java
-// easy-mapper
+// orika
 Copiers.create(Class<F> sourceClass, Class<T> targetClass)
-Copiers.createMapper(Class<F> sourceClass, Class<T> targetClass)
+Copiers.createOrika(Class<F> sourceClass, Class<T> targetClass)
 // cglib
 Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass)
 Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter)
 ```
 
 ### Cglib
-Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节码增强技术，千万次拷贝仅在 **1.5s** 左右，但高性能带来的显著缺点是功能单一、拓展性差，BeanCopier 仅支持源对象到目标对象的**完全拷贝**，不支持自定义映射，Convert 拓展也只能对拷贝的 value 做处理，很多情况下不满足实际的业务需求。
+Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节码增强技术，千万次拷贝仅需毫秒即可完成，但高性能带来的显著缺点是功能单一、拓展性差，BeanCopier 仅支持源对象到目标对象的**完全拷贝**，不支持自定义映射，Convert 拓展也只能对拷贝的 value 做处理，很多情况下不满足实际的业务需求。
 
 **注意：**
 1. BeanCopier 只拷贝名称和类型都相同的属性
 2. 当目标类的 setter 方法少于 getter 方法时，会导致创建 BeanCopier 失败
 3. 一旦使用 Converter，BeanCopier 将完全使用 Converter 中定义的规则去拷贝，所以在 `convert()` 方法中要考虑到所有的属性，否则会抛出 `ClassCastException`
 
-### EasyMapper
-[EasyMapper](https://github.com/neoremind/easy-mapper) 基于 Javassist 字节码技术，千万次拷贝在 **8s** 左右。虽不如 Cglib，但 EasyMapper 的优点在于使用灵活、扩展性强，具体情况可以查看 EasyMapper 的 Github，地址：https://github.com/neoremind/easy-mapper，中文文档地址：http://neoremind.com/2016/08/easy-mapper-一个灵活可扩展的高性能bean-mapping类库
+### Orika
+[Orika](https://github.com/orika-mapper/orika) 基于 Javassist 字节码技术，千万次拷贝在 **5s** 左右。虽不如 Cglib，但 Orika 的优点在于使用灵活、扩展性强，具体情况可以查看 Orika 的 Github，地址：https://github.com/orika-mapper/orika，建议阅读文档地址：http://www.baeldung.com/orika-mapping
 
 **注意：**
 1. 拷贝结果为浅拷贝
-2. 支持级联拷贝，但是需要提前注册好级联对象之间的映射关系
-3. 支持与 Java8 结合使用，支持 lambda 与 stream
+2. 支持级联拷贝，但是需要提前注册好级联对象之间的映射关系，且可以使用 `parent()` 方法来指定父类
+3. 支持源对象中的集合类型直接拷贝到目标对象的集合
+4. 不同类型有默认的 Converter 做转换
 
 ## 使用方式
-通过工厂方法建立 Source 与 Target 之间的关系后，调用 `copy()` 方法即可完成 Bean 拷贝，调用 `map()` 方法即可完成 List 拷贝，简洁高效。
+通过工厂方法建立 sourceClass 与 targetClass 之间的关系后，调用 `copy()` 方法即可完成 Bean 拷贝，调用 `map()` 方法即可完成 List 拷贝，简洁高效。
 
 ### Cglib
 ```java
@@ -74,7 +75,7 @@ List<User> family = ImmutableList.of(trang, meng);
 List<UserEntity> entries = Copiers.createCglib(User.class, UserEntity.class).map(family);
 ```
 
-### EasyMapper
+### Orika
 ```java
 // 拷贝对象，创建新对象
 User user = User.of("trang", 25);
@@ -92,41 +93,33 @@ List<User> family = ImmutableList.of(trang, meng);
 List<UserEntity> entries = Copiers.create(User.class, UserEntity.class).map(family);
 ```
 
-## EasyMapper 进阶
-EasyMapper 支持强大的自定义关系映射，并且使用缓存技术，一次注册后续直接使用。
+## Orika 进阶
+Orika 支持强大的自定义关系映射，并且使用缓存技术，一次注册后续直接使用。
 
 ```java
 // 跳过拷贝的属性，支持配置多个
-Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+// Orika 默认使用全参构造，这时 skip() 不生效，需要使用不包含 skip 属性的构造方法，
+// 所以 Copiers 将默认值改为了无参构造，用户也可以在调用 skip() 后使用 constructor() 方法自己指定
+Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
         .skip("age", "sex")
         .register();
 
-// 将源对象的 `name` 属性映射到目标对象的 `username` 属性，只映射名称，适用于类型一致名称不同的场景
-Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+// 将源对象的 `name` 属性映射到目标对象的 `username` 属性
+Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
         .field("name", "username")
         .register();
 
-// 将源对象的 `weight` 属性映射到目标对象的 `weight` 属性，声明映射关系，适用于类型不一致的场景
-Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
-        .field("weight", "weight", new Transformer<Integer, Long>() {
-            @Override
-            public Long transform(Integer source) {
-                return source.longValue();
-            }
-        })
-        .register();
-
-// 开启拷贝 null 值，默认 EasyMapper 不会将源对象中值为 null 的属性拷贝到目标对象中，如有需要可以手动开启
-Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+// 开启拷贝 null 值，默认 Orika 不会将源对象中值为 null 的属性拷贝到目标对象中，如有需要可以手动开启
+Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
         .nulls()
         .register();
 
 // 全局自定义映射关系，若和其它方法结合使用则在最后执行
-Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
-        .mapping(new AtoBMapping<User, UserEntity>() {
+Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
+        .customize(new CustomMapper<User, UserEntity>() {
             @Override
-            public void map(User source, UserEntity target) {
-                target.setUsername("extra");
+            public void mapAtoB(User source, UserEntity target, MappingContext context) {
+                target.setUsername("prefix:" + source.getName());
             }
         })
         .register();
@@ -136,34 +129,16 @@ Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.cl
 
 ```java
 // 创建 copier
-Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
+Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
                 // 跳过拷贝
                 .skip("age", "sex")
                 // 自定义属性映射
                 .field("name", "username")
-                // 自定义属性映射
-                .field("weight", "weight", new Transformer<Integer, Long>() {
-                    @Override
-                    public Long transform(Integer source) {
-                        return source.longValue();
-                    }
-                })
-                // easy-mapper 默认不支持 List 的级联拷贝，需要手动声明，否则会抛出异常
-                .field("sub", "sub", new Transformer<List<User>, List<UserEntity>>() {
-                    @Override
-                    public List<UserEntity> transform(List<User> users) {
-                        List<UserEntity> result = new ArrayList<>();
-                        for (User u : users) {
-                            result.add(Copiers.create(User.class, UserEntity.class).copy(u));
-                        }
-                        return result;
-                    }
-                })
                 // 全局自定义映射关系
-                .mapping(new AtoBMapping<User, UserEntity>() {
+                .customize(new CustomMapper<User, UserEntity>() {
                     @Override
-                    public void map(User source, UserEntity target) {
-                        target.setUsername("user:" + target.getUsername());
+                    public void mapAtoB(User source, UserEntity target, MappingContext context) {
+                        target.setUsername("prefix:" + source.getName());
                     }
                 })
                 .register();
@@ -173,11 +148,8 @@ Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.cl
 
 ```java
 // 创建 copier
-Copier<User, UserEntity> copier = Copiers.createMapper(User.class, UserEntity.class)
-                .skip("sub")
+Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
                 .field("name", "username")
-                .field("weight", "weight", Integer::longValue)
-                .mapping((source, target) -> target.setUsername("user:" + target.getUsername()))
                 .register();
 // 使用 Stream 拷贝 List
 sourceList.stream().map(copier::copy).collect(toList());

@@ -1,6 +1,5 @@
 package com.github.trang.copiers.test.plugin;
 
-import com.baidu.unbiz.easymapper.transformer.Transformer;
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.test.bean.User;
@@ -11,14 +10,9 @@ import com.github.trang.copiers.test.bean.UserVo;
 public class CopierContainer {
 
     public static final Copier<User, UserEntity> USER_TO_ENTITY =
-            Copiers.createMapper(User.class, UserEntity.class)
+            Copiers.createOrika(User.class, UserEntity.class)
+                    .skip("sub")
                     .field("name", "username")
-                    .field("weight", "weight", new Transformer<Integer, Long>() {
-                        @Override
-                        public Long transform(Integer source) {
-                            return source.longValue();
-                        }
-                    })
                     .register();
 
     public static final Copier<UserForm, User> FORM_TO_USER =

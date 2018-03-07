@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BeanMapCopiersTest {
+public class MapCopiersTest {
     
     private User trang = new User();
     private User meng = new User();

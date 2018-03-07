@@ -2,13 +2,12 @@ package com.github.trang.copiers;
 
 import com.github.trang.copiers.cglib.CglibCopier;
 import com.github.trang.copiers.inter.Copier;
-import com.github.trang.copiers.mapper.MapperCopier;
-import com.github.trang.copiers.mapper.MapperCopier.Builder;
+import com.github.trang.copiers.orika.OrikaCopier;
 import net.sf.cglib.core.Converter;
 
 /**
  * Copiers 工具类，通过工厂方法创建 #{@link Copier} 对象
- * 目前有两种实现：Cglib & EasyMapper
+ * 目前有两种实现：Cglib & Orika
  *
  * @author trang
  */
@@ -19,25 +18,25 @@ public final class Copiers {
     }
 
     /**
-     * 基于 EasyMapper 实现的简单拷贝，满足基本需求
+     * 基于 Orika 实现的简单拷贝，满足基本需求
      *
      * @param sourceClass 源类型
      * @param targetClass 目标类型
      * @return copier
      */
-    public static <F, T> MapperCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
-        return new MapperCopier<>(sourceClass, targetClass);
+    public static <F, T> OrikaCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
+        return CopierFactory.getOrikaCopier(sourceClass, targetClass);
     }
 
     /**
-     * 基于 EasyMapper 实现的高级拷贝，满足复杂需求
+     * 基于 Orika 实现的高级拷贝，满足复杂需求
      *
      * @param sourceClass 源类型
      * @param targetClass 目标类型
      * @return copier
      */
-    public static <F, T> Builder<F, T> createMapper(Class<F> sourceClass, Class<T> targetClass) {
-        return new MapperCopier.Builder<>(sourceClass, targetClass);
+    public static <F, T> OrikaCopier.Builder<F, T> createOrika(Class<F> sourceClass, Class<T> targetClass) {
+        return new OrikaCopier.Builder<>(sourceClass, targetClass);
     }
 
     /**
@@ -48,7 +47,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
-        return new CglibCopier<>(sourceClass, targetClass);
+        return CopierFactory.getCglibCopier(sourceClass, targetClass);
     }
 
     /**
@@ -60,7 +59,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter) {
-        return new CglibCopier<>(sourceClass, targetClass, converter);
+        return CopierFactory.getCglibCopier(sourceClass, targetClass, converter);
     }
 
 }
