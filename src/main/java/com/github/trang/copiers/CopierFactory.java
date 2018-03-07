@@ -25,22 +25,28 @@ public final class CopierFactory {
     public static <F, T> OrikaCopier<F, T> getOrikaCopier(Class<F> sourceClass, Class<T> targetClass) {
         MapperKey<F, T> mapperKey = new MapperKey<>(ORIKA, sourceClass, targetClass);
         ConcurrentMap<MapperKey<F, T>, OrikaCopier<F, T>> orikaCache = CopierFactory.getOrikaCache();
-        return orikaCache.computeIfAbsent(mapperKey,
-                key -> new OrikaCopier.Builder<>(key.getSourceClass(), key.getTargetClass()).register());
+        if (!orikaCache.containsKey(mapperKey)) {
+            orikaCache.put(mapperKey, new OrikaCopier.Builder<>(mapperKey.getSourceClass(), mapperKey.getTargetClass()).register());
+        }
+        return orikaCache.get(mapperKey);
     }
 
     public static <F, T> CglibCopier<F, T> getCglibCopier(Class<F> sourceClass, Class<T> targetClass) {
         MapperKey<F, T> mapperKey = new MapperKey<>(CGLIB, sourceClass, targetClass);
         ConcurrentMap<MapperKey<F, T>, CglibCopier<F, T>> cglibCache = CopierFactory.getCglibCache();
-        return cglibCache.computeIfAbsent(mapperKey,
-                key -> new CglibCopier<>(key.getSourceClass(), key.getTargetClass()));
+        if (!cglibCache.containsKey(mapperKey)) {
+            cglibCache.put(mapperKey, new CglibCopier<>(mapperKey.getSourceClass(), mapperKey.getTargetClass()));
+        }
+        return cglibCache.get(mapperKey);
     }
 
     public static <F, T> CglibCopier<F, T> getCglibCopier(Class<F> sourceClass, Class<T> targetClass, Converter converter) {
         MapperKey<F, T> mapperKey = new MapperKey<>(CGLIB_CONVERTER, sourceClass, targetClass);
         ConcurrentMap<MapperKey<F, T>, CglibCopier<F, T>> cglibCache = CopierFactory.getCglibCache();
-        return cglibCache.computeIfAbsent(mapperKey,
-                key -> new CglibCopier<>(key.getSourceClass(), key.getTargetClass(), converter));
+        if (!cglibCache.containsKey(mapperKey)) {
+            cglibCache.put(mapperKey, new CglibCopier<>(mapperKey.getSourceClass(), mapperKey.getTargetClass(), converter));
+        }
+        return cglibCache.get(mapperKey);
     }
 
     private static class SingleHolder {
