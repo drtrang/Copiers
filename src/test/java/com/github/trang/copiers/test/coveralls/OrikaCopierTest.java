@@ -3,21 +3,15 @@ package com.github.trang.copiers.test.coveralls;
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.orika.OrikaCopier;
-import com.github.trang.copiers.orika.OrikaMapperFactory;
 import com.github.trang.copiers.test.bean.SimpleSource;
 import com.github.trang.copiers.test.bean.SimpleTarget;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.util.MockUtils;
-import com.google.common.base.Joiner;
-import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.metadata.Type;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -105,15 +99,9 @@ public class OrikaCopierTest {
 
     @Test
     public void list2String() {
-        OrikaMapperFactory.getMapperFactory().getConverterFactory().registerConverter("list2String", new CustomConverter<List, String>() {
-            @Override
-            public String convert(List source, Type<? extends String> destinationType, MappingContext mappingContext) {
-                return Joiner.on(",").join(source);
-            }
-        });
-
         Copier<SimpleSource, SimpleTarget> copier = Copiers.createOrika(SimpleSource.class, SimpleTarget.class)
-                .field("statusList", "statuses", "list2String")
+                .field("statusList", "statuses")
+                .field("typeList", "types")
                 .skip("id")
                 // 自定义 constructor() 需在 skip() 之后
                 .constructor("time")
@@ -121,6 +109,7 @@ public class OrikaCopierTest {
 
         SimpleSource source = new SimpleSource(1, System.currentTimeMillis());
         source.setStatusList(newArrayList(1,2,3));
+        source.setTypeList(newArrayList(1.1,2.22,3.333));
         SimpleTarget target = copier.copy(source);
         System.out.println(target);
     }

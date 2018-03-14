@@ -44,8 +44,8 @@ public final class CopierFactory {
     }
 
     private static class SingleHolder {
-        private static final ConcurrentMap<MapperKey, OrikaCopier> ORIKA_CACHE = new ConcurrentHashMap<>(1024, 0.75f, 4);
-        private static final ConcurrentMap<MapperKey, CglibCopier> CGLIB_CACHE = new ConcurrentHashMap<>(1024, 0.75f, 4);
+        private static final ConcurrentMap<MapperKey, OrikaCopier> ORIKA_CACHE = new ConcurrentHashMap<>(1024, 0.75f);
+        private static final ConcurrentMap<MapperKey, CglibCopier> CGLIB_CACHE = new ConcurrentHashMap<>(1024, 0.75f);
     }
 
     @SuppressWarnings("unchecked")

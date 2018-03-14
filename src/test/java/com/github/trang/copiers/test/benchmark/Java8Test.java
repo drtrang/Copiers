@@ -8,14 +8,12 @@ import com.google.common.base.Stopwatch;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 
 /**
  * Java8 测试
@@ -103,6 +101,25 @@ public class Java8Test {
     private Object value() {
         System.out.println("---");
         return "VALUE";
+    }
+
+    @Test
+    public void from() {
+        Optional.of(Arrays.asList(null,1.1,2.22,3.333,4.4444,5.55555))
+                .filter(list -> !list.isEmpty())
+                .map(list -> list.stream()
+                        .filter(Objects::nonNull)
+                        .map(Objects::toString)
+                        .collect(joining(",")))
+                .ifPresent(System.out::println);
+    }
+
+    @Test
+    public void to() {
+        Optional.ofNullable("1.1,2.22,3.333,4.4444,5.55555")
+                .map(s -> s.split(","))
+                .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(Double::parseDouble).collect(toList()))
+                .ifPresent(System.out::println);
     }
 
 }
