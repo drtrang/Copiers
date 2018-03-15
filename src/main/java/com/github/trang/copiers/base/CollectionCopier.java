@@ -1,4 +1,4 @@
-package com.github.trang.copiers.inter;
+package com.github.trang.copiers.base;
 
 /**
  * 拷贝集合底层接口，支持并行流

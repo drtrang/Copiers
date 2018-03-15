@@ -1,8 +1,8 @@
 package com.github.trang.copiers;
 
 import com.github.trang.copiers.cglib.CglibCopier;
-import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.orika.OrikaCopier;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.core.Converter;
 
 /**
@@ -11,6 +11,7 @@ import net.sf.cglib.core.Converter;
  *
  * @author trang
  */
+@Slf4j(topic = "copiers")
 public final class Copiers {
 
     private Copiers() {
@@ -25,7 +26,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> OrikaCopier<F, T> create(Class<F> sourceClass, Class<T> targetClass) {
-        return CopierFactory.getOrikaCopier(sourceClass, targetClass);
+        return CopierFactory.getOrCreateOrikaCopier(sourceClass, targetClass);
     }
 
     /**
@@ -47,7 +48,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass) {
-        return CopierFactory.getCglibCopier(sourceClass, targetClass);
+        return CopierFactory.getOrCreateCglibCopier(sourceClass, targetClass);
     }
 
     /**
@@ -59,7 +60,7 @@ public final class Copiers {
      * @return copier
      */
     public static <F, T> CglibCopier<F, T> createCglib(Class<F> sourceClass, Class<T> targetClass, Converter converter) {
-        return CopierFactory.getCglibCopier(sourceClass, targetClass, converter);
+        return CopierFactory.getOrCreateCglibCopier(sourceClass, targetClass, converter);
     }
 
 }

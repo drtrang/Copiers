@@ -1,6 +1,5 @@
-package com.github.trang.copiers.adapter;
+package com.github.trang.copiers;
 
-import com.github.trang.copiers.inter.Copier;
 import lombok.Getter;
 
 import java.util.*;

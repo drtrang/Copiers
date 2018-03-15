@@ -1,7 +1,7 @@
 package com.github.trang.copiers.test.coveralls;
 
 import com.github.trang.copiers.Copiers;
-import com.github.trang.copiers.inter.Copier;
+import com.github.trang.copiers.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.bean.UserForm;

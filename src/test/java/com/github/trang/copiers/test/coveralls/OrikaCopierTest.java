@@ -1,7 +1,7 @@
 package com.github.trang.copiers.test.coveralls;
 
+import com.github.trang.copiers.Copier;
 import com.github.trang.copiers.Copiers;
-import com.github.trang.copiers.inter.Copier;
 import com.github.trang.copiers.orika.OrikaCopier;
 import com.github.trang.copiers.test.bean.SimpleSource;
 import com.github.trang.copiers.test.bean.SimpleTarget;
@@ -106,7 +106,13 @@ public class OrikaCopierTest {
                 // 自定义 constructor() 需在 skip() 之后
                 .constructor("time")
                 .register();
-
+        Copier<SimpleSource, SimpleTarget> copier2 = Copiers.createOrika(SimpleSource.class, SimpleTarget.class)
+                .field("statusList", "statuses")
+                .field("typeList", "types")
+                .skip("id")
+                // 自定义 constructor() 需在 skip() 之后
+                .constructor("time")
+                .register();
         SimpleSource source = new SimpleSource(1, System.currentTimeMillis());
         source.setStatusList(newArrayList(1,2,3));
         source.setTypeList(newArrayList(1.1,2.22,3.333));

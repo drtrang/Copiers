@@ -1,4 +1,6 @@
-package com.github.trang.copiers.inter;
+package com.github.trang.copiers.base;
+
+import com.github.trang.copiers.Copier;
 
 /**
  * 并行接口，继承 #{@link Ordered}

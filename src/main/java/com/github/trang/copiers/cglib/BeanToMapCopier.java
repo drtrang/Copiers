@@ -1,6 +1,6 @@
 package com.github.trang.copiers.cglib;
 
-import com.github.trang.copiers.adapter.AbstractCopier;
+import com.github.trang.copiers.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 import net.sf.cglib.beans.BeanMap;
 

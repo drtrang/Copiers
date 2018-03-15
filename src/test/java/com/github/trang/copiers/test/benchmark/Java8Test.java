@@ -1,7 +1,7 @@
 package com.github.trang.copiers.test.benchmark;
 
 import com.github.trang.copiers.Copiers;
-import com.github.trang.copiers.inter.Copier;
+import com.github.trang.copiers.Copier;
 import com.github.trang.copiers.test.bean.SimpleSource;
 import com.github.trang.copiers.test.bean.SimpleTarget;
 import com.google.common.base.Stopwatch;

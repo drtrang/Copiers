@@ -1,4 +1,4 @@
-package com.github.trang.copiers.inter;
+package com.github.trang.copiers.base;
 
 import java.util.List;
 

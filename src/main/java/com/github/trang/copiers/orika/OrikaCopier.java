@@ -1,8 +1,9 @@
 package com.github.trang.copiers.orika;
 
-import com.github.trang.copiers.adapter.AbstractCopier;
+import com.github.trang.copiers.AbstractCopier;
+import com.github.trang.copiers.Copier;
 import com.github.trang.copiers.exception.CopierException;
-import com.github.trang.copiers.inter.Copier;
+import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.Mapper;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
@@ -14,6 +15,7 @@ import static com.github.trang.copiers.util.Preconditions.checkNotNull;
  *
  * @author trang
  */
+@Slf4j(topic = "copiers")
 public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F, T> {
 
     /**
@@ -66,7 +68,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param targetField 目标对象属性名称
          * @return this
          */
-        public Builder<F, T> field(String sourceField, String targetField) {
+        public OrikaCopier.Builder<F, T> field(String sourceField, String targetField) {
             builder.field(sourceField, targetField);
             return this;
         }
@@ -79,7 +81,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param converterId 自定义转换规则
          * @return this
          */
-        public Builder<F, T> field(String sourceField, String targetField, String converterId) {
+        public OrikaCopier.Builder<F, T> field(String sourceField, String targetField, String converterId) {
             builder.fieldMap(sourceField, targetField)
                     .converter(converterId)
                     .add();
@@ -95,7 +97,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param targetType  目标对象属性类型
          * @return this
          */
-        public Builder<F, T> field(String sourceField, String targetField, Class<?> sourceType, Class<?> targetType) {
+        public OrikaCopier.Builder<F, T> field(String sourceField, String targetField, Class<?> sourceType, Class<?> targetType) {
             builder.fieldMap(sourceField, targetField)
                     .aElementType(sourceType)
                     .bElementType(targetType)
@@ -113,8 +115,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param converterId 自定义转换规则
          * @return this
          */
-        public Builder<F, T> field(String sourceField, String targetField, Class<?> sourceType, Class<?> targetType,
-                                   String converterId) {
+        public OrikaCopier.Builder<F, T> field(String sourceField, String targetField, Class<?> sourceType, Class<?> targetType, String converterId) {
             builder.fieldMap(sourceField, targetField)
                     .aElementType(sourceType)
                     .bElementType(targetType)
@@ -128,7 +129,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          *
          * @return this
          */
-        public Builder<F, T> nulls() {
+        public OrikaCopier.Builder<F, T> nulls() {
             builder.mapNulls(true);
             return this;
         }
@@ -139,16 +140,15 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param fields 要排除的属性名称
          * @return this
          */
-        public Builder<F, T> skip(String... fields) {
+        public OrikaCopier.Builder<F, T> skip(String... fields) {
             if (fields != null && fields.length != 0) {
                 for (String field : fields) {
                     builder.exclude(field);
-//                    builder.fieldMap(field).exclude().add();
                 }
                 // Orika 默认使用全参构造，这时 skip() 不生效，需要使用不包含 skip 属性的构造方法，
                 // 所以 Copiers 将默认值改为了无参构造，用户也可以在调用 skip() 后使用 constructor() 方法自己指定
                 // https://github.com/orika-mapper/orika/issues/135
-                 builder.constructorB();
+                builder.constructorB();
             }
             return this;
         }
@@ -182,7 +182,7 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          * @param parentTargetClass 目标对象父类类型
          * @return this
          */
-        public Builder<F, T> parent(Class<?> parentSourceClass, Class<?> parentTargetClass) {
+        public OrikaCopier.Builder<F, T> parent(Class<?> parentSourceClass, Class<?> parentTargetClass) {
             builder.use(parentSourceClass, parentTargetClass);
             return this;
         }
@@ -194,7 +194,9 @@ public class OrikaCopier<F, T> extends AbstractCopier<BoundMapperFacade<F, T>, F
          */
         public OrikaCopier<F, T> register() {
             builder.byDefault().register();
-            return new OrikaCopier<>(builder.getAType().getRawType(), builder.getBType().getRawType());
+            Class<F> sourceClass = builder.getAType().getRawType();
+            Class<T> targetClass = builder.getBType().getRawType();
+            return new OrikaCopier<>(sourceClass, targetClass);
         }
 
     }

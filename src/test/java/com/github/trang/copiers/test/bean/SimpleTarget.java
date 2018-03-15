@@ -19,6 +19,7 @@ public class SimpleTarget {
     private String statuses;
     private String types;
     private String name;
+    private String same;
 
 //    public SimpleTarget() {
 //    }

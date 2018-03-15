@@ -18,6 +18,7 @@ public class SimpleSource {
     private List<Integer> statusList;
     private List<Double> typeList;
     private Map<String, Object> map;
+    private String same;
 
 //    public SimpleSource() {
 //    }
