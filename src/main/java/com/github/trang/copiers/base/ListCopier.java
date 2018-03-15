@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author trang
  */
-public interface ListCopier<F, T> extends CollectionCopier<F, T> {
+public interface ListCopier<F, T> {
 
     /**
      * 将 source 对象集合拷贝到新集合

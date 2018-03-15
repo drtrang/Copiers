@@ -23,8 +23,7 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
     /** 目标对象的类型 */
     protected Class<T> targetClass;
 
-    protected AbstractCopier() {
-    }
+    protected AbstractCopier() {}
 
     protected AbstractCopier(Class<F> sourceClass, Class<T> targetClass, C copier) {
         checkNotNull(sourceClass, "source class cannot be null!");
@@ -33,21 +32,6 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
         this.sourceClass = sourceClass;
         this.targetClass = targetClass;
         this.copier = copier;
-    }
-
-    private boolean parallel;
-    private boolean ordered;
-
-    @Override
-    public AbstractCopier<C, F, T> parallel() {
-        this.parallel = true;
-        return this;
-    }
-
-    @Override
-    public AbstractCopier<C, F, T> ordered() {
-        this.ordered = true;
-        return this;
     }
 
     /**
@@ -62,11 +46,7 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
                 || sourceArray.length != targetArray.length) {
             return;
         }
-        if (parallel) {
-            Arrays.parallelSetAll(targetArray, index -> copy(sourceArray[index]));
-        } else {
-            Arrays.stream(sourceArray).map(this::copy).toArray(non -> targetArray);
-        }
+        Arrays.stream(sourceArray).map(this::copy).toArray(non -> targetArray);
     }
 
     /**
@@ -102,13 +82,7 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
     }
 
     protected void forEachTransform(Collection<F> sources, Collection<T> targets) {
-        if (parallel && ordered) {
-            sources.parallelStream().map(this::copy).forEachOrdered(targets::add);
-        } else if (parallel) {
-            sources.parallelStream().map(this::copy).forEach(targets::add);
-        } else {
-            sources.stream().map(this::copy).forEach(targets::add);
-        }
+        sources.stream().map(this::copy).forEach(targets::add);
     }
 
     protected List<T> newActualList(List<F> sourceList) {

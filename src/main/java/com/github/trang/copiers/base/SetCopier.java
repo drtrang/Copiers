@@ -7,7 +7,7 @@ import java.util.Set;
  *
  * @author trang
  */
-public interface SetCopier<F, T> extends CollectionCopier<F, T> {
+public interface SetCopier<F, T> {
 
     /**
      * 将 source 对象集合拷贝到新集合
