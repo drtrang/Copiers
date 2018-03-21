@@ -1,5 +1,6 @@
 package com.github.trang.copiers.orika;
 
+import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.orika.converter.BooleanConverters;
 import com.github.trang.copiers.orika.converter.ListConverters;
 import lombok.Getter;
@@ -27,8 +28,8 @@ public class OrikaMapper {
     /** 启用 Boolean Converter 时使用的分隔符，默认 "," */
     private String delimiter = defaultDelimiter;
     /** Orika MapperFactory */
-    private volatile DefaultMapperFactory factory;
-    /** 是否已经初始化 */
+    private DefaultMapperFactory factory;
+    /** 是否已经初始化，用 volatile 来保证多线程环境下的可见性 */
     private volatile boolean initialized = false;
 
     public OrikaMapper() {
@@ -47,13 +48,18 @@ public class OrikaMapper {
     }
 
     private synchronized void init() {
-        if (!initialized) {
-            DefaultMapperFactory.Builder factoryBuilder = new DefaultMapperFactory.Builder();
-            configureFactoryBuilder(factoryBuilder);
-            this.factory = factoryBuilder.build();
-            configure(this.factory);
-            registerConverters(this.factory.getConverterFactory());
-            initialized = true;
+        try {
+            if (!initialized) {
+                initialized = true;
+                DefaultMapperFactory.Builder factoryBuilder = new DefaultMapperFactory.Builder();
+                configureFactoryBuilder(factoryBuilder);
+                this.factory = factoryBuilder.build();
+                configure(this.factory);
+                registerConverters(this.factory.getConverterFactory());
+            }
+        } catch (Exception e) {
+            initialized = false;
+            throw new CopierException("create orika mapper-factory failed.", e);
         }
     }
 
