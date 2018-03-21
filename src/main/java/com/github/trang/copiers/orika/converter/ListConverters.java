@@ -8,13 +8,8 @@ import ma.glasnost.orika.metadata.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 
 /**
  * BooleanConverters
@@ -30,21 +25,17 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Byte> source, Type<String> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.stream()
-                            .filter(Objects::nonNull)
-                            .map(Objects::toString)
-                            .collect(joining(delimiter)))
-                    .orElse(null);
+            return convertList2String(source, delimiter);
         }
 
         @Override
         public List<Byte> convertFrom(String source, Type<List<Byte>> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .map(s -> s.split(delimiter))
-                    .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(Byte::parseByte).collect(toList()))
-                    .orElse(null);
+            return convertString2List(source, delimiter, new Transformer<String, Byte>() {
+                @Override
+                public Byte transfer(String s) {
+                    return Byte.parseByte(s);
+                }
+            });
         }
     }
 
@@ -55,21 +46,17 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Short> source, Type<String> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.stream()
-                            .filter(Objects::nonNull)
-                            .map(Objects::toString)
-                            .collect(joining(delimiter)))
-                    .orElse(null);
+            return convertList2String(source, delimiter);
         }
 
         @Override
         public List<Short> convertFrom(String source, Type<List<Short>> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .map(s -> s.split(delimiter))
-                    .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(Short::parseShort).collect(toList()))
-                    .orElse(null);
+            return convertString2List(source, delimiter, new Transformer<String, Short>() {
+                @Override
+                public Short transfer(String s) {
+                    return Short.parseShort(s);
+                }
+            });
         }
     }
 
@@ -80,21 +67,17 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Integer> source, Type<String> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.stream()
-                            .filter(Objects::nonNull)
-                            .map(Objects::toString)
-                            .collect(joining(delimiter)))
-                    .orElse(null);
+            return convertList2String(source, delimiter);
         }
 
         @Override
         public List<Integer> convertFrom(String source, Type<List<Integer>> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .map(s -> s.split(delimiter))
-                    .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(Integer::parseInt).collect(toList()))
-                    .orElse(null);
+            return convertString2List(source, delimiter, new Transformer<String, Integer>() {
+                @Override
+                public Integer transfer(String s) {
+                    return Integer.parseInt(s);
+                }
+            });
         }
     }
 
@@ -105,21 +88,17 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Long> source, Type<String> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.stream()
-                            .filter(Objects::nonNull)
-                            .map(Objects::toString)
-                            .collect(joining(delimiter)))
-                    .orElse(null);
+            return convertList2String(source, delimiter);
         }
 
         @Override
         public List<Long> convertFrom(String source, Type<List<Long>> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .map(s -> s.split(delimiter))
-                    .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(Long::parseLong).collect(toList()))
-                    .orElse(null);
+            return convertString2List(source, delimiter, new Transformer<String, Long>() {
+                @Override
+                public Long transfer(String s) {
+                    return Long.parseLong(s);
+                }
+            });
         }
 
     }
@@ -139,21 +118,22 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Double> source, Type<String> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.stream()
-                            .filter(Objects::nonNull)
-                            .map(d -> formatter != null ? formatter.format(d) : d.toString())
-                            .collect(joining(delimiter)))
-                    .orElse(null);
+            return convertList2String(source, delimiter, new Transformer<Double, String>() {
+                @Override
+                public String transfer(Double e) {
+                    return formatter != null ? formatter.format(e) : e.toString();
+                }
+            });
         }
 
         @Override
         public List<Double> convertFrom(String source, Type<List<Double>> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .map(s -> s.split(delimiter))
-                    .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(Double::parseDouble).collect(toList()))
-                    .orElse(null);
+            return convertString2List(source, delimiter, new Transformer<String, Double>() {
+                @Override
+                public Double transfer(String s) {
+                    return Double.parseDouble(s);
+                }
+            });
         }
 
     }
@@ -173,21 +153,22 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Float> source, Type<String> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.stream()
-                            .filter(Objects::nonNull)
-                            .map(f -> formatter != null ? formatter.format(f) : f.toString())
-                            .collect(joining(delimiter)))
-                    .orElse(null);
+            return convertList2String(source, delimiter, new Transformer<Float, String>() {
+                @Override
+                public String transfer(Float e) {
+                    return formatter != null ? formatter.format(e) : e.toString();
+                }
+            });
         }
 
         @Override
         public List<Float> convertFrom(String source, Type<List<Float>> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .map(s -> s.split(delimiter))
-                    .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(Float::parseFloat).collect(toList()))
-                    .orElse(null);
+            return convertString2List(source, delimiter, new Transformer<String, Float>() {
+                @Override
+                public Float transfer(String s) {
+                    return Float.parseFloat(s);
+                }
+            });
         }
 
     }
@@ -199,21 +180,22 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<BigDecimal> source, Type<String> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .filter(list -> !list.isEmpty())
-                    .map(list -> list.stream()
-                            .filter(Objects::nonNull)
-                            .map(BigDecimal::toPlainString)
-                            .collect(joining(delimiter)))
-                    .orElse(null);
+            return convertList2String(source, delimiter, new Transformer<BigDecimal, String>() {
+                @Override
+                public String transfer(BigDecimal e) {
+                    return e.toPlainString();
+                }
+            });
         }
 
         @Override
         public List<BigDecimal> convertFrom(String source, Type<List<BigDecimal>> destinationType, MappingContext mappingContext) {
-            return Optional.ofNullable(source)
-                    .map(s -> s.split(delimiter))
-                    .map(arr -> Arrays.stream(arr).filter(Objects::nonNull).map(BigDecimal::new).collect(toList()))
-                    .orElse(null);
+            return convertString2List(source, delimiter, new Transformer<String, BigDecimal>() {
+                @Override
+                public BigDecimal transfer(String s) {
+                    return new BigDecimal(s);
+                }
+            });
         }
 
     }
@@ -224,6 +206,45 @@ public class ListConverters {
         format.setMaximumFractionDigits(scale);
         format.setRoundingMode(mode);
         return format;
+    }
+
+    private static <E> String convertList2String(List<E> source, String delimiter) {
+        return convertList2String(source, delimiter, null);
+    }
+
+    private static <E> String convertList2String(List<E> source, String delimiter, Transformer<E, String> transformer) {
+        if (source != null && !source.isEmpty()) {
+            StringBuilder builder = new StringBuilder();
+            for (E e : source) {
+                if (e != null) {
+                    builder.append(transformer != null ? transformer.transfer(e) : e).append(delimiter);
+                }
+            }
+            int length = builder.length();
+            if (length > 0) {
+                builder = builder.delete(length - 1, length);
+            }
+            return builder.toString();
+        }
+        return null;
+    }
+
+    private static <E> List<E> convertString2List(String source, String delimiter, Transformer<String, E> transformer) {
+        if (source != null && !source.isEmpty()) {
+            List<E> r = new ArrayList<>();
+            String[] arr = source.split(delimiter);
+            for (String s : arr) {
+                if (s != null && !s.isEmpty()) {
+                    r.add(transformer.transfer(s));
+                }
+            }
+            return r;
+        }
+        return null;
+    }
+
+    private interface Transformer<F, T> {
+        T transfer(F t);
     }
 
 }

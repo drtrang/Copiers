@@ -34,27 +34,18 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
         this.copier = copier;
     }
 
-    /**
-     * 拷贝数组
-     *
-     * @param sourceArray 源对象数组
-     * @param targetArray 目标对象数组
-     */
     @Override
     public void map(F[] sourceArray, T[] targetArray) {
         if (sourceArray == null || sourceArray.length == 0 || targetArray == null || targetArray.length == 0
                 || sourceArray.length != targetArray.length) {
             return;
         }
-        Arrays.stream(sourceArray).map(this::copy).toArray(non -> targetArray);
+        for (int i = 0; i < sourceArray.length; i++) {
+            T target = copy(sourceArray[i]);
+            targetArray[i] = target;
+        }
     }
 
-    /**
-     * 拷贝 List
-     *
-     * @param sourceList 源对象集合
-     * @return 目标对象集合
-     */
     @Override
     public List<T> map(List<F> sourceList) {
         if (sourceList == null || sourceList.isEmpty()) {
@@ -65,12 +56,6 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
         return targetList;
     }
 
-    /**
-     * 拷贝 Set
-     *
-     * @param sourceSet 源对象集合
-     * @return 目标对象集合
-     */
     @Override
     public Set<T> map(Set<F> sourceSet) {
         if (sourceSet == null || sourceSet.isEmpty()) {
@@ -82,7 +67,9 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
     }
 
     protected void forEachTransform(Collection<F> sources, Collection<T> targets) {
-        sources.stream().map(this::copy).forEach(targets::add);
+        for (F source : sources) {
+            targets.add(copy(source));
+        }
     }
 
     protected List<T> newActualList(List<F> sourceList) {

@@ -10,7 +10,7 @@ import java.util.List;
 public interface ListCopier<F, T> {
 
     /**
-     * 将 source 对象集合拷贝到新集合
+     * 将 sourceList 拷贝到新集合
      *
      * @param sourceList 源对象集合
      * @return 目标对象集合
