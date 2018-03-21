@@ -25,8 +25,8 @@ public final class ClassUtil {
     /**
      * Verifies whether a given type is one of the wrapper classes for a primitive type.
      *
-     * @param type
-     * @return
+     * @param type type
+     * @return boolean
      */
     public static boolean isPrimitiveWrapper(Class<?> type) {
         return PRIMITIVE_WRAPPER_TYPES.contains(type);
@@ -36,8 +36,8 @@ public final class ClassUtil {
      * Returns the corresponding wrapper type for the given primitive,
      * or null if the type is not primitive.
      *
-     * @param primitiveType
-     * @return
+     * @param primitiveType primitiveType
+     * @return Class<?>
      */
     public static Class<?> getWrapperType(Class<?> primitiveType) {
         if (boolean.class.equals(primitiveType)) {
@@ -65,7 +65,7 @@ public final class ClassUtil {
      * Returns the corresponding primitive type for the given primitive wrapper,
      * or null if the type is not a primitive wrapper.
      *
-     * @param wrapperType
+     * @param wrapperType wrapperType
      * @return the corresponding primitive type
      */
     public static Class<?> getPrimitiveType(Class<?> wrapperType) {

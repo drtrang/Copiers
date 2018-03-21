@@ -30,12 +30,7 @@ public class ListConverters {
 
         @Override
         public List<Byte> convertFrom(String source, Type<List<Byte>> destinationType, MappingContext mappingContext) {
-            return convertString2List(source, delimiter, new Transformer<String, Byte>() {
-                @Override
-                public Byte transfer(String s) {
-                    return Byte.parseByte(s);
-                }
-            });
+            return convertString2List(source, delimiter, Byte::parseByte);
         }
     }
 
@@ -51,12 +46,7 @@ public class ListConverters {
 
         @Override
         public List<Short> convertFrom(String source, Type<List<Short>> destinationType, MappingContext mappingContext) {
-            return convertString2List(source, delimiter, new Transformer<String, Short>() {
-                @Override
-                public Short transfer(String s) {
-                    return Short.parseShort(s);
-                }
-            });
+            return convertString2List(source, delimiter, Short::parseShort);
         }
     }
 
@@ -72,12 +62,7 @@ public class ListConverters {
 
         @Override
         public List<Integer> convertFrom(String source, Type<List<Integer>> destinationType, MappingContext mappingContext) {
-            return convertString2List(source, delimiter, new Transformer<String, Integer>() {
-                @Override
-                public Integer transfer(String s) {
-                    return Integer.parseInt(s);
-                }
-            });
+            return convertString2List(source, delimiter, Integer::parseInt);
         }
     }
 
@@ -93,12 +78,7 @@ public class ListConverters {
 
         @Override
         public List<Long> convertFrom(String source, Type<List<Long>> destinationType, MappingContext mappingContext) {
-            return convertString2List(source, delimiter, new Transformer<String, Long>() {
-                @Override
-                public Long transfer(String s) {
-                    return Long.parseLong(s);
-                }
-            });
+            return convertString2List(source, delimiter, Long::parseLong);
         }
 
     }
@@ -118,22 +98,12 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Double> source, Type<String> destinationType, MappingContext mappingContext) {
-            return convertList2String(source, delimiter, new Transformer<Double, String>() {
-                @Override
-                public String transfer(Double e) {
-                    return formatter != null ? formatter.format(e) : e.toString();
-                }
-            });
+            return convertList2String(source, delimiter, e -> formatter != null ? formatter.format(e) : e.toString());
         }
 
         @Override
         public List<Double> convertFrom(String source, Type<List<Double>> destinationType, MappingContext mappingContext) {
-            return convertString2List(source, delimiter, new Transformer<String, Double>() {
-                @Override
-                public Double transfer(String s) {
-                    return Double.parseDouble(s);
-                }
-            });
+            return convertString2List(source, delimiter, Double::parseDouble);
         }
 
     }
@@ -153,22 +123,12 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Float> source, Type<String> destinationType, MappingContext mappingContext) {
-            return convertList2String(source, delimiter, new Transformer<Float, String>() {
-                @Override
-                public String transfer(Float e) {
-                    return formatter != null ? formatter.format(e) : e.toString();
-                }
-            });
+            return convertList2String(source, delimiter, e -> formatter != null ? formatter.format(e) : e.toString());
         }
 
         @Override
         public List<Float> convertFrom(String source, Type<List<Float>> destinationType, MappingContext mappingContext) {
-            return convertString2List(source, delimiter, new Transformer<String, Float>() {
-                @Override
-                public Float transfer(String s) {
-                    return Float.parseFloat(s);
-                }
-            });
+            return convertString2List(source, delimiter, Float::parseFloat);
         }
 
     }
@@ -180,22 +140,12 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<BigDecimal> source, Type<String> destinationType, MappingContext mappingContext) {
-            return convertList2String(source, delimiter, new Transformer<BigDecimal, String>() {
-                @Override
-                public String transfer(BigDecimal e) {
-                    return e.toPlainString();
-                }
-            });
+            return convertList2String(source, delimiter, BigDecimal::toPlainString);
         }
 
         @Override
         public List<BigDecimal> convertFrom(String source, Type<List<BigDecimal>> destinationType, MappingContext mappingContext) {
-            return convertString2List(source, delimiter, new Transformer<String, BigDecimal>() {
-                @Override
-                public BigDecimal transfer(String s) {
-                    return new BigDecimal(s);
-                }
-            });
+            return convertString2List(source, delimiter, BigDecimal::new);
         }
 
     }

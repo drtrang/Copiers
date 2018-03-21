@@ -28,6 +28,7 @@ public class OrikaMapper {
     private String delimiter = defaultDelimiter;
     /** Orika MapperFactory */
     private volatile DefaultMapperFactory factory;
+    /** 是否已经初始化 */
     private volatile boolean initialized = false;
 
     public OrikaMapper() {
