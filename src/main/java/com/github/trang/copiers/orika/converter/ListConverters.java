@@ -216,7 +216,7 @@ public class ListConverters {
             StringBuilder builder = new StringBuilder();
             for (E e : source) {
                 if (e != null) {
-                    builder.append(transformer.transfer(e)).append(delimiter);
+                    builder.append(transformer != null ? transformer.transfer(e) : e).append(delimiter);
                 }
             }
             int length = builder.length();
