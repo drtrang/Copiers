@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * BooleanConverters
@@ -18,17 +19,17 @@ import java.util.ArrayList;
 public class ListConverters {
 
     @RequiredArgsConstructor
-    public static class ByteListToStringConverter extends BidirectionalConverter<ArrayList<Byte>, String> {
+    public static class ByteListToStringConverter extends BidirectionalConverter<List<Byte>, String> {
 
         private final String delimiter;
 
         @Override
-        public String convertTo(ArrayList<Byte> source, Type<String> destinationType, MappingContext mappingContext) {
+        public String convertTo(List<Byte> source, Type<String> destinationType, MappingContext mappingContext) {
             return convertList2String(source, delimiter);
         }
 
         @Override
-        public ArrayList<Byte> convertFrom(String source, Type<ArrayList<Byte>> destinationType, MappingContext mappingContext) {
+        public List<Byte> convertFrom(String source, Type<List<Byte>> destinationType, MappingContext mappingContext) {
             return convertString2List(source, delimiter, new Transformer<String, Byte>() {
                 @Override
                 public Byte transfer(String s) {
@@ -39,17 +40,17 @@ public class ListConverters {
     }
 
     @RequiredArgsConstructor
-    public static class ShortListToStringConverter extends BidirectionalConverter<ArrayList<Short>, String> {
+    public static class ShortListToStringConverter extends BidirectionalConverter<List<Short>, String> {
 
         private final String delimiter;
 
         @Override
-        public String convertTo(ArrayList<Short> source, Type<String> destinationType, MappingContext mappingContext) {
+        public String convertTo(List<Short> source, Type<String> destinationType, MappingContext mappingContext) {
             return convertList2String(source, delimiter);
         }
 
         @Override
-        public ArrayList<Short> convertFrom(String source, Type<ArrayList<Short>> destinationType, MappingContext mappingContext) {
+        public List<Short> convertFrom(String source, Type<List<Short>> destinationType, MappingContext mappingContext) {
             return convertString2List(source, delimiter, new Transformer<String, Short>() {
                 @Override
                 public Short transfer(String s) {
@@ -60,17 +61,17 @@ public class ListConverters {
     }
 
     @RequiredArgsConstructor
-    public static class IntegerListToStringConverter extends BidirectionalConverter<ArrayList<Integer>, String> {
+    public static class IntegerListToStringConverter extends BidirectionalConverter<List<Integer>, String> {
 
         private final String delimiter;
 
         @Override
-        public String convertTo(ArrayList<Integer> source, Type<String> destinationType, MappingContext mappingContext) {
+        public String convertTo(List<Integer> source, Type<String> destinationType, MappingContext mappingContext) {
             return convertList2String(source, delimiter);
         }
 
         @Override
-        public ArrayList<Integer> convertFrom(String source, Type<ArrayList<Integer>> destinationType, MappingContext mappingContext) {
+        public List<Integer> convertFrom(String source, Type<List<Integer>> destinationType, MappingContext mappingContext) {
             return convertString2List(source, delimiter, new Transformer<String, Integer>() {
                 @Override
                 public Integer transfer(String s) {
@@ -81,17 +82,17 @@ public class ListConverters {
     }
 
     @RequiredArgsConstructor
-    public static class LongListToStringConverter extends BidirectionalConverter<ArrayList<Long>, String> {
+    public static class LongListToStringConverter extends BidirectionalConverter<List<Long>, String> {
 
         private final String delimiter;
 
         @Override
-        public String convertTo(ArrayList<Long> source, Type<String> destinationType, MappingContext mappingContext) {
+        public String convertTo(List<Long> source, Type<String> destinationType, MappingContext mappingContext) {
             return convertList2String(source, delimiter);
         }
 
         @Override
-        public ArrayList<Long> convertFrom(String source, Type<ArrayList<Long>> destinationType, MappingContext mappingContext) {
+        public List<Long> convertFrom(String source, Type<List<Long>> destinationType, MappingContext mappingContext) {
             return convertString2List(source, delimiter, new Transformer<String, Long>() {
                 @Override
                 public Long transfer(String s) {
@@ -103,7 +104,7 @@ public class ListConverters {
     }
 
     @RequiredArgsConstructor
-    public static class DoubleListToStringConverter extends BidirectionalConverter<ArrayList<Double>, String> {
+    public static class DoubleListToStringConverter extends BidirectionalConverter<List<Double>, String> {
 
         private final String delimiter;
         private NumberFormat formatter;
@@ -116,7 +117,7 @@ public class ListConverters {
         }
 
         @Override
-        public String convertTo(ArrayList<Double> source, Type<String> destinationType, MappingContext mappingContext) {
+        public String convertTo(List<Double> source, Type<String> destinationType, MappingContext mappingContext) {
             return convertList2String(source, delimiter, new Transformer<Double, String>() {
                 @Override
                 public String transfer(Double e) {
@@ -126,7 +127,7 @@ public class ListConverters {
         }
 
         @Override
-        public ArrayList<Double> convertFrom(String source, Type<ArrayList<Double>> destinationType, MappingContext mappingContext) {
+        public List<Double> convertFrom(String source, Type<List<Double>> destinationType, MappingContext mappingContext) {
             return convertString2List(source, delimiter, new Transformer<String, Double>() {
                 @Override
                 public Double transfer(String s) {
@@ -138,7 +139,7 @@ public class ListConverters {
     }
 
     @RequiredArgsConstructor
-    public static class FloatListToStringConverter extends BidirectionalConverter<ArrayList<Float>, String> {
+    public static class FloatListToStringConverter extends BidirectionalConverter<List<Float>, String> {
 
         private final String delimiter;
         private NumberFormat formatter;
@@ -151,7 +152,7 @@ public class ListConverters {
         }
 
         @Override
-        public String convertTo(ArrayList<Float> source, Type<String> destinationType, MappingContext mappingContext) {
+        public String convertTo(List<Float> source, Type<String> destinationType, MappingContext mappingContext) {
             return convertList2String(source, delimiter, new Transformer<Float, String>() {
                 @Override
                 public String transfer(Float e) {
@@ -161,7 +162,7 @@ public class ListConverters {
         }
 
         @Override
-        public ArrayList<Float> convertFrom(String source, Type<ArrayList<Float>> destinationType, MappingContext mappingContext) {
+        public List<Float> convertFrom(String source, Type<List<Float>> destinationType, MappingContext mappingContext) {
             return convertString2List(source, delimiter, new Transformer<String, Float>() {
                 @Override
                 public Float transfer(String s) {
@@ -173,12 +174,12 @@ public class ListConverters {
     }
 
     @RequiredArgsConstructor
-    public static class BigDecimalListToStringConverter extends BidirectionalConverter<ArrayList<BigDecimal>, String> {
+    public static class BigDecimalListToStringConverter extends BidirectionalConverter<List<BigDecimal>, String> {
 
         private final String delimiter;
 
         @Override
-        public String convertTo(ArrayList<BigDecimal> source, Type<String> destinationType, MappingContext mappingContext) {
+        public String convertTo(List<BigDecimal> source, Type<String> destinationType, MappingContext mappingContext) {
             return convertList2String(source, delimiter, new Transformer<BigDecimal, String>() {
                 @Override
                 public String transfer(BigDecimal e) {
@@ -188,7 +189,7 @@ public class ListConverters {
         }
 
         @Override
-        public ArrayList<BigDecimal> convertFrom(String source, Type<ArrayList<BigDecimal>> destinationType, MappingContext mappingContext) {
+        public List<BigDecimal> convertFrom(String source, Type<List<BigDecimal>> destinationType, MappingContext mappingContext) {
             return convertString2List(source, delimiter, new Transformer<String, BigDecimal>() {
                 @Override
                 public BigDecimal transfer(String s) {
@@ -207,11 +208,11 @@ public class ListConverters {
         return format;
     }
 
-    private static <E> String convertList2String(ArrayList<E> source, String delimiter) {
+    private static <E> String convertList2String(List<E> source, String delimiter) {
         return convertList2String(source, delimiter, null);
     }
 
-    private static <E> String convertList2String(ArrayList<E> source, String delimiter, Transformer<E, String> transformer) {
+    private static <E> String convertList2String(List<E> source, String delimiter, Transformer<E, String> transformer) {
         if (source != null && !source.isEmpty()) {
             StringBuilder builder = new StringBuilder();
             for (E e : source) {
@@ -228,9 +229,9 @@ public class ListConverters {
         return null;
     }
 
-    private static <E> ArrayList<E> convertString2List(String source, String delimiter, Transformer<String, E> transformer) {
+    private static <E> List<E> convertString2List(String source, String delimiter, Transformer<String, E> transformer) {
         if (source != null && !source.isEmpty()) {
-            ArrayList<E> r = new ArrayList<>();
+            List<E> r = new ArrayList<>();
             String[] arr = source.split(delimiter);
             for (String s : arr) {
                 if (s != null && !s.isEmpty()) {

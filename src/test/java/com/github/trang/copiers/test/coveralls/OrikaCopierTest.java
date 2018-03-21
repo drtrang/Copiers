@@ -47,7 +47,7 @@ public class OrikaCopierTest {
         assertThat(target.getWife().getUsername(), nullValue());
         // 使用上级对象的设置，跳过拷贝
         assertThat(target.getWife().getAge(), equalTo(user.getWife().getAge()));
-         assertThat(target.getWife().getSex(), equalTo(user.getWife().getSex()));
+        assertThat(target.getWife().getSex(), equalTo(user.getWife().getSex()));
         assertThat(target.getWife().getHeight(), equalTo(user.getWife().getHeight()));
         assertThat(target.getWife().getWeight(), equalTo(user.getWife().getWeight().longValue()));
         assertThat(target.getWife().getHouse(), equalTo(user.getWife().getHouse()));

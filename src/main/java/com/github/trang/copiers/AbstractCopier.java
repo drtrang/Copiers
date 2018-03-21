@@ -34,12 +34,6 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
         this.copier = copier;
     }
 
-    /**
-     * 拷贝数组
-     *
-     * @param sourceArray 源对象数组
-     * @param targetArray 目标对象数组
-     */
     @Override
     public void map(F[] sourceArray, T[] targetArray) {
         if (sourceArray == null || sourceArray.length == 0 || targetArray == null || targetArray.length == 0
@@ -52,12 +46,6 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
         }
     }
 
-    /**
-     * 拷贝 List
-     *
-     * @param sourceList 源对象集合
-     * @return 目标对象集合
-     */
     @Override
     public List<T> map(List<F> sourceList) {
         if (sourceList == null || sourceList.isEmpty()) {
@@ -68,12 +56,6 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
         return targetList;
     }
 
-    /**
-     * 拷贝 Set
-     *
-     * @param sourceSet 源对象集合
-     * @return 目标对象集合
-     */
     @Override
     public Set<T> map(Set<F> sourceSet) {
         if (sourceSet == null || sourceSet.isEmpty()) {
