@@ -27,7 +27,8 @@ public class OrikaMapper {
     /** 启用 Boolean Converter 时使用的分隔符，默认 "," */
     private String delimiter = defaultDelimiter;
     /** Orika MapperFactory */
-    private DefaultMapperFactory factory;
+    private volatile DefaultMapperFactory factory;
+    private volatile boolean initialized = false;
 
     public OrikaMapper() {
         this(defaultUseBuiltinBooleanConverters, defaultUseBuiltinListConverters, defaultDelimiter);
@@ -45,11 +46,14 @@ public class OrikaMapper {
     }
 
     private synchronized void init() {
-        DefaultMapperFactory.Builder factoryBuilder = new DefaultMapperFactory.Builder();
-        configureFactoryBuilder(factoryBuilder);
-        this.factory = factoryBuilder.build();
-        configure(this.factory);
-        registerConverters(this.factory.getConverterFactory());
+        if (!initialized) {
+            DefaultMapperFactory.Builder factoryBuilder = new DefaultMapperFactory.Builder();
+            configureFactoryBuilder(factoryBuilder);
+            this.factory = factoryBuilder.build();
+            configure(this.factory);
+            registerConverters(this.factory.getConverterFactory());
+            initialized = true;
+        }
     }
 
     protected void configureFactoryBuilder(DefaultMapperFactory.Builder factoryBuilder) {}
