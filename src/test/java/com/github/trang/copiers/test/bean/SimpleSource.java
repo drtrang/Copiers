@@ -16,7 +16,9 @@ public class SimpleSource {
     private Integer id;
     private Long time;
     private List<Integer> statusList;
+    private List<Double> typeList;
     private Map<String, Object> map;
+    private String same;
 
 //    public SimpleSource() {
 //    }

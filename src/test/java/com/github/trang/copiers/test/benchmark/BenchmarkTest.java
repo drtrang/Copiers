@@ -2,7 +2,7 @@ package com.github.trang.copiers.test.benchmark;
 
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.cglib.CglibCopier;
-import com.github.trang.copiers.inter.Copier;
+import com.github.trang.copiers.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.util.MockUtils;

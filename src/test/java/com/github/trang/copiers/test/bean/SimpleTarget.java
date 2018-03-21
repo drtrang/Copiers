@@ -1,6 +1,8 @@
 package com.github.trang.copiers.test.bean;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
@@ -15,7 +17,9 @@ public class SimpleTarget {
     private String id;
     private Date time;
     private String statuses;
+    private String types;
     private String name;
+    private String same;
 
 //    public SimpleTarget() {
 //    }

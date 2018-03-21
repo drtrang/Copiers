@@ -1,6 +1,5 @@
-package com.github.trang.copiers.adapter;
+package com.github.trang.copiers;
 
-import com.github.trang.copiers.inter.Copier;
 import lombok.Getter;
 
 import java.util.*;
@@ -24,8 +23,7 @@ public abstract class AbstractCopier<C, F, T> implements Copier<F, T> {
     /** 目标对象的类型 */
     protected Class<T> targetClass;
 
-    protected AbstractCopier() {
-    }
+    protected AbstractCopier() {}
 
     protected AbstractCopier(Class<F> sourceClass, Class<T> targetClass, C copier) {
         checkNotNull(sourceClass, "source class cannot be null!");

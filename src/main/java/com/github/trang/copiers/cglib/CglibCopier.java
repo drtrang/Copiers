@@ -1,8 +1,8 @@
 package com.github.trang.copiers.cglib;
 
-import com.github.trang.copiers.adapter.AbstractCopier;
+import com.github.trang.copiers.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
-import com.github.trang.copiers.inter.Copier;
+import com.github.trang.copiers.Copier;
 import com.github.trang.copiers.util.ReflectionUtil;
 import lombok.Getter;
 import net.sf.cglib.beans.BeanCopier;

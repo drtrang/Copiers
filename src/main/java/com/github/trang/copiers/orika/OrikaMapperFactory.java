@@ -1,34 +1,33 @@
 package com.github.trang.copiers.orika;
 
+import com.github.trang.copiers.orika.OrikaMapper.SimpleOrikaMapper;
 import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory.MapperFactoryBuilder;
 
 /**
  * 创建 MapperFactory 的单例
  *
  * @author trang
  */
-public class OrikaMapperFactory {
+public final class OrikaMapperFactory {
 
     private static volatile MapperFactory INSTANCE = null;
 
-    public static MapperFactory getMapperFactory() {
+    public static MapperFactory getMapperFactory(OrikaMapper orikaMapper) {
         if (INSTANCE == null) {
             synchronized (OrikaMapperFactory.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new DefaultMapperFactory.Builder().mapNulls(false).build();
+                    INSTANCE = orikaMapper.getFactory();
                 }
             }
         }
         return INSTANCE;
     }
 
-    public static MapperFactory getMapperFactory(MapperFactoryBuilder<?, ?> builder) {
+    public static MapperFactory getMapperFactory() {
         if (INSTANCE == null) {
             synchronized (OrikaMapperFactory.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = builder.build();
+                    INSTANCE = new SimpleOrikaMapper().getFactory();
                 }
             }
         }

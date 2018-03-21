@@ -1,4 +1,4 @@
-package com.github.trang.copiers.inter;
+package com.github.trang.copiers.base;
 
 /**
  * 拷贝数组底层接口
