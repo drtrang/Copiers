@@ -14,14 +14,14 @@ Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.2</version>
 </dependency>
 
 <!-- java8 or higher -->
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.2</version>
 </dependency>
 ```
 
@@ -40,57 +40,63 @@ Copiers.createCglib(Class<F> sourceClass, Class<T> targetClass, Converter conver
 ### Cglib
 Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节码增强技术，千万次拷贝仅需毫秒即可完成，但高性能带来的显著缺点是功能单一、拓展性差，BeanCopier 仅支持源对象到目标对象的**完全拷贝**，不支持自定义映射，Convert 拓展也只能对拷贝的 value 做处理，很多情况下不满足实际的业务需求。
 
-**注意：**
-1. BeanCopier 只拷贝名称和类型都相同的属性
-2. 当目标类的 setter 方法少于 getter 方法时，会导致创建 BeanCopier 失败
-3. 一旦使用 Converter，BeanCopier 将完全使用 Converter 中定义的规则去拷贝，所以在 `convert()` 方法中要考虑到所有的属性，否则会抛出 `ClassCastException`
+> **注意：**
+> 1. BeanCopier 只拷贝名称和类型都相同的属性
+> 2. 当目标类的 setter 方法少于 getter 方法时，会导致创建 BeanCopier 失败
+> 3. 一旦使用 Converter，BeanCopier 将完全使用 Converter 中定义的规则去拷贝，所以在 `convert()` 方法中要考虑到所有的属性，否则会抛出 `ClassCastException`
 
 ### Orika
-[Orika](https://github.com/orika-mapper/orika) 基于 Javassist 字节码技术，千万次拷贝在 **5s** 左右。虽不如 Cglib，但 Orika 的优点在于使用灵活、扩展性强，具体情况可以查看 Orika 的 Github，地址：https://github.com/orika-mapper/orika，建议阅读文档地址：http://www.baeldung.com/orika-mapping
+[Orika](https://github.com/orika-mapper/orika) 基于 Javassist 字节码技术，千万次拷贝在 **5s** 左右。性能虽不如 Cglib，但 Orika 的优点在于灵活性、扩展性强，详细介绍可以查看 Orika 的 Github：https://github.com/orika-mapper/orika，另外强烈推荐这篇使用教程：http://www.baeldung.com/orika-mapping
 
-**注意：**
-1. 拷贝结果为浅拷贝
-2. 支持级联拷贝，但是需要提前注册好级联对象之间的映射关系，且可以使用 `parent()` 方法来指定父类
-3. 支持源对象中的集合类型直接拷贝到目标对象的集合
-4. 不同类型有默认的 Converter 做转换
+> **注意：**
+> 1. 拷贝结果为浅拷贝
+> 2. 支持级联拷贝，但是需要提前注册好级联对象之间的映射关系，且可以使用 `parent()` 方法来指定父类
+> 3. 支持源对象中的集合类型直接拷贝到目标对象的集合
+> 4. 不同类型有默认的 Converter 做转换
 
 ## 使用方式
 通过工厂方法建立 sourceClass 与 targetClass 之间的关系后，调用 `copy()` 方法即可完成 Bean 拷贝，调用 `map()` 方法即可完成 List 拷贝，简洁高效。
 
 ### Cglib
 ```java
+// 建立 User.class 与 UserEntity.class 之间的映射关系
+Copier copier = Copiers.createCglib(User.class, UserEntity.class);
+
 // 拷贝对象，创建新对象
 User user = User.of("trang", 25);
-UserEntity entity = Copiers.createCglib(User.class, UserEntity.class).copy(user);
+UserEntity entity = copier.copy(user);
 
 // 拷贝对象，传入已有对象，完全拷贝
 User user = User.of("trang", null);
 UserEntity entity = UserEntity.of("meng", 24);
-Copiers.createCglib(User.class, UserEntity.class).copy(user, entity);
+copier.copy(user, entity);
 
 // 拷贝 List，创建新 List
 User trang = User.of("trang", 25);
 User meng = User.of("meng", 24);
 List<User> family = ImmutableList.of(trang, meng);
-List<UserEntity> entries = Copiers.createCglib(User.class, UserEntity.class).map(family);
+List<UserEntity> entries = copier.map(family);
 ```
 
 ### Orika
 ```java
+// 建立 User.class 与 UserEntity.class 之间的映射关系
+Copier copier = Copiers.create(User.class, UserEntity.class);
+
 // 拷贝对象，创建新对象
 User user = User.of("trang", 25);
-UserEntity entity = Copiers.create(User.class, UserEntity.class).copy(user);
+UserEntity entity = copier.copy(user);
 
 // 拷贝对象，传入已有对象，不会拷贝值为 null 的属性（可以配置）
 User user = User.of("trang", null);
 UserEntity entity = UserEntity.of("meng", 24);
-Copiers.create(User.class, UserEntity.class).copy(user, entity);
+copier.copy(user, entity);
 
 // 拷贝 List，创建新 List
 User trang = User.of("trang", 25);
 User meng = User.of("meng", 24);
 List<User> family = ImmutableList.of(trang, meng);
-List<UserEntity> entries = Copiers.create(User.class, UserEntity.class).map(family);
+List<UserEntity> entries = copier.map(family);
 ```
 
 ## Orika 进阶
@@ -152,13 +158,9 @@ Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.cla
                 .field("name", "username")
                 .register();
 // 使用 Stream 拷贝 List
-sourceList.stream().map(copier::copy).collect(toList());
-// 2.2.1 版本之后可以如下调用，等同于上边代码
-copier.map(sourceList);
+sourceList.stream().map(copier::copy).collect(toList()); //copier.map(sourceList);
 // 使用并行 Stream 拷贝 List
 sourceList.parallelStream().map(copier::copy).collect(toList());
-// 2.2.1 版本之后可以如下调用，等同于上边代码
-copier.parallel().map(sourceList);
 // 使用 Optional 拷贝 List
 Optional.of(name)
         .map(service::selectByName)

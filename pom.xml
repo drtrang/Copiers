@@ -5,7 +5,7 @@
 
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.2</version>
 
     <name>Copiers</name>
     <description>A Friendly Bean Copier Packaging.</description>
@@ -76,7 +76,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <!-- Maven 插件 -->
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.1</jacoco-maven-plugin.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.0.2</maven-dependency-plugin.version>
