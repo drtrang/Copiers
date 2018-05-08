@@ -1,10 +1,9 @@
 package com.github.trang.copiers.orika;
 
-import com.github.trang.copiers.orika.OrikaMapper.SimpleOrikaMapper;
 import ma.glasnost.orika.MapperFactory;
 
 /**
- * 创建 MapperFactory 的单例
+ * 创建 MapperFactory 的单例，提供默认配置和自定义配置两种方式
  *
  * @author trang
  */
@@ -27,7 +26,7 @@ public final class OrikaMapperFactory {
         if (INSTANCE == null) {
             synchronized (OrikaMapperFactory.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new SimpleOrikaMapper().getFactory();
+                    INSTANCE = new OrikaMapper().getFactory();
                 }
             }
         }

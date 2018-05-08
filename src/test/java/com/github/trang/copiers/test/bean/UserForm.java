@@ -1,11 +1,12 @@
 package com.github.trang.copiers.test.bean;
 
+import java.io.Serializable;
+
 import com.google.common.base.MoreObjects;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 /**
  * 用户信息 Form

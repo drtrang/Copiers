@@ -1,20 +1,22 @@
 package com.github.trang.copiers.test.framework;
 
+import static com.google.common.collect.Lists.newArrayList;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.junit.Test;
+
 import com.github.trang.copiers.test.bean.SimpleSource;
 import com.github.trang.copiers.test.bean.SimpleTarget;
 import com.google.common.base.Joiner;
+
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
-import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author trang
@@ -39,7 +41,7 @@ public class OrikaTest {
                 .register();
         SimpleSource source = new SimpleSource(1, System.currentTimeMillis());
         source.setStatusList(newArrayList(1,2,3));
-        source.setMap(new HashMap<String, Object>());
+        source.setMap(new HashMap<>());
         BoundMapperFacade<SimpleSource, SimpleTarget> mapper = mapperFactory.getMapperFacade(SimpleSource.class, SimpleTarget.class);
         SimpleTarget target = mapper.map(source);
         System.out.println(target);

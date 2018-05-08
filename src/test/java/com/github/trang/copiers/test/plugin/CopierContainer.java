@@ -1,7 +1,7 @@
 package com.github.trang.copiers.test.plugin;
 
 import com.github.trang.copiers.Copiers;
-import com.github.trang.copiers.Copier;
+import com.github.trang.copiers.base.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.bean.UserForm;

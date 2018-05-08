@@ -1,14 +1,15 @@
 package com.github.trang.copiers.orika;
 
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
+
 import com.github.trang.copiers.AbstractCopier;
-import com.github.trang.copiers.Copier;
+import com.github.trang.copiers.base.Copier;
 import com.github.trang.copiers.exception.CopierException;
+
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.Mapper;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
-
-import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 /**
  * 基于 Orika 的 #{@link Copier} 实现

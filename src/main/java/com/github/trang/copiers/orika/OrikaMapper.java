@@ -3,37 +3,39 @@ package com.github.trang.copiers.orika;
 import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.orika.converter.BooleanConverters;
 import com.github.trang.copiers.orika.converter.ListConverters;
+
 import lombok.Getter;
 import lombok.ToString;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.ConverterFactory;
+import ma.glasnost.orika.impl.ConfigurableMapper;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 
 /**
- * OrikaMapper
+ * 自定义 Orika 配置，参考自 #{@link ConfigurableMapper}，没有直接继承 ConfigurableMapper 的原因是需要定制初始化过程
  *
  * @author trang
  */
 @Getter
 public class OrikaMapper {
 
-    private static final Boolean defaultUseBuiltinBooleanConverters = Boolean.TRUE;
-    private static final Boolean defaultUseBuiltinListConverters = Boolean.TRUE;
-    private static final String defaultDelimiter = ",";
+    private static final Boolean DEFAULT_USE_BUILTIN_BOOLEAN_CONVERTERS = Boolean.TRUE;
+    private static final Boolean DEFAULT_USE_BUILTIN_LIST_CONVERTERS = Boolean.TRUE;
+    private static final String DEFAULT_DELIMITER = ",";
 
-    /** 是否启用内置的 Boolean Converter，默认开启 */
-    private Boolean useBuiltinListConverters = defaultUseBuiltinListConverters;
-    /** 是否启用内置的 List Converter，默认开启 */
-    private Boolean useBuiltinBooleanConverters = defaultUseBuiltinBooleanConverters;
-    /** 启用 Boolean Converter 时使用的分隔符，默认 "," */
-    private String delimiter = defaultDelimiter;
+    /** 是否启用内置的 Boolean Converters，默认开启 */
+    private Boolean useBuiltinListConverters;
+    /** 是否启用内置的 List Converters，默认开启 */
+    private Boolean useBuiltinBooleanConverters;
+    /** 启用 List Converters 时使用的分隔符，默认为 "," */
+    private String delimiter;
     /** Orika MapperFactory */
     private DefaultMapperFactory factory;
-    /** 是否已经初始化，用 volatile 来保证多线程环境下的可见性 */
-    private volatile boolean initialized = false;
+    /** OrikaMapper 初始化标识，用 volatile 来保证多线程环境下的可见性 */
+    private volatile boolean initialized;
 
     public OrikaMapper() {
-        this(defaultUseBuiltinBooleanConverters, defaultUseBuiltinListConverters, defaultDelimiter);
+        this(DEFAULT_USE_BUILTIN_BOOLEAN_CONVERTERS, DEFAULT_USE_BUILTIN_LIST_CONVERTERS, DEFAULT_DELIMITER);
     }
 
     public OrikaMapper(Boolean useBuiltinBooleanConverters, Boolean useBuiltinListConverters, String delimiter) {
@@ -43,19 +45,15 @@ public class OrikaMapper {
         init();
     }
 
-    public static OrikaMapper.Builder builder() {
-        return new OrikaMapper.Builder();
-    }
-
     private synchronized void init() {
         try {
             if (!initialized) {
                 initialized = true;
                 DefaultMapperFactory.Builder factoryBuilder = new DefaultMapperFactory.Builder();
                 configureFactoryBuilder(factoryBuilder);
-                this.factory = factoryBuilder.build();
-                configure(this.factory);
-                registerConverters(this.factory.getConverterFactory());
+                factory = factoryBuilder.build();
+                configure(factory);
+                configureConverterFactory(factory.getConverterFactory());
             }
         } catch (Exception e) {
             initialized = false;
@@ -63,11 +61,13 @@ public class OrikaMapper {
         }
     }
 
-    protected void configureFactoryBuilder(DefaultMapperFactory.Builder factoryBuilder) {}
+    protected void configureFactoryBuilder(DefaultMapperFactory.Builder factoryBuilder) {
+        factoryBuilder.mapNulls(false);
+    }
 
     protected void configure(MapperFactory factory) {}
 
-    protected void registerConverters(ConverterFactory converterFactory) {
+    protected void configureConverterFactory(ConverterFactory converterFactory) {
         if (useBuiltinBooleanConverters) {
             converterFactory.registerConverter(new BooleanConverters.BooleanToByteConverter());
             converterFactory.registerConverter(new BooleanConverters.BooleanToShortConverter());
@@ -88,6 +88,10 @@ public class OrikaMapper {
         }
     }
 
+    public static OrikaMapper.Builder builder() {
+        return new OrikaMapper.Builder();
+    }
+
     @ToString
     public static class Builder {
 
@@ -96,9 +100,9 @@ public class OrikaMapper {
         private String delimiter;
 
         public Builder() {
-            this.useBuiltinBooleanConverters = defaultUseBuiltinBooleanConverters;
-            this.useBuiltinListConverters = defaultUseBuiltinListConverters;
-            this.delimiter = defaultDelimiter;
+            this.useBuiltinBooleanConverters = DEFAULT_USE_BUILTIN_BOOLEAN_CONVERTERS;
+            this.useBuiltinListConverters = DEFAULT_USE_BUILTIN_LIST_CONVERTERS;
+            this.delimiter = DEFAULT_DELIMITER;
         }
 
         public OrikaMapper.Builder useBuiltinBooleanConverters(Boolean useBuiltinBooleanConverters) {
@@ -118,15 +122,6 @@ public class OrikaMapper {
 
         public OrikaMapper build() {
             return new OrikaMapper(useBuiltinBooleanConverters, useBuiltinListConverters, delimiter);
-        }
-
-    }
-
-    public static class SimpleOrikaMapper extends OrikaMapper {
-
-        @Override
-        protected void configureFactoryBuilder(DefaultMapperFactory.Builder factoryBuilder) {
-            factoryBuilder.mapNulls(false);
         }
 
     }

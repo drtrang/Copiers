@@ -1,20 +1,26 @@
 package com.github.trang.copiers.test.benchmark;
 
-import com.github.trang.copiers.Copier;
-import com.github.trang.copiers.Copiers;
-import com.github.trang.copiers.test.bean.SimpleSource;
-import com.github.trang.copiers.test.bean.SimpleTarget;
-import com.google.common.base.Stopwatch;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+import org.junit.Test;
+
+import com.github.trang.copiers.Copiers;
+import com.github.trang.copiers.base.Copier;
+import com.github.trang.copiers.test.bean.SimpleSource;
+import com.github.trang.copiers.test.bean.SimpleTarget;
+import com.google.common.base.Stopwatch;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Java8 测试
@@ -36,10 +42,9 @@ public class Java8Test {
         SimpleTarget[] targetArray2 = Arrays.stream(sourceArray).parallel().map(copier::copy).toArray(SimpleTarget[]::new);
         log.info("多线程耗时: {}ms, 大小: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS), targetArray2.length);
 
-        SimpleTarget[] targetArray1 = new SimpleTarget[size];
         stopwatch.reset().start();
-        copier.map(sourceArray, targetArray1);
-        log.info("单线程耗时: {}ms, 大小: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS), targetArray1.length);
+        SimpleTarget[] targetArray3 = copier.copyArray(sourceArray, SimpleTarget[]::new);
+        log.info("单线程耗时: {}ms, 大小: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS), targetArray3.length);
     }
 
     @Test
@@ -51,7 +56,7 @@ public class Java8Test {
         Stopwatch stopwatch = Stopwatch.createUnstarted();
 
         stopwatch.start();
-        List<SimpleTarget> targetList1 = copier.map(sourceList);
+        List<SimpleTarget> targetList1 = copier.copyList(sourceList);
         log.info("单线程耗时: {}ms, 大小: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS), targetList1.size());
 
         List<SimpleTarget> targetList2 = new ArrayList<>(sourceList.size());

@@ -1,10 +1,12 @@
 package com.github.trang.copiers.test.framework;
 
+import org.junit.Test;
+
 import com.github.trang.copiers.test.bean.SimpleSource;
 import com.github.trang.copiers.test.bean.SimpleTarget;
+
 import net.sf.cglib.beans.BeanCopier;
 import net.sf.cglib.core.Converter;
-import org.junit.Test;
 
 /**
  * @author trang

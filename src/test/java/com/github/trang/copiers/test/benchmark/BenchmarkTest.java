@@ -1,17 +1,17 @@
 package com.github.trang.copiers.test.benchmark;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.Test;
+
 import com.github.trang.copiers.Copiers;
-import com.github.trang.copiers.cglib.CglibCopier;
-import com.github.trang.copiers.Copier;
+import com.github.trang.copiers.base.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.util.MockUtils;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 性能测试
@@ -31,7 +31,7 @@ public class BenchmarkTest {
     @Test
     public void test2() {
         // cglib
-        CglibCopier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
+        Copier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
         Stopwatch cglibWatch = Stopwatch.createStarted();
         for (Integer times : timesList) {
             long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);

@@ -10,18 +10,18 @@ Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮
 
 ## 依赖
 ```xml
+<!-- java8 or higher -->
+<dependency>
+    <groupId>com.github.drtrang</groupId>
+    <artifactId>copiers</artifactId>
+    <version>2.5.0</version>
+</dependency>
+
 <!-- java7 -->
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
     <version>1.4.2</version>
-</dependency>
-
-<!-- java8 or higher -->
-<dependency>
-    <groupId>com.github.drtrang</groupId>
-    <artifactId>copiers</artifactId>
-    <version>2.4.2</version>
 </dependency>
 ```
 
@@ -55,7 +55,7 @@ Cglib 中的 BeanCopier 是目前性能最好的拷贝方式，基于 ASM 字节
 > 4. 不同类型有默认的 Converter 做转换
 
 ## 使用方式
-通过工厂方法建立 sourceClass 与 targetClass 之间的关系后，调用 `copy()` 方法即可完成 Bean 拷贝，调用 `map()` 方法即可完成 List 拷贝，简洁高效。
+通过工厂方法建立 sourceClass 与 targetClass 之间的关系后，调用 `copy()` 方法即可完成 Bean 拷贝，调用 `copyList()` 方法即可完成 List 拷贝，简洁高效。
 
 ### Cglib
 ```java
@@ -75,7 +75,7 @@ copier.copy(user, entity);
 User trang = User.of("trang", 25);
 User meng = User.of("meng", 24);
 List<User> family = ImmutableList.of(trang, meng);
-List<UserEntity> entries = copier.map(family);
+List<UserEntity> entries = copier.copyList(family);
 ```
 
 ### Orika
@@ -96,7 +96,7 @@ copier.copy(user, entity);
 User trang = User.of("trang", 25);
 User meng = User.of("meng", 24);
 List<User> family = ImmutableList.of(trang, meng);
-List<UserEntity> entries = copier.map(family);
+List<UserEntity> entries = copier.copyList(family);
 ```
 
 ## Orika 进阶
@@ -158,13 +158,13 @@ Copier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.cla
                 .field("name", "username")
                 .register();
 // 使用 Stream 拷贝 List
-sourceList.stream().map(copier::copy).collect(toList()); //copier.map(sourceList);
+sourceList.stream().map(copier::copy).collect(toList()); //copier.copyList(sourceList);
 // 使用并行 Stream 拷贝 List
 sourceList.parallelStream().map(copier::copy).collect(toList());
 // 使用 Optional 拷贝 List
 Optional.of(name)
         .map(service::selectByName)
-        .map(copier::map) 
+        .map(copier::copyList) 
         .orElse(emptyList());
 ```
 

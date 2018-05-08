@@ -1,18 +1,23 @@
 package com.github.trang.copiers.orika.converter;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * BooleanConverters
+ * List 转换器，用于 List 与常用类型之间的互相转换，默认会注册到 Orika
  *
  * @author trang
  */
@@ -25,7 +30,7 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Byte> source, Type<String> destinationType, MappingContext mappingContext) {
-            return convertList2String(source, delimiter);
+            return convertList2String(source, delimiter, Object::toString);
         }
 
         @Override
@@ -41,7 +46,7 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Short> source, Type<String> destinationType, MappingContext mappingContext) {
-            return convertList2String(source, delimiter);
+            return convertList2String(source, delimiter, Object::toString);
         }
 
         @Override
@@ -57,7 +62,7 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Integer> source, Type<String> destinationType, MappingContext mappingContext) {
-            return convertList2String(source, delimiter);
+            return convertList2String(source, delimiter, Object::toString);
         }
 
         @Override
@@ -73,7 +78,7 @@ public class ListConverters {
 
         @Override
         public String convertTo(List<Long> source, Type<String> destinationType, MappingContext mappingContext) {
-            return convertList2String(source, delimiter);
+            return convertList2String(source, delimiter, Object::toString);
         }
 
         @Override
@@ -158,43 +163,18 @@ public class ListConverters {
         return format;
     }
 
-    private static <E> String convertList2String(List<E> source, String delimiter) {
-        return convertList2String(source, delimiter, null);
+    private static <E> String convertList2String(List<E> source, String delimiter, Function<E, String> transformer) {
+        return source.stream()
+                .filter(Objects::nonNull)
+                .map(transformer)
+                .collect(joining(delimiter));
     }
 
-    private static <E> String convertList2String(List<E> source, String delimiter, Transformer<E, String> transformer) {
-        if (source != null && !source.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            for (E e : source) {
-                if (e != null) {
-                    builder.append(transformer != null ? transformer.transfer(e) : e).append(delimiter);
-                }
-            }
-            int length = builder.length();
-            if (length > 0) {
-                builder = builder.delete(length - 1, length);
-            }
-            return builder.toString();
-        }
-        return null;
-    }
-
-    private static <E> List<E> convertString2List(String source, String delimiter, Transformer<String, E> transformer) {
-        if (source != null && !source.isEmpty()) {
-            List<E> r = new ArrayList<>();
-            String[] arr = source.split(delimiter);
-            for (String s : arr) {
-                if (s != null && !s.isEmpty()) {
-                    r.add(transformer.transfer(s));
-                }
-            }
-            return r;
-        }
-        return null;
-    }
-
-    private interface Transformer<F, T> {
-        T transfer(F t);
+    private static <E> List<E> convertString2List(String source, String delimiter, Function<String, E> transformer) {
+        return Arrays.stream(source.split(delimiter))
+                .filter(s -> s != null && !s.isEmpty())
+                .map(transformer)
+                .collect(toList());
     }
 
 }
