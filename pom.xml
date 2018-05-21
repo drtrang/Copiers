@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -11,7 +10,7 @@
 
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>2.5.1-SNAPSHOT</version>
+    <version>2.5.1</version>
 
     <name>Copiers</name>
     <description>A Friendly Bean Copier Packaging.</description>
@@ -41,7 +40,7 @@
         <connection>scm:git:https://github.com/drtrang/Copiers.git</connection>
         <developerConnection>scm:git:git@github.com:drtrang/Copiers.git</developerConnection>
         <url>https://github.com/drtrang/Copiers</url>
-        <tag>HEAD</tag>
+        <tag>v2.5.1</tag>
     </scm>
 
     <issueManagement>
