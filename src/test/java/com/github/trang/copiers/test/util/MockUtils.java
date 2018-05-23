@@ -1,10 +1,10 @@
 package com.github.trang.copiers.test.util;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import com.github.trang.copiers.test.bean.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author trang

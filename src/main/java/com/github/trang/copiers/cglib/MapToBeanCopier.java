@@ -1,33 +1,38 @@
 package com.github.trang.copiers.cglib;
 
-import com.github.trang.copiers.AbstractCopier;
-import com.github.trang.copiers.exception.CopierException;
-import com.github.trang.copiers.util.ReflectionUtil;
-import net.sf.cglib.beans.BeanMap;
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 import java.util.Map;
 
-import static com.github.trang.copiers.util.Preconditions.checkNotNull;
+import com.github.trang.copiers.AbstractCopier;
+import com.github.trang.copiers.exception.CopierException;
+import com.github.trang.copiers.util.ReflectionUtil;
+
+import lombok.extern.slf4j.Slf4j;
+import net.sf.cglib.beans.BeanMap;
 
 /**
  * Map 转换为 JavaBean
  *
  * @author trang
  */
+@Slf4j(topic = "copiers")
 public class MapToBeanCopier<T> extends AbstractCopier<BeanMap, Map<String, Object>, T> {
 
-    public MapToBeanCopier(Class<T> beanClass) {
-        checkNotNull(beanClass, "bean class cannot be null!");
-        this.targetClass = beanClass;
+    private final Class<T> targetClass;
+
+    public MapToBeanCopier(Class<T> targetClass) {
+        checkNotNull(targetClass, "target class cannot be null!");
+        this.targetClass = targetClass;
     }
 
     @Override
-    public T copy(Map<String, Object> map) {
-        checkNotNull(map, "map cannot be null!");
+    public T copy(Map<String, Object> source) {
+        checkNotNull(source, "source map cannot be null!");
         try {
             T bean = ReflectionUtil.newInstance(targetClass);
             BeanMap beanMap = BeanMap.create(bean);
-            beanMap.putAll(map);
+            beanMap.putAll(source);
             return bean;
         } catch (Exception e) {
             throw new CopierException("create object fail, class: " + targetClass.getName(), e);
@@ -35,11 +40,12 @@ public class MapToBeanCopier<T> extends AbstractCopier<BeanMap, Map<String, Obje
     }
 
     @Override
-    public void copy(Map<String, Object> map, T bean) {
-        checkNotNull(map, "map cannot be null!");
+    public void copy(Map<String, Object> source, T bean) {
+        checkNotNull(source, "source map cannot be null!");
+        checkNotNull(bean, "target bean cannot be null!");
         try {
             BeanMap beanMap = BeanMap.create(bean);
-            beanMap.putAll(map);
+            beanMap.putAll(source);
         } catch (Exception e) {
             throw new CopierException("create object fail, class: " + bean.getClass().getName(), e);
         }

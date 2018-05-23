@@ -3,18 +3,18 @@ package com.github.trang.copiers.base;
 import java.util.List;
 
 /**
- * 拷贝集合底层接口
+ * List 拷贝底层接口
  *
  * @author trang
  */
-public interface ListCopier<F, T> {
+public interface ListCopier<F, T> extends BeanCopier<F, T> {
 
     /**
-     * 将 sourceList 拷贝到新集合
+     * 将 sourceList 拷贝到新集合，使用 ArrayList
      *
      * @param sourceList 源对象集合
      * @return 目标对象集合
      */
-    List<T> map(List<F> sourceList);
+    List<T> copyList(List<F> sourceList);
 
 }

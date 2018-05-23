@@ -1,19 +1,27 @@
 package com.github.trang.copiers.test.coveralls;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.github.trang.copiers.MapCopiers;
 import com.github.trang.copiers.test.bean.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.Sets;
 
 public class MapCopiersTest {
-    
+
     private User trang = new User();
     private User meng = new User();
 
@@ -40,20 +48,44 @@ public class MapCopiersTest {
 
     @Test
     public void beanToMap() {
-        Map<String, Object> map = MapCopiers.beanToMap(trang);
+        Map<String, Object> map = MapCopiers.<User>createBeanToMap().copy(trang);
         System.out.println(map);
 
         Map<String, Object> map2 = new HashMap<>();
         map2.put("value", "value");
         map2.put("name", "name");
-        MapCopiers.beanToMap(trang, map2);
+        MapCopiers.<User>createBeanToMap().copy(trang, map2);
         System.out.println(map2);
     }
 
     @Test
-    public void beansToMap() {
+    public void beanToMapList() {
         List<User> users = Lists.newArrayList(trang, meng);
-        List<Map<String, Object>> list = MapCopiers.beansToMap(users);
+        List<Map<String, Object>> list = MapCopiers.<User>createBeanToMap().copyList(users);
+        assertTrue(list instanceof ArrayList);
+        assertEquals(2, list.size());
+        for (Map<String, Object> map : list) {
+            System.out.println(map);
+        }
+    }
+
+    @Test
+    public void beanToMapSet() {
+        Set<User> users = Sets.newHashSet(trang, meng);
+        Set<Map<String, Object>> hashSet = MapCopiers.<User>createBeanToMap().copySet(users);
+        assertTrue(hashSet instanceof HashSet);
+        assertEquals(2, hashSet.size());
+        for (Map<String, Object> map : hashSet) {
+            System.out.println(map);
+        }
+    }
+
+    @Test
+    public void beanToMapArray() {
+        List<User> users = Lists.newArrayList(trang, meng);
+        List<Map<String, Object>> list = MapCopiers.<User>createBeanToMap().copyList(users);
+        assertTrue(list instanceof ArrayList);
+        assertEquals(2, list.size());
         for (Map<String, Object> map : list) {
             System.out.println(map);
         }
@@ -61,17 +93,17 @@ public class MapCopiersTest {
 
     @Test
     public void mapToBean() {
-        Map<String, Object> map = MapCopiers.beanToMap(trang);
+        Map<String, Object> map = MapCopiers.<User>createBeanToMap().copy(trang);
         map.remove("handsome");
         System.out.println(map);
 
-        User user = MapCopiers.mapToBean(map, User.class);
+        User user = MapCopiers.createMapToBean(User.class).copy(map);
         System.out.println(user);
 
         User u2 = new User();
         u2.setName("name");
         u2.setHandsome(true);
-        MapCopiers.mapToBean(map, u2);
+        MapCopiers.createMapToBean(User.class).copy(map, u2);
         System.out.println(u2);
 
     }
@@ -79,8 +111,10 @@ public class MapCopiersTest {
     @Test
     public void mapToBeans() {
         List<User> users = Lists.newArrayList(trang, meng);
-        List<Map<String, Object>> map = MapCopiers.beansToMap(users);
-        List<User> list = MapCopiers.mapToBeans(map, User.class);
+        System.out.println(users);
+        List<Map<String, Object>> map = MapCopiers.<User>createBeanToMap().copyList(users);
+        System.out.println(map);
+        List<User> list = MapCopiers.createMapToBean(User.class).copyList(map);
         System.out.println(list);
     }
 

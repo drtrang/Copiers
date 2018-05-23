@@ -1,20 +1,22 @@
 package com.github.trang.copiers.test.coveralls;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.util.List;
+
+import org.junit.Test;
+
 import com.github.trang.copiers.Copiers;
-import com.github.trang.copiers.Copier;
+import com.github.trang.copiers.base.Copier;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.bean.UserForm;
 import com.github.trang.copiers.test.plugin.SimpleConverter;
 import com.github.trang.copiers.test.util.MockUtils;
+
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Copiers 测试
@@ -33,7 +35,7 @@ public class CglibCopierTest {
     public void cglib() {
         Copier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
         UserEntity target = cglibCopier.copy(user);
-        List<UserEntity> targets = cglibCopier.map(newArrayList(user, user));
+        List<UserEntity> targets = cglibCopier.copyList(newArrayList(user, user));
 
         User reverseUser = Copiers.createCglib(UserEntity.class, User.class).copy(target);
     }

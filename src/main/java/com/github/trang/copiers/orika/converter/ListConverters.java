@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * BooleanConverters
+ * List 转换器，用于 List 与常用类型之间的互相转换，默认会注册到 Orika
  *
  * @author trang
  */

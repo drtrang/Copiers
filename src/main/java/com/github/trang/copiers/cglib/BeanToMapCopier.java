@@ -1,20 +1,23 @@
 package com.github.trang.copiers.cglib;
 
-import com.github.trang.copiers.AbstractCopier;
-import com.github.trang.copiers.exception.CopierException;
-import net.sf.cglib.beans.BeanMap;
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.trang.copiers.util.Preconditions.checkNotNull;
+import com.github.trang.copiers.AbstractCopier;
+import com.github.trang.copiers.exception.CopierException;
+
+import lombok.extern.slf4j.Slf4j;
+import net.sf.cglib.beans.BeanMap;
 
 /**
  * JavaBean 转换为 Map
  *
  * @author trang
  */
-public class BeanToMapCopier<F> extends AbstractCopier<BeanMap, F, Map<String, Object>> {
+@Slf4j(topic = "copiers")
+public class BeanToMapCopier<F> extends AbstractCopier<BeanMap, F, Map<String,Object>> {
 
     @Override
     @SuppressWarnings("unchecked")
@@ -30,12 +33,12 @@ public class BeanToMapCopier<F> extends AbstractCopier<BeanMap, F, Map<String, O
 
     @Override
     @SuppressWarnings("unchecked")
-    public void copy(F bean, Map<String, Object> map) {
+    public void copy(F bean, Map<String, Object> target) {
         checkNotNull(bean, "source bean cannot be null!");
-        checkNotNull(map, "map cannot be null!");
+        checkNotNull(target, "target map cannot be null!");
         try {
             BeanMap beanMap = BeanMap.create(bean);
-            map.putAll(beanMap);
+            target.putAll(beanMap);
         } catch (Exception e) {
             throw new CopierException("create object fail, class: " + bean.getClass().getName(), e);
         }

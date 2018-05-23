@@ -1,18 +1,27 @@
 package com.github.trang.copiers.base;
 
 /**
- * 拷贝数组底层接口
+ * 数组拷贝底层接口
  *
  * @author trang
  */
-public interface ArrayCopier<F, T> {
+public interface ArrayCopier<F, T> extends BeanCopier<F, T> {
 
     /**
-     * 将 sourceArray 拷贝到 targetArray
+     * 将 sourceArray 拷贝到新数组
      *
      * @param sourceArray 源对象数组
-     * @param targetArray 目标对象数组
+     * @return Object 数组
      */
-    void map(F[] sourceArray, T[] targetArray);
+    Object[] copyArray(F[] sourceArray);
+
+    /**
+     * 将 sourceArray 拷贝到新数组
+     *
+     * @param sourceArray 源对象数组
+     * @param targetArray 目标对象数组生成器
+     * @return 目标对象数组
+     */
+    T[] copyArray(F[] sourceArray, T[] targetArray);
 
 }

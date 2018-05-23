@@ -1,14 +1,16 @@
 package com.github.trang.copiers.cglib;
 
+import static com.github.trang.copiers.util.Preconditions.checkNotNull;
+
 import com.github.trang.copiers.AbstractCopier;
+import com.github.trang.copiers.base.Copier;
 import com.github.trang.copiers.exception.CopierException;
-import com.github.trang.copiers.Copier;
 import com.github.trang.copiers.util.ReflectionUtil;
+
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.beans.BeanCopier;
 import net.sf.cglib.core.Converter;
-
-import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 /**
  * 基于 Cglib #{@link BeanCopier} 的 #{@link Copier} 实现
@@ -19,6 +21,7 @@ import static com.github.trang.copiers.util.Preconditions.checkNotNull;
  * @author trang
  */
 @Getter
+@Slf4j(topic = "copiers")
 public class CglibCopier<F, T> extends AbstractCopier<BeanCopier, F, T> {
 
     /** 自定义转换器，只有在 useConverter 为 true 时生效 */

@@ -1,22 +1,24 @@
 package com.github.trang.copiers.test.coveralls;
 
-import com.github.trang.copiers.Copier;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import com.github.trang.copiers.Copiers;
+import com.github.trang.copiers.base.Copier;
 import com.github.trang.copiers.orika.OrikaCopier;
 import com.github.trang.copiers.test.bean.SimpleSource;
 import com.github.trang.copiers.test.bean.SimpleTarget;
 import com.github.trang.copiers.test.bean.User;
 import com.github.trang.copiers.test.bean.UserEntity;
 import com.github.trang.copiers.test.util.MockUtils;
+
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
 
 /**
  * @author trang
@@ -27,7 +29,7 @@ public class OrikaCopierTest {
 
     @Test
     public void defaultOrika() {
-        OrikaCopier<User, UserEntity> copier = Copiers.create(User.class, UserEntity.class);
+        Copier<User, UserEntity> copier = Copiers.create(User.class, UserEntity.class);
         UserEntity target = copier.copy(user);
 
         System.out.println(user);

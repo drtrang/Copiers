@@ -1,7 +1,7 @@
 package com.github.trang.copiers.base;
 
 /**
- * 拷贝 Bean 底层接口
+ * Bean 拷贝底层接口
  *
  * @author trang
  */
