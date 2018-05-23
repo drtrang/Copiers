@@ -14,14 +14,14 @@ Copiers 是一个优雅的 Bean 拷贝工具，可通过友好的 Fluent API 帮
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>2.5.1</version>
+    <version>2.5.2</version>
 </dependency>
 
 <!-- java7 -->
 <dependency>
     <groupId>com.github.drtrang</groupId>
     <artifactId>copiers</artifactId>
-    <version>1.4.2</version>
+    <version>1.5.2</version>
 </dependency>
 ```
 
