@@ -41,7 +41,7 @@ public class OrikaTest {
                 .register();
         SimpleSource source = new SimpleSource(1, System.currentTimeMillis());
         source.setStatusList(newArrayList(1,2,3));
-        source.setMap(new HashMap<>());
+        source.setMap(new HashMap<String, Object>());
         BoundMapperFacade<SimpleSource, SimpleTarget> mapper = mapperFactory.getMapperFacade(SimpleSource.class, SimpleTarget.class);
         SimpleTarget target = mapper.map(source);
         System.out.println(target);

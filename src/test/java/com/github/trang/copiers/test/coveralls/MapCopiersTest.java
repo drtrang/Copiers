@@ -6,11 +6,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +33,7 @@ public class MapCopiersTest {
         trang.setHeight(1.73);
         trang.setWeight(68);
         trang.setHobbits(ImmutableList.of("coding"));
-        trang.setHouse(ImmutableMap.of("home", "home"));
+        trang.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 
         meng.setName("meng");
         meng.setSex((byte) 1);
@@ -43,7 +41,7 @@ public class MapCopiersTest {
         meng.setWeight(60);
         meng.setHandsome(true);
         meng.setHobbits(ImmutableList.of("beautiful"));
-        meng.setHouse(ImmutableMap.of("home", "home"));
+        meng.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 
         trang.setWife(meng);
     }
@@ -69,13 +67,6 @@ public class MapCopiersTest {
         for (Map<String, Object> map : list) {
             System.out.println(map);
         }
-
-        List<Map<String, Object>> linkedList = MapCopiers.<User>createBeanToMap().copyList(users, LinkedList::new);
-        assertTrue(linkedList instanceof LinkedList);
-        assertEquals(2, linkedList.size());
-        for (Map<String, Object> map : linkedList) {
-            System.out.println(map);
-        }
     }
 
     @Test
@@ -87,13 +78,6 @@ public class MapCopiersTest {
         for (Map<String, Object> map : hashSet) {
             System.out.println(map);
         }
-
-        Set<Map<String, Object>> cowSet = MapCopiers.<User>createBeanToMap().copySet(users, CopyOnWriteArraySet::new);
-        assertTrue(cowSet instanceof CopyOnWriteArraySet);
-        assertEquals(2, cowSet.size());
-        for (Map<String, Object> map : cowSet) {
-            System.out.println(map);
-        }
     }
 
     @Test
@@ -103,13 +87,6 @@ public class MapCopiersTest {
         assertTrue(list instanceof ArrayList);
         assertEquals(2, list.size());
         for (Map<String, Object> map : list) {
-            System.out.println(map);
-        }
-
-        List<Map<String, Object>> linkedList = MapCopiers.<User>createBeanToMap().copyList(users, LinkedList::new);
-        assertTrue(linkedList instanceof LinkedList);
-        assertEquals(2, linkedList.size());
-        for (Map<String, Object> map : linkedList) {
             System.out.println(map);
         }
     }

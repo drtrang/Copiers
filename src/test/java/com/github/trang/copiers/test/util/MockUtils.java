@@ -20,7 +20,7 @@ public class MockUtils {
         user.setName("trang");
         user.setHobbits(ImmutableList.of("coding"));
         user.setHandsome(true);
-        user.setHouse(ImmutableMap.of("home", "home"));
+        user.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 
         User wife = new User();
         wife.setName("meng");
@@ -28,7 +28,7 @@ public class MockUtils {
         wife.setAge(24);
         wife.setHeight(1.65);
         wife.setWeight(55);
-        wife.setHouse(ImmutableMap.of("home", "home"));
+        wife.setHouse(ImmutableMap.<String, Object>of("home", "home"));
 
         user.setWife(wife);
         user.setSub(newArrayList(wife));

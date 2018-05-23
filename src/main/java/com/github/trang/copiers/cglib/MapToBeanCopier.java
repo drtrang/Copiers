@@ -4,7 +4,7 @@ import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 import java.util.Map;
 
-import com.github.trang.copiers.base.Copier;
+import com.github.trang.copiers.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 import com.github.trang.copiers.util.ReflectionUtil;
 
@@ -17,7 +17,7 @@ import net.sf.cglib.beans.BeanMap;
  * @author trang
  */
 @Slf4j(topic = "copiers")
-public class MapToBeanCopier<T> implements Copier<Map<String, Object>, T> {
+public class MapToBeanCopier<T> extends AbstractCopier<BeanMap, Map<String, Object>, T> {
 
     private final Class<T> targetClass;
 

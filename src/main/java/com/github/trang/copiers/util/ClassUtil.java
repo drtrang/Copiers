@@ -18,7 +18,7 @@ public final class ClassUtil {
     }
 
     private static Set<Class<?>> getWrapperTypes() {
-        return new HashSet<>(Arrays.asList(Byte.class, Short.class, Integer.class,
+        return new HashSet<Class<?>>(Arrays.asList(Byte.class, Short.class, Integer.class,
                 Long.class, Boolean.class, Character.class, Float.class, Double.class));
     }
 

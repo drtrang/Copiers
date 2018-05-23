@@ -4,9 +4,8 @@ import static com.github.trang.copiers.util.Preconditions.checkNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
-import com.github.trang.copiers.base.Copier;
+import com.github.trang.copiers.AbstractCopier;
 import com.github.trang.copiers.exception.CopierException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,22 +17,15 @@ import net.sf.cglib.beans.BeanMap;
  * @author trang
  */
 @Slf4j(topic = "copiers")
-public class BeanToMapCopier<F> implements Copier<F, Map<String, Object>> {
+public class BeanToMapCopier<F> extends AbstractCopier<BeanMap, F, Map<String,Object>> {
 
     @Override
-    public Map<String, Object> copy(F bean) {
-        return copy(bean, HashMap::new);
-    }
-
     @SuppressWarnings("unchecked")
-    public Map<String, Object> copy(F bean, Supplier<Map<String, Object>> mapFactory) {
+    public Map<String, Object> copy(F bean) {
         checkNotNull(bean, "source bean cannot be null!");
-        checkNotNull(mapFactory, "map factory cannot be null!");
         try {
             BeanMap beanMap = BeanMap.create(bean);
-            Map<String, Object> map = mapFactory.get();
-            map.putAll(beanMap);
-            return map;
+            return new HashMap<>(beanMap);
         } catch (Exception e) {
             throw new CopierException("create object fail, class: " + bean.getClass().getName(), e);
         }

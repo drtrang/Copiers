@@ -116,7 +116,7 @@ public class OrikaCopierTest {
                 .constructor("time")
                 .register();
         SimpleSource source = new SimpleSource(1, System.currentTimeMillis());
-//        source.setStatusList(newArrayList(1,2,3));
+        source.setStatusList(newArrayList(1,2,3));
         source.setTypeList(newArrayList(1.1,2.22,3.333));
         SimpleTarget target = copier.copy(source);
         System.out.println(target);

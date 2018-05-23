@@ -27,19 +27,28 @@ public final class CopierFactory {
     public static <F, T> OrikaCopier<F, T> getOrCreateOrikaCopier(Class<F> sourceClass, Class<T> targetClass) {
         ConcurrentMap<MapperKey<F, T>, OrikaCopier<F, T>> orikaCache = CopierCache.<F, T>getInstance().getOrikaCache();
         MapperKey<F, T> mapperKey = new MapperKey<>(ORIKA, sourceClass, targetClass);
-        return orikaCache.computeIfAbsent(mapperKey, key -> new OrikaCopier.Builder<>(key.getSourceClass(), key.getTargetClass()).register());
+        if (!orikaCache.containsKey(mapperKey)) {
+            orikaCache.put(mapperKey, new OrikaCopier.Builder<>(mapperKey.getSourceClass(), mapperKey.getTargetClass()).register());
+        }
+        return orikaCache.get(mapperKey);
     }
 
     public static <F, T> CglibCopier<F, T> getOrCreateCglibCopier(Class<F> sourceClass, Class<T> targetClass) {
         ConcurrentMap<MapperKey<F, T>, CglibCopier<F, T>> cglibCache = CopierCache.<F, T>getInstance().getCglibCache();
         MapperKey<F, T> mapperKey = new MapperKey<>(CGLIB, sourceClass, targetClass);
-        return cglibCache.computeIfAbsent(mapperKey, key -> new CglibCopier<>(key.getSourceClass(), key.getTargetClass()));
+        if (!cglibCache.containsKey(mapperKey)) {
+            cglibCache.put(mapperKey, new CglibCopier<>(mapperKey.getSourceClass(), mapperKey.getTargetClass()));
+        }
+        return cglibCache.get(mapperKey);
     }
 
     public static <F, T> CglibCopier<F, T> getOrCreateCglibCopier(Class<F> sourceClass, Class<T> targetClass, Converter converter) {
         ConcurrentMap<MapperKey<F, T>, CglibCopier<F, T>> cglibCache = CopierCache.<F, T>getInstance().getCglibCache();
         MapperKey<F, T> mapperKey = new MapperKey<>(CGLIB, sourceClass, targetClass, converter);
-        return cglibCache.computeIfAbsent(mapperKey, key -> new CglibCopier<>(key.getSourceClass(), key.getTargetClass(), converter));
+        if (!cglibCache.containsKey(mapperKey)) {
+            cglibCache.put(mapperKey, new CglibCopier<>(mapperKey.getSourceClass(), mapperKey.getTargetClass(), converter));
+        }
+        return cglibCache.get(mapperKey);
     }
 
     public static class CopierCache<F, T> {
