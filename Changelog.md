@@ -1,11 +1,9 @@
 # Changelog
 
-## 2.5.0
-1. 使用 default 方法重构拷贝接口
-2. 拷贝集合的方法由 `map()` 改为语义更明确的名字，如：`copyArray()`、`copyList()` 等
-3. 拷贝集合的接口中增加了支持自定义集合类型的方法
-4. 重构了 MapCopiers
-5. pom 继承自 parent，并更新依赖
+## 2.5.2
+1. 拷贝集合的方法由 `map()` 改为语义更明确的名字，如：`copyArray()`、`copyList()` 等
+2. 重构了 MapCopiers
+3. pom 继承自 parent，并更新依赖
 
 ## 1.4.2 & 2.4.2
 1. OrikaMapper 增加初始化标识
