@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.2
+1. 升级 parent 为 1.2.1
+
 ## 2.5.0
 1. 使用 default 方法重构拷贝接口
 2. 拷贝集合的方法由 `map()` 改为语义更明确的名字，如：`copyArray()`、`copyList()` 等
