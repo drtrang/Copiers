@@ -1,5 +1,6 @@
 package com.github.trang.copiers.test.coveralls;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -12,65 +13,48 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.github.trang.copiers.MapCopiers;
-import com.github.trang.copiers.test.bean.User;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.github.trang.copiers.test.bean.Teacher;
+import com.github.trang.copiers.test.util.MockUtils;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
+/**
+ * MapCopiersTest
+ * <p>
+ * Write the code. Change the world.
+ *
+ * @author trang
+ * @date 2018/6/21
+ */
 public class MapCopiersTest {
 
-    private User trang = new User();
-    private User meng = new User();
-
-    @Before
-    public void before() {
-        trang.setName("trang");
-        trang.setSex((byte) 0);
-        trang.setAge(23);
-        trang.setHeight(1.73);
-        trang.setWeight(68);
-        trang.setHobbits(ImmutableList.of("coding"));
-        trang.setHouse(ImmutableMap.of("home", "home"));
-
-        meng.setName("meng");
-        meng.setSex((byte) 1);
-        meng.setAge(22);
-        meng.setWeight(60);
-        meng.setHandsome(true);
-        meng.setHobbits(ImmutableList.of("beautiful"));
-        meng.setHouse(ImmutableMap.of("home", "home"));
-
-        trang.setWife(meng);
-    }
+    private Teacher teacher = MockUtils.newTeacher();
 
     @Test
     public void beanToMap() {
-        Map<String, Object> map = MapCopiers.<User>createBeanToMap().copy(trang);
+        Map<String, Object> map = MapCopiers.<Teacher>createBeanToMap().copy(teacher);
         System.out.println(map);
 
         Map<String, Object> map2 = new HashMap<>();
         map2.put("value", "value");
         map2.put("name", "name");
-        MapCopiers.<User>createBeanToMap().copy(trang, map2);
+        MapCopiers.<Teacher>createBeanToMap().copy(teacher, map2);
         System.out.println(map2);
     }
 
     @Test
     public void beanToMapList() {
-        List<User> users = Lists.newArrayList(trang, meng);
-        List<Map<String, Object>> list = MapCopiers.<User>createBeanToMap().copyList(users);
+        List<Teacher> teachers = Lists.newArrayList(teacher, teacher);
+        List<Map<String, Object>> list = MapCopiers.<Teacher>createBeanToMap().copyList(teachers);
         assertTrue(list instanceof ArrayList);
         assertEquals(2, list.size());
         for (Map<String, Object> map : list) {
             System.out.println(map);
         }
 
-        List<Map<String, Object>> linkedList = MapCopiers.<User>createBeanToMap().copyList(users, LinkedList::new);
+        List<Map<String, Object>> linkedList = MapCopiers.<Teacher>createBeanToMap().copyList(teachers, LinkedList::new);
         assertTrue(linkedList instanceof LinkedList);
         assertEquals(2, linkedList.size());
         for (Map<String, Object> map : linkedList) {
@@ -80,17 +64,17 @@ public class MapCopiersTest {
 
     @Test
     public void beanToMapSet() {
-        Set<User> users = Sets.newHashSet(trang, meng);
-        Set<Map<String, Object>> hashSet = MapCopiers.<User>createBeanToMap().copySet(users);
+        Set<Teacher> teachers = newHashSet(teacher, teacher);
+        Set<Map<String, Object>> hashSet = MapCopiers.<Teacher>createBeanToMap().copySet(teachers);
         assertTrue(hashSet instanceof HashSet);
-        assertEquals(2, hashSet.size());
+        assertEquals(1, hashSet.size());
         for (Map<String, Object> map : hashSet) {
             System.out.println(map);
         }
 
-        Set<Map<String, Object>> cowSet = MapCopiers.<User>createBeanToMap().copySet(users, CopyOnWriteArraySet::new);
+        Set<Map<String, Object>> cowSet = MapCopiers.<Teacher>createBeanToMap().copySet(teachers, CopyOnWriteArraySet::new);
         assertTrue(cowSet instanceof CopyOnWriteArraySet);
-        assertEquals(2, cowSet.size());
+        assertEquals(1, cowSet.size());
         for (Map<String, Object> map : cowSet) {
             System.out.println(map);
         }
@@ -98,15 +82,15 @@ public class MapCopiersTest {
 
     @Test
     public void beanToMapArray() {
-        List<User> users = Lists.newArrayList(trang, meng);
-        List<Map<String, Object>> list = MapCopiers.<User>createBeanToMap().copyList(users);
+        List<Teacher> teachers = Lists.newArrayList(teacher, teacher);
+        List<Map<String, Object>> list = MapCopiers.<Teacher>createBeanToMap().copyList(teachers);
         assertTrue(list instanceof ArrayList);
         assertEquals(2, list.size());
         for (Map<String, Object> map : list) {
             System.out.println(map);
         }
 
-        List<Map<String, Object>> linkedList = MapCopiers.<User>createBeanToMap().copyList(users, LinkedList::new);
+        List<Map<String, Object>> linkedList = MapCopiers.<Teacher>createBeanToMap().copyList(teachers, LinkedList::new);
         assertTrue(linkedList instanceof LinkedList);
         assertEquals(2, linkedList.size());
         for (Map<String, Object> map : linkedList) {
@@ -116,28 +100,28 @@ public class MapCopiersTest {
 
     @Test
     public void mapToBean() {
-        Map<String, Object> map = MapCopiers.<User>createBeanToMap().copy(trang);
+        Map<String, Object> map = MapCopiers.<Teacher>createBeanToMap().copy(teacher);
         map.remove("handsome");
         System.out.println(map);
 
-        User user = MapCopiers.createMapToBean(User.class).copy(map);
-        System.out.println(user);
+        Teacher teacher = MapCopiers.createMapToBean(Teacher.class).copy(map);
+        System.out.println(teacher);
 
-        User u2 = new User();
+        Teacher u2 = new Teacher();
         u2.setName("name");
         u2.setHandsome(true);
-        MapCopiers.createMapToBean(User.class).copy(map, u2);
+        MapCopiers.createMapToBean(Teacher.class).copy(map, u2);
         System.out.println(u2);
 
     }
 
     @Test
     public void mapToBeans() {
-        List<User> users = Lists.newArrayList(trang, meng);
-        System.out.println(users);
-        List<Map<String, Object>> map = MapCopiers.<User>createBeanToMap().copyList(users);
+        List<Teacher> teachers = Lists.newArrayList(teacher, teacher);
+        System.out.println(teachers);
+        List<Map<String, Object>> map = MapCopiers.<Teacher>createBeanToMap().copyList(teachers);
         System.out.println(map);
-        List<User> list = MapCopiers.createMapToBean(User.class).copyList(map);
+        List<Teacher> list = MapCopiers.createMapToBean(Teacher.class).copyList(map);
         System.out.println(list);
     }
 

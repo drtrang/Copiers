@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import com.github.trang.copiers.Copiers;
 import com.github.trang.copiers.base.Copier;
-import com.github.trang.copiers.test.bean.User;
-import com.github.trang.copiers.test.bean.UserEntity;
+import com.github.trang.copiers.test.bean.Teacher;
+import com.github.trang.copiers.test.bean.TeacherEntity;
 import com.github.trang.copiers.test.util.MockUtils;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 public class BenchmarkTest {
 
     // source object
-    private final User source = MockUtils.newUser();
+    private final Teacher source = MockUtils.newTeacher();
     // a thousand ~ a hundred million
     private final List<Integer> timesList = ImmutableList.of(1_000, 10_000, 100_000, 1_000_000, 10_000_000/*, 100_000_000*/);
 
@@ -31,13 +31,13 @@ public class BenchmarkTest {
     @Test
     public void test2() {
         // cglib
-        Copier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
+        Copier<Teacher, TeacherEntity> cglibCopier = Copiers.createCglib(Teacher.class, TeacherEntity.class);
         Stopwatch cglibWatch = Stopwatch.createStarted();
         for (Integer times : timesList) {
             long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
             for (int i = 0; i < times; i++) {
-                UserEntity target = new UserEntity();
-//                Copiers.createCglib(User.class, UserEntity.class).copy(source, target);
+                TeacherEntity target = new TeacherEntity();
+//                Copiers.createCglib(Teacher.class, TeacherEntity.class).copy(source, target);
                 cglibCopier.copy(source, target);
             }
             long end = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
@@ -45,8 +45,8 @@ public class BenchmarkTest {
         }
 
         // orika
-        Copier<User, UserEntity> orikaCopier =
-                Copiers.createOrika(User.class, UserEntity.class)
+        Copier<Teacher, TeacherEntity> orikaCopier =
+                Copiers.createOrika(Teacher.class, TeacherEntity.class)
                         .skip("sub")
                         .field("name", "username")
                         .register();
@@ -54,12 +54,12 @@ public class BenchmarkTest {
         for (Integer times : timesList) {
             long start = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
             for (int i = 0; i < times; i++) {
-                UserEntity target = new UserEntity();
-//                Copiers.createOrika(User.class, UserEntity.class)
+                TeacherEntity target = new TeacherEntity();
+//                Copiers.createOrika(Teacher.class, TeacherEntity.class)
 //                        .skip("sub")
 //                        .field("name", "username")
 //                        .register().copy(source, target);
-//                Copiers.create(User.class, UserEntity.class).copy(source, target);
+//                Copiers.create(Teacher.class, TeacherEntity.class).copy(source, target);
                 orikaCopier.copy(source, target);
             }
             long end = mapperWatch.elapsed(TimeUnit.MILLISECONDS);
@@ -73,7 +73,7 @@ public class BenchmarkTest {
     @Test
     public void test1() {
         // cglib
-        Copier<User, UserEntity> cglibCopier = Copiers.createCglib(User.class, UserEntity.class);
+        Copier<Teacher, TeacherEntity> cglibCopier = Copiers.createCglib(Teacher.class, TeacherEntity.class);
         Stopwatch cglibWatch = Stopwatch.createStarted();
         for (Integer times : timesList) {
             long start = cglibWatch.elapsed(TimeUnit.MILLISECONDS);
@@ -85,8 +85,8 @@ public class BenchmarkTest {
         }
 
         // orika
-        Copier<User, UserEntity> orikaCopier =
-                Copiers.createOrika(User.class, UserEntity.class)
+        Copier<Teacher, TeacherEntity> orikaCopier =
+                Copiers.createOrika(Teacher.class, TeacherEntity.class)
                         .skip("sub")
                         .field("name", "username")
                         .register();

@@ -4,35 +4,44 @@ import java.io.Serializable;
 
 import com.google.common.base.MoreObjects;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
- * 用户信息 Form
- * 与 #{@link User} 区别：只有部分信息
+ * 教师信息 VO
+ * 与 #{@link Teacher} 区别：
+ *   1. weight: Float -> Integer
+ *   2. 删除了 n 个字段
+ * <p>
+ * Write the code. Change the world.
+ *
+ * @author trang
+ * @date 2018/6/21
  */
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
-public class UserForm implements Serializable {
+@AllArgsConstructor
+public class TeacherVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String name;
     private Integer age;
     private Byte sex;
     private Double height;
     private Integer weight;
-    private String name;
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues()
+        return MoreObjects.toStringHelper("Teacher").omitNullValues()
+                .add("name", name)
                 .add("age", age)
                 .add("sex", sex)
                 .add("height", height)
                 .add("weight", weight)
-                .add("name", name)
                 .toString();
     }
 

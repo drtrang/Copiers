@@ -1,9 +1,9 @@
 package com.github.trang.copiers.test.coveralls;
 
+import static com.github.trang.copiers.test.util.MockUtils.newTeacher;
+import static com.github.trang.copiers.test.util.MockUtils.newTeacherEntity;
 import static com.google.common.collect.Lists.newArrayList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,90 +13,104 @@ import com.github.trang.copiers.base.Copier;
 import com.github.trang.copiers.orika.OrikaCopier;
 import com.github.trang.copiers.test.bean.SimpleSource;
 import com.github.trang.copiers.test.bean.SimpleTarget;
-import com.github.trang.copiers.test.bean.User;
-import com.github.trang.copiers.test.bean.UserEntity;
-import com.github.trang.copiers.test.util.MockUtils;
+import com.github.trang.copiers.test.bean.Student;
+import com.github.trang.copiers.test.bean.StudentEntity;
+import com.github.trang.copiers.test.bean.Teacher;
+import com.github.trang.copiers.test.bean.TeacherEntity;
 
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 
 /**
+ * OrikaCopierTest
+ * <p>
+ * Write the code. Change the world.
+ *
  * @author trang
+ * @date 2018/6/21
  */
+@SuppressWarnings("Duplicates")
 public class OrikaCopierTest {
 
-    private User user = MockUtils.newUser();
+    private static Copier<Teacher, TeacherEntity> copier = Copiers.create(Teacher.class, TeacherEntity.class);
+    private static Copier<TeacherEntity, Teacher> reverseCopier = Copiers.create(TeacherEntity.class, Teacher.class);
+
+    // orika 支持级联拷贝，当 pojo 中有级联对象时需要提前注册映射关系，否则会抛出异常
+    private static Copier<Student, StudentEntity> useless1 = Copiers.create(Student.class, StudentEntity.class);
+    private static Copier<StudentEntity, Student> useless2 = Copiers.create(StudentEntity.class, Student.class);
 
     @Test
-    public void defaultOrika() {
-        Copier<User, UserEntity> copier = Copiers.create(User.class, UserEntity.class);
-        UserEntity target = copier.copy(user);
+    public void copyTest() {
+        Teacher teacher = newTeacher();
+        TeacherEntity target = copier.copy(teacher);
+        // 名称不同，忽略转换
+        assertThat(target.getUsername()).isNull();
+        assertThat(target.getAge()).isEqualTo(teacher.getAge());
+        assertThat(target.getSex()).isEqualTo(teacher.getSex());
+        assertThat(target.getHeight()).isEqualTo(teacher.getHeight());
+        // 类型不同，由默认转换器转换
+        assertThat(target.getWeight()).isEqualTo(teacher.getWeight().longValue());
+        assertThat(target.getHandsome()).isEqualTo(teacher.getHandsome());
+        assertThat(target.getHouse()).isEqualTo(teacher.getHouse());
+        // 名称不同，忽略转换
+        assertThat(target.getLover().getUsername()).isNull();
+        // 相同类型的级联不需要提前注册映射关系
+        assertThat(target.getLover().getAge()).isEqualTo(teacher.getLover().getAge());
+        // 支持级联拷贝，可以转换
+        assertThat(target.getStudents().toString()).isEqualTo(teacher.getStudents().toString());
+    }
 
-        System.out.println(user);
-        System.out.println(target);
-
-        assertThat(target.getAge(), equalTo(user.getAge()));
-        assertThat(target.getSex(), equalTo(user.getSex()));
-        // weight 属性在 user 对象中没有设置值
-        assertThat(target.getWeight(), nullValue(Long.class));
-        assertThat(target.getHeight(), equalTo(user.getHeight()));
-        // 属性不一致
-        assertThat(target.getUsername(), nullValue());
-        assertThat(target.getHobbits(), equalTo(user.getHobbits()));
-        assertThat(target.getHandsome(), equalTo(user.getHandsome()));
-        assertThat(target.getHouse(), equalTo(user.getHouse()));
-        // 属性不一致
-        assertThat(target.getWife().getUsername(), nullValue());
-        // 使用上级对象的设置，跳过拷贝
-        assertThat(target.getWife().getAge(), equalTo(user.getWife().getAge()));
-        assertThat(target.getWife().getSex(), equalTo(user.getWife().getSex()));
-        assertThat(target.getWife().getHeight(), equalTo(user.getWife().getHeight()));
-        assertThat(target.getWife().getWeight(), equalTo(user.getWife().getWeight().longValue()));
-        assertThat(target.getWife().getHouse(), equalTo(user.getWife().getHouse()));
-        assertThat(target.getOther(), nullValue());
+    @Test
+    public void reverseCopyTest() {
+        TeacherEntity teacher = newTeacherEntity();
+        Teacher target = reverseCopier.copy(teacher);
+        // 名称不同
+        assertThat(target.getName()).isNull();
+        assertThat(target.getAge()).isEqualTo(teacher.getAge());
+        assertThat(target.getSex()).isEqualTo(teacher.getSex());
+        assertThat(target.getHeight()).isEqualTo(teacher.getHeight());
+        // 类型不同
+        assertThat(target.getWeight()).isEqualTo(teacher.getWeight().floatValue());
+        assertThat(target.getHandsome()).isEqualTo(teacher.getHandsome());
+        assertThat(target.getHouse()).isEqualTo(teacher.getHouse());
+        // 类型不同
+        assertThat(target.getLover().getName()).isNull();
+        assertThat(target.getLover().getAge()).isEqualTo(teacher.getLover().getAge());
+        // 这里解释一下为什么相等，因为两个字段名称相同且类型都为 list
+        assertThat(target.getStudents().toString()).isEqualTo(teacher.getStudents().toString());
     }
 
     @Test
     @Ignore
     public void orika() {
-        OrikaCopier<User, UserEntity> copier = Copiers.createOrika(User.class, UserEntity.class)
+        Teacher teacher = newTeacher();
+        OrikaCopier<Teacher, TeacherEntity> copier = Copiers.createOrika(Teacher.class, TeacherEntity.class)
                 .skip("age", "sex")
                 .field("name", "username")
                 .field("wife.sex", "wife.sex")
-                .customize(new CustomMapper<User, UserEntity>() {
+                .customize(new CustomMapper<Teacher, TeacherEntity>() {
                     @Override
-                    public void mapAtoB(User source, UserEntity target, MappingContext context) {
+                    public void mapAtoB(Teacher source, TeacherEntity target, MappingContext context) {
                         target.setUsername("prefix:" + source.getName());
                     }
                 })
                 .register();
 
-        UserEntity target = copier.copy(user);
+        TeacherEntity target = copier.copy(teacher);
 
-        System.out.println(user);
+        System.out.println(teacher);
         System.out.println(target);
 
         // age 属性跳过拷贝
-        assertThat(target.getAge(), nullValue(Integer.class));
+        assertThat(target.getAge()).isNull();
         // sex 属性跳过拷贝
-        assertThat(target.getSex(), nullValue(Byte.class));
-        // weight 属性在 user 对象中没有设置值
-        assertThat(target.getWeight(), nullValue(Long.class));
-        assertThat(target.getHeight(), equalTo(user.getHeight()));
-        assertThat(target.getUsername(), equalTo("prefix:" + user.getName()));
-        assertThat(target.getHobbits(), equalTo(user.getHobbits()));
-        assertThat(target.getHandsome(), equalTo(user.getHandsome()));
-        assertThat(target.getHouse(), equalTo(user.getHouse()));
-        assertThat(target.getWife().getUsername(), equalTo("prefix:" + user.getWife().getName()));
-        // 使用上级对象的设置，跳过拷贝
-        assertThat(target.getWife().getAge(), nullValue());
-        // 使用自定义的设置
-        // assertThat(target.getWife().getSex(), equalTo(user.getWife().getSex()));
-        assertThat(target.getWife().getSex(), nullValue());
-        assertThat(target.getWife().getHeight(), equalTo(user.getWife().getHeight()));
-        assertThat(target.getWife().getWeight(), equalTo(user.getWife().getWeight().longValue()));
-        assertThat(target.getWife().getHouse(), equalTo(user.getWife().getHouse()));
-        assertThat(target.getOther(), nullValue(String.class));
+        assertThat(target.getSex()).isNull();
+        // weight 属性在 teacher 对象中没有设置值
+        assertThat(target.getWeight()).isNull();
+        assertThat(target.getHeight()).isEqualTo(teacher.getHeight());
+        assertThat(target.getUsername()).isEqualTo("prefix:" + teacher.getName());
+        assertThat(target.getHandsome()).isEqualTo(teacher.getHandsome());
+        assertThat(target.getHouse()).isEqualTo(teacher.getHouse());
     }
 
     @Test

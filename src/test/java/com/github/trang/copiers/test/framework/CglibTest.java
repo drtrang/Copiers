@@ -1,5 +1,7 @@
 package com.github.trang.copiers.test.framework;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 import com.github.trang.copiers.test.bean.SimpleSource;
@@ -29,6 +31,9 @@ public class CglibTest {
                 System.out.println("value:" + value + ", target:" + target + ", context:" + context);
                 if (String.class.equals(target)) {
                     return value.toString();
+                }
+                if (Date.class.equals(target)) {
+                    return new Date((long) value);
                 }
                 return value;
             }

@@ -6,51 +6,54 @@ import java.util.Map;
 
 import com.google.common.base.MoreObjects;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 /**
- * 用户信息
+ * 教师信息
+ * <p>
+ * Write the code. Change the world.
+ *
+ * @author trang
+ * @date 2018/6/21
  */
-@Getter
-@Setter
-@NoArgsConstructor
-public class User implements Serializable {
+@Data
+@Builder
+@AllArgsConstructor
+public class Teacher implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String name;
     private Integer age;
     private Byte sex;
     private Double height;
-    private Integer weight;
-    private String name;
-    private List<String> hobbits;
+    private Float weight;
     private Boolean handsome;
     private Map<String, Object> house;
-    private User wife;
-    private List<User> sub;
+    private Teacher lover;
+    private List<Student> students;
 
-    public static User of(String name, Integer age) {
-        User user = new User();
-        user.setName(name);
-        user.setAge(age);
-        return user;
+    public Teacher() { }
+
+    public Teacher(String name, Integer age) {
+        this.name = name;
+        this.age = age;
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues()
+        return MoreObjects.toStringHelper("Teacher").omitNullValues()
+                .add("name", name)
                 .add("age", age)
                 .add("sex", sex)
                 .add("height", height)
                 .add("weight", weight)
-                .add("name", name)
-                .add("hobbits", hobbits)
                 .add("handsome", handsome)
                 .add("house", house)
-                .add("wife", wife)
-                .add("sub", sub)
+                .add("lover", lover)
+                .add("students", students)
                 .toString();
     }
 
